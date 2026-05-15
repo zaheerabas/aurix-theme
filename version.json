@@ -1,0 +1,13 @@
+{
+  "version": "17.0.0",
+  "name": "Aurix International",
+  "slug": "aurix-v17",
+  "author": "ZaheerAbbas",
+  "download_url": "https://github.com/zaheerabas/aurix-theme/releases/latest/download/aurix-theme.zip",
+  "details_url": "https://github.com/zaheerabas/aurix-theme",
+  "description": "Custom WooCommerce theme for Aurix International — surgical and dental instruments.",
+  "last_updated": "2026-05-15",
+  "requires": "5.8",
+  "requires_php": "7.4",
+  "changelog": "v17.0.0 — Shop page sidebar categories, product card improvements, gallery quick view, mobile fixes."
+}

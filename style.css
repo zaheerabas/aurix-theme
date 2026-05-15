@@ -1,0 +1,2031 @@
+/*
+Theme Name:  Aurix International
+Theme URI:   https://aurixinternational.com
+Author:      ZaheerAbbas
+Version:     17.0.0
+Description: Custom WordPress theme for Aurix International v4.0 — by ZaheerAbbas
+Text Domain: aurix
+Tags:        e-commerce, woocommerce, elementor
+*/
+
+/* =========================================================
+   VARIABLES & RESET
+========================================================= */
+:root {
+  --gold:       #b8925a;
+  --gold-lt:    #d4ae7a;
+  --gold-dk:    #9a7440;
+  --gold-pale:  rgba(184,146,90,.10);
+  --navy:       #0d1b2a;
+  --navy-mid:   #152338;
+  --navy-lt:    #1e3050;
+  --white:      #ffffff;
+  --off:        #f5f1eb;
+  --bg:         #eef1f6;
+  --muted:      #8a9ab0;
+  --border:     rgba(13,27,42,.09);
+  --border-md:  rgba(13,27,42,.14);
+  --text:       #2d3748;
+  --shadow-xs:  0 1px 8px rgba(13,27,42,.06);
+  --shadow-sm:  0 2px 20px rgba(13,27,42,.09);
+  --shadow-md:  0 8px 48px rgba(13,27,42,.15);
+  --t:          .22s cubic-bezier(.4,0,.2,1);
+  --r:          8px;
+  --r-lg:       12px;
+  --bar-h:      36px;
+  --hdr-h:      76px;
+  --nav-h:      48px;
+  --mob-top:    56px;
+  --mob-bot:    64px;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text);
+  padding-top:calc(var(--bar-h) + var(--hdr-h) + var(--nav-h)); }
+body.scrolled { padding-top:calc(60px + var(--nav-h)); }
+a { text-decoration:none; }
+img { max-width:100%; height:auto; display:block; }
+button { font-family:inherit; cursor:pointer; }
+
+/* =========================================================
+   1. ANNOUNCEMENT BAR
+========================================================= */
+#aurix-topbar {
+  position:fixed; top:0; left:0; right:0; z-index:1200;
+  height:var(--bar-h); background:var(--navy);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 40px; font-size:.72rem; letter-spacing:.04em;
+  color:rgba(255,255,255,.7); overflow:hidden;
+  transition:height var(--t), opacity var(--t);
+}
+#aurix-topbar a { color:var(--gold-lt); transition:color var(--t); }
+#aurix-topbar a:hover { color:#fff; }
+.atb-left { display:flex; align-items:center; gap:14px; }
+.atb-right { display:flex; align-items:center; gap:16px; }
+.atb-sep { width:1px; height:12px; background:rgba(255,255,255,.18); }
+.atb-pill { background:var(--gold); color:var(--navy); font-weight:700; font-size:.62rem;
+  padding:2px 8px; border-radius:20px; letter-spacing:.08em; text-transform:uppercase; }
+#aurix-topbar i { font-size:.75rem; opacity:.75; margin-right:4px; }
+body.scrolled #aurix-topbar { height:0; opacity:0; pointer-events:none; }
+
+/* =========================================================
+   2. DESKTOP HEADER
+========================================================= */
+#aurix-header {
+  position:fixed; top:var(--bar-h); left:0; right:0; z-index:1100;
+  background:#fff; border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-sm);
+  transition:top var(--t), box-shadow var(--t);
+}
+body.scrolled #aurix-header { top:0; box-shadow:var(--shadow-md); }
+
+.ahdr-row {
+  max-width:1420px; margin:0 auto; padding:0 40px;
+  height:var(--hdr-h); display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center; gap:24px;
+  transition:height var(--t);
+}
+body.scrolled .ahdr-row { height:60px; }
+
+/* Logo */
+.ahdr-logo { display:flex; align-items:center; text-decoration:none; flex-shrink:0; }
+.alogo { display:flex; align-items:center; gap:10px; }
+.alogo__mark {
+  width:44px; height:44px; background:var(--navy); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; position:relative; transition:width var(--t),height var(--t);
+}
+.alogo__mark::before {
+  content:''; position:absolute; inset:5px;
+  border:1.5px solid var(--gold); border-radius:50%; opacity:.5;
+}
+.alogo__mark svg { width:20px; height:20px; position:relative; z-index:1; }
+.alogo__mark--sm { width:34px; height:34px; }
+.alogo__mark--sm svg { width:16px; height:16px; }
+body.scrolled .alogo__mark { width:36px; height:36px; }
+body.scrolled .alogo__mark svg { width:16px; height:16px; }
+.alogo__text { line-height:1.1; }
+.alogo__name { display:block; font-family:'Cormorant Garamond',serif; font-size:1.5rem;
+  font-weight:700; color:var(--navy); letter-spacing:.12em; text-transform:uppercase;
+  transition:font-size var(--t); }
+.alogo__sub { display:block; font-size:.58rem; font-weight:600; color:var(--gold);
+  letter-spacing:.25em; text-transform:uppercase; transition:opacity var(--t); }
+body.scrolled .alogo__name { font-size:1.18rem; }
+body.scrolled .alogo__sub { opacity:0; height:0; overflow:hidden; }
+
+/* Search */
+.ahdr-search { position:relative; max-width:560px; width:100%; justify-self:center; }
+.ahdr-search__icon { position:absolute; left:16px; top:50%; transform:translateY(-50%);
+  color:var(--muted); font-size:.82rem; pointer-events:none; }
+.ahdr-search__input {
+  width:100%; height:46px; padding:0 52px 0 42px;
+  border:1.5px solid #dde4ef; border-radius:23px;
+  font-family:'Outfit',sans-serif; font-size:.87rem; color:var(--navy);
+  background:#f7f9fc; outline:none;
+  transition:border-color var(--t), box-shadow var(--t), background var(--t);
+}
+.ahdr-search__input::placeholder { color:#a8b4c6; }
+.ahdr-search__input:focus { border-color:var(--gold); background:#fff;
+  box-shadow:0 0 0 3px rgba(184,146,90,.12); }
+body.scrolled .ahdr-search__input { height:38px; }
+.ahdr-search__btn {
+  position:absolute; right:7px; top:50%; transform:translateY(-50%);
+  width:32px; height:32px; background:var(--navy); border:none; border-radius:50%;
+  color:#fff; font-size:.78rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t);
+}
+.ahdr-search__btn:hover { background:var(--gold); }
+
+/* Actions */
+.ahdr-actions { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+
+.ahdr-pill {
+  display:flex; align-items:center; gap:5px;
+  border:1.5px solid #dde4ef; border-radius:18px;
+  padding:5px 12px; color:var(--navy); font-size:.76rem; font-weight:500;
+  background:#fff; white-space:nowrap;
+  transition:border-color var(--t), color var(--t);
+}
+.ahdr-pill i { color:var(--gold); font-size:.72rem; }
+.ahdr-pill:hover { border-color:var(--gold); color:var(--gold); }
+
+.ahdr-call { display:flex; align-items:center; gap:10px; text-decoration:none;
+  margin:0 6px; overflow:hidden; max-width:200px;
+  transition:max-width var(--t), opacity var(--t); }
+body.scrolled .ahdr-call { max-width:0; opacity:0; pointer-events:none; }
+.ahdr-call__ico { width:40px; height:40px; flex-shrink:0; background:var(--navy);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  color:var(--gold); font-size:.82rem; transition:background var(--t); }
+.ahdr-call:hover .ahdr-call__ico { background:var(--gold); color:#fff; }
+.ahdr-call__info { white-space:nowrap; }
+.ahdr-call__lbl { display:block; font-size:.58rem; color:var(--muted); letter-spacing:.07em; text-transform:uppercase; }
+.ahdr-call__num { display:block; font-size:.88rem; font-weight:600; color:var(--navy); }
+
+.ahdr-ibtn {
+  width:42px; height:42px; border-radius:50%; border:1.5px solid #dde4ef;
+  background:#fff; color:var(--navy); font-size:.9rem;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; text-decoration:none;
+  transition:border-color var(--t), color var(--t), background var(--t), width var(--t), height var(--t);
+}
+.ahdr-ibtn:hover { border-color:var(--gold); color:var(--gold); background:var(--gold-pale); }
+body.scrolled .ahdr-ibtn { width:36px; height:36px; font-size:.8rem; }
+.ahdr-ibtn__badge {
+  position:absolute; top:-5px; right:-5px;
+  background:var(--gold); color:#fff; min-width:18px; height:18px;
+  border-radius:9px; font-size:.58rem; font-weight:700; padding:0 4px;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid #fff;
+}
+.ahdr-ibtn__dot {
+  position:absolute; bottom:2px; right:2px;
+  width:8px; height:8px; border-radius:50%;
+  background:#22c55e; border:1.5px solid #fff;
+}
+.ahdr-ibtn--account .fa-user-check { color:var(--gold); }
+
+/* =========================================================
+   3. NAV BAR
+========================================================= */
+#aurix-nav {
+  position:fixed; top:calc(var(--bar-h) + var(--hdr-h)); left:0; right:0;
+  z-index:1099; background:var(--navy);
+  transition:top var(--t);
+}
+body.scrolled #aurix-nav { top:60px; }
+.anav-inner { max-width:1420px; margin:0 auto; padding:0 40px;
+  display:flex; align-items:center; height:var(--nav-h); }
+
+.anav-cat-btn {
+  display:flex; align-items:center; gap:9px;
+  background:var(--gold); color:var(--navy);
+  border:none; height:100%; padding:0 22px;
+  font-family:'Outfit',sans-serif; font-size:.8rem; font-weight:600;
+  letter-spacing:.07em; text-transform:uppercase; flex-shrink:0;
+  transition:background var(--t);
+}
+.anav-cat-btn:hover { background:var(--gold-lt); }
+.bars { display:flex; flex-direction:column; gap:4px; width:16px; }
+.bars span { display:block; height:2px; background:var(--navy); border-radius:2px;
+  transition:transform var(--t), opacity var(--t); }
+.anav-cat-btn.open .bars span:nth-child(1) { transform:translateY(6px) rotate(45deg); }
+.anav-cat-btn.open .bars span:nth-child(2) { opacity:0; }
+.anav-cat-btn.open .bars span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); }
+
+.anav-links { display:flex; align-items:center; list-style:none; flex:1; padding-left:4px; }
+.anav-links li a { display:flex; align-items:center; height:var(--nav-h); padding:0 14px;
+  color:rgba(255,255,255,.78); font-size:.83rem; font-weight:500;
+  border-bottom:2px solid transparent; white-space:nowrap;
+  transition:color var(--t), border-color var(--t), background var(--t); }
+.anav-links li a:hover,
+.anav-links li a.active,
+.anav-links li.current-menu-item > a,
+.anav-links li.current_page_item > a {
+  color:#fff; border-bottom-color:var(--gold); background:rgba(255,255,255,.05); }
+
+.anav-pills { display:flex; align-items:center; gap:7px; margin-left:auto; }
+.anav-pill { display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
+  border-radius:18px; padding:0 13px; height:32px; line-height:1; color:rgba(255,255,255,.8);
+  font-size:.75rem; font-weight:500; white-space:nowrap;
+  transition:background var(--t), border-color var(--t); }
+.anav-pill:hover { background:rgba(184,146,90,.2); border-color:var(--gold); color:#fff; }
+.anav-pill i { color:var(--gold); font-size:.78rem; line-height:1; display:inline-flex; align-items:center; }
+.anav-track { color:rgba(255,255,255,.62); font-size:.75rem; padding:0 13px; height:32px;
+  border:1px solid rgba(255,255,255,.12); border-radius:18px;
+  display:inline-flex; align-items:center; justify-content:center; gap:6px; line-height:1;
+  transition:color var(--t), border-color var(--t); }
+.anav-track:hover { color:var(--gold-lt); border-color:var(--gold); }
+
+/* =========================================================
+   4. SLIDE PANELS
+========================================================= */
+.apanel {
+  position:fixed; top:0; left:0; bottom:0; width:min(300px,88vw);
+  background:#fff; z-index:1400;
+  transform:translateX(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column;
+  box-shadow:4px 0 40px rgba(13,27,42,.18);
+}
+.apanel--right { left:auto; right:0; transform:translateX(100%); box-shadow:-4px 0 40px rgba(13,27,42,.18); }
+.apanel.open { transform:translateX(0); }
+
+.apanel__head {
+  background:var(--navy); height:60px; padding:0 20px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.apanel__title { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700;
+  color:#fff; letter-spacing:.08em; text-transform:uppercase; }
+.apanel__title em { color:var(--gold); font-style:normal; }
+.apanel__close { width:30px; height:30px; background:rgba(255,255,255,.1); border:none;
+  border-radius:50%; color:#fff; font-size:.82rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t); }
+.apanel__close:hover { background:var(--gold); }
+
+.apanel__body { flex:1; overflow-y:auto; padding:4px 0; }
+.apanel__body a {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 20px; color:var(--navy); font-size:.88rem; font-weight:400;
+  border-bottom:1px solid rgba(0,0,0,.05);
+  transition:background var(--t), color var(--t), padding-left var(--t);
+}
+.apanel__body a:hover { background:var(--off); color:var(--gold); padding-left:26px; }
+.apanel__body a:last-child { border-bottom:none; }
+.albl { display:flex; align-items:center; gap:11px; }
+.albl i { width:16px; color:var(--gold); font-size:.78rem; text-align:center; }
+.apanel__body a > .fa-chevron-right { font-size:.68rem; color:#c0ccd8; }
+
+.apanel__divider { height:1px; background:var(--border); margin:8px 0; }
+.apanel__user {
+  display:flex; align-items:center; gap:10px; padding:14px 20px;
+  background:var(--gold-pale); border-bottom:1px solid rgba(0,0,0,.05);
+  color:var(--navy); font-size:.85rem; font-weight:600;
+}
+.apanel__user i { color:var(--gold); font-size:1.3rem; }
+
+/* =========================================================
+   5. CART SIDEBAR PANEL
+========================================================= */
+#aurix-cart-panel {
+  position:fixed; top:0; right:0; bottom:0;
+  width:min(440px,100vw); background:#fff; z-index:1400;
+  transform:translateX(100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column;
+  box-shadow:-4px 0 50px rgba(13,27,42,.2);
+}
+#aurix-cart-panel.open { transform:translateX(0); }
+
+.acp-header {
+  background:var(--navy); padding:0 22px; height:64px;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.acp-title { display:flex; align-items:center; gap:12px; color:#fff; }
+.acp-title i { color:var(--gold); font-size:1.1rem; }
+.acp-title span { font-family:'Cormorant Garamond',serif; font-size:1.15rem;
+  font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.acp-close { width:34px; height:34px; background:rgba(255,255,255,.1); border:none;
+  border-radius:50%; color:#fff; font-size:.9rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t); }
+.acp-close:hover { background:var(--gold); }
+
+.acp-body { flex:1; overflow-y:auto; }
+
+/* Mini-cart items styling */
+.aurix-minicart-items { }
+
+/* Empty cart */
+.woocommerce-mini-cart__empty-message {
+  padding:52px 24px; text-align:center; color:var(--muted); font-size:.92rem; }
+.woocommerce-mini-cart__empty-message::before {
+  content:'\f07a'; font-family:'Font Awesome 6 Free'; font-weight:900;
+  display:block; font-size:3rem; color:#dde4ef; margin-bottom:16px; }
+
+/* Cart items */
+.woocommerce-mini-cart { list-style:none; padding:0; margin:0; }
+.woocommerce-mini-cart-item {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:16px 20px; border-bottom:1px solid var(--border);
+  transition:background var(--t);
+}
+.woocommerce-mini-cart-item:hover { background:#fafbfd; }
+.woocommerce-mini-cart-item img {
+  width:72px; height:72px; object-fit:cover;
+  border-radius:var(--r); border:1px solid var(--border); flex-shrink:0;
+}
+.woocommerce-mini-cart-item .mini-cart-item-details { flex:1; min-width:0; }
+.woocommerce-mini-cart-item a:not(.remove_from_cart_button) {
+  display:block; font-size:.85rem; font-weight:500; color:var(--navy);
+  margin-bottom:4px; line-height:1.4;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.woocommerce-mini-cart-item a:hover { color:var(--gold); }
+.woocommerce-mini-cart-item .quantity { font-size:.8rem; color:var(--muted); }
+.woocommerce-mini-cart-item .woocommerce-Price-amount { color:var(--navy); font-weight:600; }
+/* SKU / variation label */
+.variation-sku { font-size:.72rem; color:var(--gold); font-weight:500;
+  background:var(--gold-pale); padding:2px 6px; border-radius:4px;
+  display:inline-block; margin-top:3px; }
+
+.woocommerce-mini-cart-item .remove_from_cart_button {
+  flex-shrink:0; width:28px; height:28px; background:#fff3f3;
+  border:1.5px solid #fcc; border-radius:50%; color:#e55;
+  display:flex; align-items:center; justify-content:center; font-size:.85rem;
+  line-height:1; transition:background var(--t), color var(--t);
+}
+.woocommerce-mini-cart-item .remove_from_cart_button:hover { background:#e55; color:#fff; border-color:#e55; }
+
+/* Subtotal row */
+.woocommerce-mini-cart__total {
+  padding:14px 20px 8px; display:flex; justify-content:space-between; align-items:center;
+  font-size:.9rem; font-weight:600; color:var(--navy);
+  border-top:2px solid var(--border);
+}
+.woocommerce-mini-cart__total strong { color:var(--gold); font-size:1rem; }
+.woocommerce-mini-cart__buttons { display:none; }
+
+.acp-footer {
+  padding:18px 20px 22px; background:#f7f9fc;
+  border-top:1px solid var(--border); flex-shrink:0;
+}
+.acp-subtotal { display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:10px; font-size:.92rem; }
+.acp-subtotal span:first-child { color:var(--muted); font-weight:500; }
+.acp-total-amt { font-size:1.15rem; font-weight:700; color:var(--navy); }
+.acp-note { font-size:.74rem; color:var(--muted); line-height:1.5;
+  padding:8px 12px; background:rgba(184,146,90,.08);
+  border-radius:var(--r); border-left:3px solid var(--gold);
+  margin-bottom:14px; }
+.acp-note i { color:var(--gold); margin-right:4px; }
+.acp-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.acp-btn {
+  height:46px; border-radius:23px; display:flex; align-items:center; justify-content:center;
+  gap:8px; font-family:'Outfit',sans-serif; font-size:.88rem; font-weight:600;
+  letter-spacing:.03em; transition:background var(--t), color var(--t), border-color var(--t);
+  border:2px solid transparent;
+}
+.acp-btn--outline { background:#fff; color:var(--navy); border-color:#dde4ef; }
+.acp-btn--outline:hover { border-color:var(--gold); color:var(--gold); }
+.acp-btn--solid { background:var(--navy); color:#fff; }
+.acp-btn--solid:hover { background:var(--gold); color:#fff; }
+
+/* =========================================================
+   6. OVERLAY
+========================================================= */
+#aurix-overlay {
+  position:fixed; inset:0; background:rgba(10,20,35,.55); z-index:1300;
+  opacity:0; visibility:hidden; backdrop-filter:blur(2px);
+  transition:opacity var(--t), visibility var(--t);
+}
+#aurix-overlay.open { opacity:1; visibility:visible; }
+
+/* =========================================================
+   7. SEARCH OVERLAY
+========================================================= */
+#aurix-search-overlay {
+  position:fixed; inset:0; background:rgba(10,20,35,.6); z-index:1500;
+  opacity:0; visibility:hidden; display:flex; align-items:flex-start;
+  justify-content:center; padding-top:88px; backdrop-filter:blur(3px);
+  transition:opacity var(--t), visibility var(--t);
+}
+#aurix-search-overlay.open { opacity:1; visibility:visible; }
+.asrch-box { background:#fff; border-radius:14px; padding:22px;
+  width:min(500px,92vw); box-shadow:var(--shadow-md);
+  transform:translateY(-16px); transition:transform var(--t); }
+#aurix-search-overlay.open .asrch-box { transform:translateY(0); }
+.asrch-row { display:flex; gap:10px; }
+.asrch-input { flex:1; height:48px; padding:0 20px;
+  border:1.5px solid #dde4ef; border-radius:24px;
+  font-family:'Outfit',sans-serif; font-size:.9rem; color:var(--navy); outline:none;
+  transition:border-color var(--t), box-shadow var(--t); }
+.asrch-input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(184,146,90,.12); }
+.asrch-submit { width:48px; height:48px; flex-shrink:0; background:var(--navy);
+  border:none; border-radius:50%; color:#fff; font-size:.88rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t); }
+.asrch-submit:hover { background:var(--gold); }
+.asrch-hints { margin-top:12px; display:flex; flex-wrap:wrap; gap:7px; }
+.asrch-hint { background:var(--off); border:none; border-radius:16px; padding:5px 14px;
+  font-size:.76rem; color:var(--navy-mid); font-family:'Outfit',sans-serif;
+  transition:background var(--t), color var(--t); }
+.asrch-hint:hover { background:var(--gold-pale); color:var(--gold); }
+
+/* =========================================================
+   8. MOBILE TOP BAR
+========================================================= */
+#aurix-mob-top {
+  display:none; position:fixed; top:0; left:0; right:0;
+  height:var(--mob-top); background:#fff;
+  border-bottom:1px solid var(--border); box-shadow:var(--shadow-sm); z-index:1100;
+  align-items:center; justify-content:space-between; padding:0 14px;
+}
+.amob-btn { width:40px; height:40px; border:none; background:none;
+  font-size:1.1rem; color:var(--navy); border-radius:var(--r);
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t), color var(--t); }
+.amob-btn:hover { background:var(--gold-pale); color:var(--gold); }
+.amob-logo-link { display:flex; align-items:center; text-decoration:none; }
+.amob-right { display:flex; align-items:center; gap:4px; }
+.amob-ilink { width:38px; height:38px; border:none; background:none;
+  font-size:.9rem; color:var(--muted); position:relative;
+  display:flex; align-items:center; justify-content:center;
+  transition:color var(--t); }
+.amob-ilink:hover { color:var(--gold); }
+.amob-badge { position:absolute; top:3px; right:3px;
+  background:var(--gold); color:#fff; min-width:15px; height:15px;
+  border-radius:8px; font-size:.52rem; font-weight:700; padding:0 3px;
+  display:flex; align-items:center; justify-content:center; border:2px solid #fff; }
+
+/* =========================================================
+   9. MOBILE BOTTOM NAV
+========================================================= */
+#aurix-mob-bot {
+  display:none; position:fixed; bottom:0; left:0; right:0;
+  height:var(--mob-bot); background:#fff;
+  border-top:1px solid var(--border); box-shadow:0 -4px 28px rgba(13,27,42,.1);
+  z-index:1100; align-items:center; justify-content:space-around; padding:0 6px;
+}
+.amob-nav {
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+  color:#8a9ab0; font-size:.59rem; font-weight:500;
+  letter-spacing:.04em; text-transform:uppercase;
+  padding:6px 8px; border:none; background:none; position:relative; flex:1;
+  transition:color var(--t); text-decoration:none; height:100%;
+}
+.amob-nav i { font-size:1.1rem; line-height:1; display:flex; align-items:center; justify-content:center; }
+.amob-nav:hover, .amob-nav.active { color:var(--gold); }
+.amob-nav__badge { position:absolute; top:4px; left:50%; transform:translateX(4px);
+  background:var(--gold); color:#fff; min-width:15px; height:15px;
+  border-radius:8px; font-size:.52rem; font-weight:700; padding:0 3px;
+  display:flex; align-items:center; justify-content:center; border:2px solid #fff; }
+.amob-nav--home {
+  background:var(--navy); color:#fff !important; width:52px; height:52px;
+  flex:0 0 52px; border-radius:50%; font-size:0 !important; gap:0;
+  margin-top:-18px; border:3px solid #fff;
+  box-shadow:0 4px 24px rgba(13,27,42,.28);
+}
+.amob-nav--home i { font-size:1.2rem !important; color:var(--gold); }
+.amob-nav--home:hover { background:var(--gold); }
+.amob-nav--home:hover i { color:#fff; }
+
+/* =========================================================
+   10. SOCIAL ICONS — BRAND COLORS (theme-override mode off)
+========================================================= */
+.footer-socials { display:flex; gap:8px; flex-wrap:wrap; }
+.footer-socials--center { justify-content:center; }
+.fsoc {
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:transform .15s, opacity .15s, box-shadow .15s;
+}
+.fsoc:hover { transform:translateY(-3px); opacity:.88; box-shadow:0 4px 12px rgba(0,0,0,.2); }
+.fsoc svg { width:15px; height:15px; display:block; }
+.fsoc svg path { fill:#fff; }
+
+/* Brand colors — each platform's official color */
+.fsoc--fb  { background:#1877F2; }
+.fsoc--x   { background:#000000; }
+.fsoc--li  { background:#0A66C2; }
+.fsoc--ig  { background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285AEB 90%); }
+.fsoc--yt  { background:#FF0000; }
+.fsoc--pin { background:#E60023; }
+
+/* =========================================================
+   11. FOOTER
+========================================================= */
+.aurix-footer { background:#F5F6F8; }
+.footer-bar-top { height:3px; background:linear-gradient(90deg,transparent 0%,var(--gold) 25%,var(--gold) 75%,transparent 100%); }
+
+.footer-desk { padding:52px 0 0; }
+.footer-container { max-width:1300px; margin:0 auto; padding:0 48px; }
+.footer-grid {
+  display:grid;
+  grid-template-columns:1.8fr 1fr 1.1fr 1fr 1.2fr;
+  gap:0 36px; padding-bottom:40px;
+  border-bottom:1px solid #d8dce4;
+}
+
+.footer-logo { display:inline-flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:14px; }
+.footer-logo__mark { width:38px; height:38px; display:flex; align-items:center; justify-content:center; }
+.footer-logo__mark svg { width:38px; height:38px; }
+.footer-logo__text { display:flex; flex-direction:column; }
+.footer-logo__name { font-family:'DM Sans',sans-serif; font-size:19px; font-weight:600;
+  letter-spacing:.22em; text-transform:uppercase; color:#0e1b2e; line-height:1; }
+.footer-logo__sub { font-size:8px; font-weight:400; letter-spacing:.3em;
+  text-transform:uppercase; color:#8a96a3; margin-top:2px; }
+.footer-logo__line { width:44px; height:1.5px; background:var(--gold); margin:6px 0 16px; }
+.footer-brand__desc { font-size:13px; line-height:1.76; color:#4a5568;
+  max-width:250px; margin-bottom:20px; }
+
+.footer-col h4 { font-size:13px; font-weight:700; color:#0e1b2e; letter-spacing:.06em;
+  text-transform:uppercase; margin-bottom:16px; padding-bottom:10px;
+  border-bottom:2px solid var(--gold); display:inline-block; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.footer-col ul li a { font-size:13px; color:#4a5568;
+  display:flex; align-items:center; gap:0;
+  transition:color .15s, gap .15s; }
+.footer-col ul li a::before { content:'›'; color:var(--gold); font-weight:700; font-size:15px;
+  width:0; overflow:hidden; transition:width .15s, margin-right .15s; margin-right:0; }
+.footer-col ul li a:hover { color:#0e1b2e; gap:4px; }
+.footer-col ul li a:hover::before { width:12px; margin-right:4px; }
+
+.footer-col--contact .footer-contact-block {
+  display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; }
+.footer-contact-block > i { color:var(--gold); margin-top:2px; font-size:.82rem; flex-shrink:0; width:14px; }
+.footer-contact-block p, .footer-contact-block a {
+  font-size:13px; color:#4a5568; line-height:1.6; }
+.footer-contact-block a { color:var(--gold); }
+.footer-contact-block a:hover { color:#0e1b2e; }
+
+/* Mobile footer */
+.footer-mob { display:none; }
+.mob-accord { border-bottom:1px solid #d8dce4; }
+.mob-accord__btn {
+  width:100%; background:none; border:none; padding:16px 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500;
+  color:#0e1b2e; text-align:left; transition:background .15s;
+}
+.mob-accord__btn:hover { background:#ededee; }
+.mob-accord__arrow { width:22px; height:22px; border-radius:50%;
+  border:1.5px solid #d8dce4; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .2s, transform .25s; }
+.mob-accord__btn:hover .mob-accord__arrow { border-color:var(--gold); }
+.mob-accord__arrow svg { width:11px; height:11px; fill:none; stroke:#8a96a3;
+  stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.mob-accord.open .mob-accord__arrow { transform:rotate(180deg); border-color:var(--gold); }
+.mob-accord.open .mob-accord__arrow svg { stroke:var(--gold); }
+.mob-accord__body { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+.mob-accord.open .mob-accord__body { max-height:500px; }
+.mob-accord__body ul { list-style:none; padding:4px 20px 16px; display:flex; flex-direction:column; gap:0; }
+.mob-accord__body ul li a { display:block; padding:9px 0; font-size:14px; color:#4a5568;
+  border-bottom:1px solid #eded; transition:color .15s; }
+.mob-accord__body ul li:last-child a { border-bottom:none; }
+.mob-accord__body ul li a:hover { color:var(--gold); }
+
+.mob-brand { padding:28px 20px; text-align:center; border-bottom:1px solid #d8dce4; }
+.mob-brand__logo { display:flex; flex-direction:column; align-items:center; margin-bottom:12px; }
+.mob-brand__name { font-size:18px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:#0e1b2e; }
+.mob-brand__sub { font-size:8px; letter-spacing:.3em; text-transform:uppercase; color:#8a96a3; margin-top:2px; }
+.mob-brand__line { width:36px; height:1.5px; background:var(--gold); margin:5px auto 0; }
+.mob-brand p { font-size:13px; color:#4a5568; line-height:1.72; margin:12px 0 18px; }
+
+/* Footer bottom */
+.footer-bottom { background:var(--navy); border-top:3px solid var(--gold); }
+.footer-bottom__inner {
+  max-width:1300px; margin:0 auto; padding:0 48px;
+  height:52px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+.footer-copy { font-size:12.5px; color:rgba(255,255,255,.55); white-space:nowrap; }
+.footer-copy strong { color:var(--gold); }
+.footer-copy a { color:rgba(255,255,255,.55); transition:color .15s; }
+.footer-copy a:hover { color:var(--gold); }
+.footer-dev { font-size:12px; color:rgba(255,255,255,.45); white-space:nowrap; }
+.dev-mark { font-weight:700; font-size:12.5px; }
+.footer-pay { display:flex; align-items:center; gap:5px; }
+.pay-chip { height:24px; min-width:38px; padding:0 7px; background:#fff;
+  border:1px solid rgba(255,255,255,.2); border-radius:4px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; font-weight:700; }
+.p-visa { color:#1a1f71; font-style:italic; font-size:10px; letter-spacing:.08em; }
+.p-mc { width:40px; padding:0; }
+.mc-w { display:flex; align-items:center; justify-content:center; width:100%; }
+.mc-c { width:14px; height:14px; border-radius:50%; }
+.mc-l { background:#EB001B; margin-right:-5px; }
+.mc-r { background:#F79E1B; }
+
+/* =========================================================
+   12. WOOCOMMERCE — GLOBAL BUTTONS
+========================================================= */
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit {
+  background:var(--navy) !important; color:#fff !important;
+  border-radius:25px !important; font-family:'Outfit',sans-serif !important;
+  font-size:.88rem !important; font-weight:500 !important; letter-spacing:.04em !important;
+  transition:background var(--t) !important; border:none !important;
+  padding:12px 28px !important;
+}
+.woocommerce a.button:hover, .woocommerce button.button:hover,
+.woocommerce input.button:hover, .woocommerce #respond input#submit:hover {
+  background:var(--gold) !important; color:#fff !important; }
+.woocommerce a.button.alt, .woocommerce button.button.alt,
+.woocommerce input.button.alt {
+  background:var(--gold) !important; }
+.woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover {
+  background:var(--navy) !important; }
+
+.woocommerce .price { color:var(--navy) !important; font-weight:600 !important; }
+.woocommerce .price ins { color:var(--gold) !important; text-decoration:none !important; font-weight:700 !important; }
+.woocommerce .price del { color:var(--muted) !important; font-size:.82em !important; }
+.woocommerce-loop-product__title { font-family:'Cormorant Garamond',serif !important;
+  font-size:1.1rem !important; color:var(--navy) !important; }
+.woocommerce ul.products li.product {
+  border-radius:var(--r-lg) !important; overflow:hidden !important;
+  box-shadow:var(--shadow-xs) !important; transition:box-shadow var(--t), transform var(--t) !important;
+  background:#fff !important;
+}
+.woocommerce ul.products li.product:hover { box-shadow:var(--shadow-md) !important; transform:translateY(-3px) !important; }
+.woocommerce .star-rating span::before { color:var(--gold) !important; }
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select {
+  border-radius:var(--r) !important; border:1.5px solid #dde4ef !important;
+  font-family:'Outfit',sans-serif !important; padding:10px 16px !important;
+  transition:border-color var(--t), box-shadow var(--t) !important;
+}
+.woocommerce form .form-row input.input-text:focus,
+.woocommerce form .form-row textarea:focus,
+.woocommerce form .form-row select:focus {
+  border-color:var(--gold) !important;
+  box-shadow:0 0 0 3px rgba(184,146,90,.1) !important; outline:none !important; }
+
+/* =========================================================
+   13. MY ACCOUNT PAGE — Login / Register tabs
+========================================================= */
+.aurix-account-page .aurix-woo-wrap {
+  max-width:1140px; margin:0 auto; padding:40px;
+}
+
+/* When not logged in — two-column Login/Register */
+.woocommerce-account:not(.user-logged-in) .woocommerce {
+  max-width:900px; margin:0 auto;
+}
+
+/* PAGE TITLE */
+.aurix-account-page .woocommerce > h2,
+.woocommerce-account h1.page-title {
+  font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700;
+  color:var(--navy); margin-bottom:8px; padding-bottom:12px;
+  border-bottom:2.5px solid var(--gold); display:inline-block;
+}
+
+/* LOGIN / REGISTER TABS */
+.aurix-auth-tabs {
+  display:flex; gap:0; margin-bottom:32px;
+  border-bottom:2px solid var(--border);
+}
+.aurix-tab {
+  padding:12px 28px; background:none; border:none; border-bottom:2.5px solid transparent;
+  margin-bottom:-2px; font-family:'Outfit',sans-serif; font-size:.92rem; font-weight:600;
+  color:var(--muted); letter-spacing:.04em; text-transform:uppercase;
+  cursor:pointer; transition:color var(--t), border-color var(--t);
+}
+.aurix-tab.active { color:var(--navy); border-bottom-color:var(--gold); }
+.aurix-tab:hover:not(.active) { color:var(--navy); }
+
+.aurix-tab-panel { display:none; }
+.aurix-tab-panel.active { display:block; }
+
+/* TWO COL layout for login+register */
+.woocommerce-account .u-columns {
+  display:grid; grid-template-columns:1fr 1fr; gap:32px;
+}
+.woocommerce-account .col-1,
+.woocommerce-account .col-2 {
+  background:#fff; border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:32px; box-shadow:var(--shadow-xs);
+}
+.woocommerce-account .col-1 h2,
+.woocommerce-account .col-2 h2 {
+  font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:700;
+  color:var(--navy); margin-bottom:24px; padding-bottom:12px;
+  border-bottom:2px solid var(--gold); display:inline-block;
+}
+
+/* Labels */
+.woocommerce form .form-row label {
+  font-size:.82rem; font-weight:600; color:var(--navy);
+  letter-spacing:.04em; text-transform:uppercase; margin-bottom:6px; display:block;
+}
+
+/* Remember me + Lost password */
+.woocommerce form .form-row .woocommerce-form__label-for-checkbox {
+  display:flex; align-items:center; gap:8px; font-size:.85rem;
+  color:var(--muted); text-transform:none; letter-spacing:0; font-weight:400;
+}
+.woocommerce form .form-row .woocommerce-form__label-for-checkbox input { margin:0; }
+.woocommerce-LostPassword a,
+.lost_password a { color:var(--gold) !important; font-size:.85rem; }
+.woocommerce-LostPassword a:hover, .lost_password a:hover { color:var(--navy) !important; }
+
+/* Register form note */
+.woocommerce-privacy-policy-text { font-size:.8rem; color:var(--muted); margin-top:12px; line-height:1.6; }
+
+/* =========================================================
+   14. MY ACCOUNT DASHBOARD (logged in)
+========================================================= */
+.user-logged-in.aurix-account-page .woocommerce {
+  display:grid; grid-template-columns:260px 1fr; gap:32px; align-items:start;
+  max-width:1100px; margin:0 auto;
+}
+
+.woocommerce-MyAccount-navigation {
+  background:#fff; border-radius:var(--r-lg); border:1px solid var(--border);
+  overflow:hidden; box-shadow:var(--shadow-xs); position:sticky; top:calc(60px + var(--nav-h) + 20px);
+}
+.woocommerce-MyAccount-navigation ul { list-style:none; margin:0; padding:0; }
+.woocommerce-MyAccount-navigation ul li a {
+  display:flex; align-items:center; gap:10px; padding:14px 20px;
+  color:var(--navy); font-size:.88rem; font-weight:500;
+  border-bottom:1px solid var(--border); text-decoration:none;
+  border-left:3px solid transparent;
+  transition:background var(--t), color var(--t), padding-left var(--t), border-color var(--t);
+}
+.woocommerce-MyAccount-navigation ul li:last-child a { border-bottom:none; }
+.woocommerce-MyAccount-navigation ul li a::before {
+  font-family:'Font Awesome 6 Free'; font-weight:900;
+  width:16px; text-align:center; font-size:.8rem; color:var(--gold); flex-shrink:0;
+}
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--dashboard a::before   { content:'\f3fd'; }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--orders a::before       { content:'\f468'; }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--downloads a::before    { content:'\f019'; }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--edit-address a::before { content:'\f3c5'; }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--edit-account a::before { content:'\f4ff'; }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a::before { content:'\f2f5'; color:#e55; }
+
+.woocommerce-MyAccount-navigation ul li a:hover,
+.woocommerce-MyAccount-navigation ul li.is-active a {
+  background:var(--gold-pale); color:var(--gold); padding-left:24px; border-left-color:var(--gold); }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a:hover { color:#e55; border-left-color:#e55; }
+
+.woocommerce-MyAccount-content {
+  background:#fff; border-radius:var(--r-lg); border:1px solid var(--border);
+  padding:32px; box-shadow:var(--shadow-xs);
+}
+.woocommerce-MyAccount-content h2,
+.woocommerce-MyAccount-content h3 { font-family:'Cormorant Garamond',serif; color:var(--navy); margin-bottom:18px; }
+
+/* Dashboard welcome */
+.woocommerce-MyAccount-content > p:first-child {
+  background:var(--gold-pale); border-left:3px solid var(--gold);
+  padding:14px 18px; border-radius:0 var(--r) var(--r) 0;
+  font-size:.9rem; color:var(--navy); margin-bottom:20px; line-height:1.6;
+}
+
+/* Orders table */
+.woocommerce-orders-table {
+  width:100%; border-collapse:collapse; font-size:.87rem; border-radius:var(--r-lg); overflow:hidden;
+}
+.woocommerce-orders-table th {
+  background:var(--navy); color:#fff; padding:12px 16px;
+  text-align:left; font-weight:600; font-size:.76rem; letter-spacing:.06em; text-transform:uppercase;
+}
+.woocommerce-orders-table td { padding:13px 16px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.woocommerce-orders-table tr:last-child td { border-bottom:none; }
+.woocommerce-orders-table tr:hover td { background:#fafbfd; }
+.woocommerce-orders-table .woocommerce-button { padding:6px 16px !important; font-size:.78rem !important; border-radius:14px !important; }
+
+mark.order-status { background:none !important; padding:4px 10px; border-radius:12px; font-size:.74rem; font-weight:600; }
+mark.order-status.status-processing { background:rgba(56,161,105,.12) !important; color:#2f855a !important; }
+mark.order-status.status-completed  { background:rgba(49,130,206,.12) !important; color:#2b6cb0 !important; }
+mark.order-status.status-pending    { background:rgba(237,137,54,.12) !important; color:#c05621 !important; }
+mark.order-status.status-cancelled  { background:rgba(229,62,62,.12) !important; color:#c53030 !important; }
+
+/* =========================================================
+   15. CART PAGE
+========================================================= */
+.aurix-cart-page .aurix-woo-wrap { max-width:1100px; margin:0 auto; }
+.aurix-cart-page h1.page-title, .aurix-checkout-page h1.page-title {
+  font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--navy);
+  margin-bottom:28px; padding-bottom:12px; border-bottom:2px solid var(--gold); display:inline-block;
+}
+
+table.shop_table { border-radius:var(--r-lg) !important; overflow:hidden; border:1px solid var(--border) !important; box-shadow:var(--shadow-xs); }
+table.shop_table thead th { background:var(--navy) !important; color:#fff !important;
+  font-size:.75rem !important; letter-spacing:.06em !important; text-transform:uppercase !important;
+  padding:14px 20px !important; border:none !important; }
+table.shop_table tbody td { padding:18px 20px !important; border-color:var(--border) !important; vertical-align:middle !important; }
+table.shop_table tbody tr:last-child td { border-bottom:none !important; }
+
+.woocommerce-cart-form .product-thumbnail img { border-radius:var(--r) !important; border:1px solid var(--border) !important; width:70px !important; height:70px !important; object-fit:cover !important; }
+.woocommerce-cart-form td.product-remove a.remove { background:#fff3f3 !important; color:#e55 !important; border:1.5px solid #fcc !important; border-radius:50% !important; font-size:1rem !important; width:30px !important; height:30px !important; display:flex !important; align-items:center !important; justify-content:center !important; transition:background var(--t) !important; }
+.woocommerce-cart-form td.product-remove a.remove:hover { background:#e55 !important; color:#fff !important; border-color:#e55 !important; }
+.woocommerce .qty { border:1.5px solid #dde4ef !important; border-radius:var(--r) !important; padding:6px 10px !important; width:70px !important; text-align:center !important; font-family:'Outfit',sans-serif !important; }
+.cart_totals { background:#fff; border:1px solid var(--border); border-radius:var(--r-lg); padding:28px; box-shadow:var(--shadow-xs); }
+.cart_totals h2 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; color:var(--navy); margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--gold); }
+.cart_totals .order-total .amount { font-size:1.3rem !important; font-weight:700 !important; color:var(--gold) !important; }
+
+/* =========================================================
+   16. CHECKOUT PAGE
+========================================================= */
+.woocommerce-checkout #payment { background:#fff; border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; }
+.woocommerce-checkout #payment ul.payment_methods { padding:16px 20px; background:var(--off); border-bottom:1px solid var(--border); }
+.woocommerce-checkout #payment div.payment_box { padding:14px 20px; font-size:.87rem; color:var(--muted); }
+.woocommerce-checkout #payment div.place-order { padding:20px; }
+.woocommerce-order-review { background:#fff; border:1px solid var(--border); border-radius:var(--r-lg); padding:24px; box-shadow:var(--shadow-xs); }
+
+/* =========================================================
+   17. GENERAL CONTENT / BLOG
+========================================================= */
+.site-main { min-height:55vh; }
+.aurix-woo-wrap, .aurix-page-wrap { max-width:1420px; margin:0 auto; padding:40px; }
+
+.entry-content { font-size:1rem; line-height:1.82; color:var(--text); }
+.entry-content h1,.entry-content h2,.entry-content h3,.entry-content h4 { font-family:'Cormorant Garamond',serif; color:var(--navy); margin:32px 0 14px; }
+.entry-content h1 { font-size:2.1rem; }
+.entry-content h2 { font-size:1.65rem; border-bottom:2px solid var(--gold); padding-bottom:7px; display:inline-block; }
+.entry-content h3 { font-size:1.3rem; }
+.entry-content p { margin-bottom:1.15em; }
+.entry-content a { color:var(--gold); text-decoration:underline; text-decoration-color:rgba(184,146,90,.35); }
+.entry-content a:hover { color:var(--navy); }
+.entry-content ul,.entry-content ol { padding-left:1.5em; margin-bottom:1.15em; }
+.entry-content li { margin-bottom:.45em; }
+.entry-content blockquote { border-left:4px solid var(--gold); padding:14px 22px; background:var(--gold-pale); border-radius:0 var(--r) var(--r) 0; font-style:italic; color:var(--navy-mid); margin:22px 0; }
+.entry-content img { border-radius:var(--r); }
+.page-title { font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--navy);
+  margin-bottom:24px; padding-bottom:12px; border-bottom:2px solid var(--gold); display:inline-block; }
+
+/* =========================================================
+   18. WOOCOMMERCE NOTICES
+========================================================= */
+.woocommerce-message { background:#f0fff4 !important; border-top-color:#38a169 !important; color:var(--navy) !important; border-radius:0 var(--r) var(--r) 0 !important; }
+.woocommerce-error { background:#fff5f5 !important; border-top-color:#e53e3e !important; border-radius:0 var(--r) var(--r) 0 !important; }
+.woocommerce-info { background:#ebf8ff !important; border-top-color:#3182ce !important; border-radius:0 var(--r) var(--r) 0 !important; }
+
+/* =========================================================
+   19. PAGINATION
+========================================================= */
+.woocommerce nav.woocommerce-pagination ul li a,
+.woocommerce nav.woocommerce-pagination ul li span { border-color:#dde4ef !important; color:var(--navy) !important; border-radius:var(--r) !important; }
+.woocommerce nav.woocommerce-pagination ul li a:hover,
+.woocommerce nav.woocommerce-pagination ul li span.current { background:var(--gold) !important; border-color:var(--gold) !important; color:#fff !important; }
+
+/* =========================================================
+   20. RESPONSIVE
+========================================================= */
+@media (max-width:1100px) {
+  .ahdr-row,.anav-inner { padding:0 24px; }
+  #aurix-topbar { padding:0 24px; }
+  .footer-container { padding:0 28px; }
+  .footer-grid { grid-template-columns:1.6fr 1fr 1fr 1fr; row-gap:32px; }
+  .footer-col--contact { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:0 24px; }
+  .footer-col--contact h4 { grid-column:1/-1; }
+}
+@media (max-width:900px) { .ahdr-call { display:none; } }
+
+@media (max-width:768px) {
+  #aurix-topbar,#aurix-header,#aurix-nav { display:none !important; }
+  #aurix-mob-top { display:flex; }
+  #aurix-mob-bot { display:flex; }
+  body { padding-top:calc(var(--mob-top) + 8px); padding-bottom:calc(var(--mob-bot) + 8px); overflow-x:hidden; }
+  body.scrolled { padding-top:calc(var(--mob-top) + 8px); }
+  html { overflow-x:hidden; }
+
+  .footer-desk { display:none; }
+  .footer-mob { display:block; }
+  .footer-bottom__inner { padding:12px 14px; height:auto; flex-direction:column; gap:8px; text-align:center; }
+  .footer-pay { justify-content:center; flex-wrap:wrap; }
+  .footer-copy,.footer-dev { white-space:normal; text-align:center; font-size:11.5px; }
+
+  .woocommerce { padding:0 !important; } /* Aurix handles spacing via its own wrappers */
+  /* Restore left/right space in main content only — NOT footer */
+  .site-main .woocommerce, #main .woocommerce { padding:0 !important; }
+  .aurix-woo-wrap,.aurix-page-wrap { padding:20px 0; }
+
+  /* Account page mobile */
+  .user-logged-in.aurix-account-page .woocommerce { grid-template-columns:1fr; }
+  .woocommerce-account .u-columns { grid-template-columns:1fr; }
+  .woocommerce-account .col-1,.woocommerce-account .col-2 { padding:20px 16px; }
+  .woocommerce-MyAccount-content { padding:20px 16px; }
+  .woocommerce-MyAccount-navigation { position:static; }
+
+  /* Cart table mobile */
+  table.shop_table thead { display:none; }
+  table.shop_table tbody td { display:block; border:none !important; padding:5px 14px !important; }
+  table.shop_table tbody td::before { content:attr(data-title)': '; font-weight:600; color:var(--muted); font-size:.76rem; }
+  table.shop_table tbody tr { border-bottom:1px solid var(--border) !important; display:block; padding:10px 0; }
+
+  /* Cart sidebar full width on mobile */
+  #aurix-cart-panel { width:100vw; }
+}
+
+@media (max-width:480px) {
+  .acp-actions { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; }
+}
+
+/* ============================================================
+   v3.0 ADDITIONS — Live Search, Wishlist, Logo, Toasts
+   Author: ZaheerAbbas
+============================================================ */
+
+/* ── REAL LOGO IMAGE ── */
+.aurix-logo-img {
+  max-height: 54px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: opacity var(--t), max-height var(--t);
+}
+body.scrolled .aurix-logo-img { max-height: 40px; }
+.amob-logo-img { max-height: 34px; width: auto; object-fit: contain; display: block; }
+/* Footer logo image */
+.footer-logo img { max-height: 44px; width: auto; object-fit: contain; }
+/* Panel logo */
+.apanel__logo { padding: 0 4px; }
+.apanel__logo img { max-height: 38px; width: auto; object-fit: contain; }
+/* custom_logo wrapper */
+.ahdr-logo .custom-logo-link img,
+.ahdr-logo img { max-height: 54px; width: auto; }
+body.scrolled .ahdr-logo .custom-logo-link img,
+body.scrolled .ahdr-logo img { max-height: 40px; }
+
+/* ── MOBILE PANEL USER BLOCK ── */
+.apanel__user { display: flex; align-items: center; gap: 12px; padding: 16px 20px;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
+  border-bottom: 1px solid rgba(255,255,255,.1); }
+.apanel__user-ava { width: 44px; height: 44px; background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.3rem; flex-shrink: 0; }
+.apanel__user-name { display: block; font-weight: 600; color: #fff; font-size: .9rem; }
+.apanel__user-link { display: block; font-size: .76rem; color: var(--gold-lt); margin-top: 2px; }
+.apanel__user-link:hover { color: #fff; }
+
+/* ── LIVE SEARCH DROPDOWN ── */
+.asrch-dropdown {
+  position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+  background: #fff; border: 1px solid #dde4ef; border-radius: var(--r-lg);
+  box-shadow: 0 8px 48px rgba(13,27,42,.18); z-index: 900;
+  max-height: 520px; overflow-y: auto;
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .2s, visibility .2s, transform .2s;
+}
+.asrch-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+.asrch-dropdown--mob { position: static; transform: none; box-shadow: none; border: none;
+  border-top: 1px solid var(--border); border-radius: 0; max-height: 320px; }
+.asrch-dropdown--mob.open { transform: none; }
+
+/* Loading */
+.asrch-loading { display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 24px; font-size: .85rem; color: var(--muted); }
+.asrch-loading i { color: var(--gold); }
+
+/* Groups */
+.asrch-group { }
+.asrch-group-label {
+  display: flex; align-items: center; gap: 8px; padding: 10px 16px 6px;
+  font-size: .68rem; font-weight: 700; color: var(--muted);
+  letter-spacing: .09em; text-transform: uppercase;
+  border-top: 1px solid var(--border); background: #fafbfd;
+}
+.asrch-group:first-child .asrch-group-label { border-top: none; }
+.asrch-group-label i { color: var(--gold); font-size: .7rem; }
+
+/* Search result items */
+.asrch-item {
+  display: flex; align-items: center; gap: 12px; padding: 11px 16px;
+  text-decoration: none; border-bottom: 1px solid rgba(0,0,0,.04);
+  transition: background var(--t);
+}
+.asrch-item:hover { background: var(--gold-pale); }
+.asrch-item__img { width: 48px; height: 48px; object-fit: cover;
+  border-radius: var(--r); border: 1px solid var(--border); flex-shrink: 0; }
+.asrch-item__icon-wrap { width: 48px; height: 48px; background: var(--off);
+  border-radius: var(--r); display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 1rem; flex-shrink: 0; }
+.asrch-item__body { flex: 1; min-width: 0; }
+.asrch-item__title { display: block; font-size: .87rem; font-weight: 500; color: var(--navy);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
+.asrch-item__title mark { background: rgba(184,146,90,.2); color: var(--gold); border-radius: 2px; padding: 0 2px; font-style: normal; }
+.asrch-item__price { font-size: .8rem; color: var(--gold); font-weight: 600; display: block; margin-top: 2px; }
+.asrch-item__sku   { font-size: .72rem; color: var(--muted); display: block; }
+.asrch-item__date  { font-size: .72rem; color: var(--muted); display: block; margin-top: 2px; }
+.asrch-item__count { font-size: .72rem; color: var(--muted); }
+
+/* Empty state */
+.asrch-empty { display: flex; align-items: center; gap: 12px; padding: 24px 16px;
+  font-size: .87rem; color: var(--muted); }
+.asrch-empty i { color: #dde4ef; font-size: 1.4rem; }
+
+/* Dropdown footer */
+.asrch-footer { display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; border-top: 1px solid var(--border); background: #fafbfd; }
+.asrch-footer__hint { font-size: .72rem; color: #c0ccd8; }
+.asrch-footer__hint kbd { background: #f0f0f0; border: 1px solid #ddd; border-radius: 3px;
+  padding: 1px 5px; font-size: .7rem; color: var(--navy); }
+.asrch-result-count { font-size: .72rem; color: var(--muted); font-weight: 600; }
+
+/* Hints updated */
+.asrch-hints { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.asrch-hints-label { font-size: .72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+/* Search input — show dropdown within positioned parent */
+.ahdr-search { position: relative; }
+
+/* ── WISHLIST BUTTON ON PRODUCT CARDS ── */
+.aurix-wl-btn {
+  position: absolute; top: 10px; right: 10px; z-index: 10;
+  width: 34px; height: 34px; background: #fff; border: 1.5px solid #dde4ef;
+  border-radius: 50%; color: #c0ccd8; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--t), color var(--t), border-color var(--t), transform .15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.aurix-wl-btn:hover { background: #fff0f0; color: #e53e3e; border-color: #fcc; transform: scale(1.12); }
+.aurix-wl-btn.in-wishlist { background: #fff0f0; color: #e53e3e; border-color: #fcc; }
+.aurix-wl-btn.in-wishlist i { font-weight: 900; }
+.aurix-wl-btn.loading { opacity: .6; pointer-events: none; }
+.aurix-wl-btn.loading i::after { content: ''; }
+
+/* Wishlist icon in header */
+.ahdr-ibtn--wishlist:hover { color: #e53e3e; border-color: #fcc; background: #fff0f0; }
+.ahdr-ibtn--wishlist .ahdr-ibtn__badge { background: #e53e3e; }
+
+/* ── WISHLIST PAGE ── */
+.aurix-wishlist-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 80px 40px; text-align: center; gap: 16px;
+}
+.aurix-wishlist-empty i { font-size: 4rem; color: #dde4ef; }
+.aurix-wishlist-empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--navy); }
+.aurix-wishlist-empty p { color: var(--muted); font-size: .95rem; }
+.aurix-wishlist-empty a { background: var(--navy); color: #fff; padding: 12px 32px;
+  border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background var(--t); }
+.aurix-wishlist-empty a:hover { background: var(--gold); }
+
+.aurix-wishlist-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px;
+  padding: 20px 0;
+}
+.aurix-wl-item {
+  background: #fff; border-radius: var(--r-lg); border: 1px solid var(--border);
+  overflow: hidden; box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--t), transform var(--t), opacity .3s;
+}
+.aurix-wl-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.aurix-wl-item img { width: 100%; height: 200px; object-fit: cover; }
+.aurix-wl-body { padding: 14px 16px 8px; }
+.aurix-wl-body h4 { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--navy); margin-bottom: 6px; }
+.aurix-wl-body h4 a { color: inherit; }
+.aurix-wl-body h4 a:hover { color: var(--gold); }
+.aurix-wl-price { font-size: .9rem; font-weight: 700; color: var(--gold); }
+.aurix-wl-actions { display: flex; gap: 8px; padding: 10px 16px 16px; }
+.aurix-wl-add-btn { flex: 1; height: 36px; background: var(--navy); color: #fff;
+  border-radius: 18px; font-size: .8rem; font-weight: 600; display: flex; align-items: center;
+  justify-content: center; gap: 7px; transition: background var(--t); }
+.aurix-wl-add-btn:hover { background: var(--gold); color: #fff; }
+.aurix-wl-remove { width: 36px; height: 36px; flex-shrink: 0; background: #fff3f3;
+  border: 1.5px solid #fcc; border-radius: 50%; color: #e55;
+  display: flex; align-items: center; justify-content: center; font-size: .82rem;
+  transition: background var(--t); }
+.aurix-wl-remove:hover { background: #e55; color: #fff; border-color: #e55; }
+
+/* WooCommerce product — make li position:relative for wishlist btn */
+.woocommerce ul.products li.product { position: relative !important; }
+
+/* ── TOAST NOTIFICATIONS ── */
+#aurix-toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--navy); color: #fff; padding: 12px 24px;
+  border-radius: 25px; font-size: .88rem; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(13,27,42,.3); z-index: 9999;
+  opacity: 0; transition: transform .3s, opacity .3s;
+  white-space: nowrap; pointer-events: none;
+  display: flex; align-items: center; gap: 10px;
+}
+#aurix-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#aurix-toast.aurix-toast--success { border-left: 3px solid #22c55e; }
+#aurix-toast.aurix-toast--info    { border-left: 3px solid var(--gold); }
+#aurix-toast.aurix-toast--error   { border-left: 3px solid #e55; }
+
+/* ── NAV HOT DEAL PILL ── */
+.anav-pill--hot { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.3); color: #ef4444; }
+.anav-pill--hot i { color: #ef4444; }
+.anav-pill--hot:hover { background: rgba(239,68,68,.2); border-color: #ef4444; color: #ef4444; }
+
+/* ── CATEGORY PANEL IMPROVEMENTS ── */
+.apanel__body a .albl-count {
+  font-size: .68rem; color: var(--muted); background: var(--border);
+  padding: 2px 8px; border-radius: 10px; margin-left: auto; margin-right: 6px;
+}
+.apanel__body a .albl-arrow { font-size: .68rem; color: #c0ccd8; }
+
+/* ── MY ACCOUNT IMPROVED LAYOUT ── */
+.aurix-account-page .aurix-woo-wrap { max-width: 1100px; margin: 0 auto; padding: 40px; }
+
+/* Account page header */
+.woocommerce-account .woocommerce-MyAccount-content h2 {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; color: var(--navy);
+  margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--gold);
+}
+
+/* Dashboard stats boxes */
+.aurix-dashboard-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+.aurix-stat-card { background: var(--off); border-radius: var(--r); padding: 20px; text-align: center; border: 1px solid var(--border); }
+.aurix-stat-card i { font-size: 1.8rem; color: var(--gold); display: block; margin-bottom: 8px; }
+.aurix-stat-card .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--navy); }
+.aurix-stat-card .stat-lbl { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+/* ── CHECKOUT IMPROVEMENTS ── */
+.aurix-checkout-page .woocommerce-checkout { max-width: 1060px; margin: 0 auto; }
+.aurix-checkout-page .woocommerce h3#order_review_heading {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--navy);
+  margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--gold);
+}
+/* Checkout steps indicator */
+.aurix-checkout-steps { display: flex; align-items: center; gap: 0; margin-bottom: 32px;
+  background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 16px 24px; box-shadow: var(--shadow-xs); }
+.aurix-step { display: flex; align-items: center; gap: 10px; flex: 1; }
+.aurix-step__num { width: 32px; height: 32px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-weight: 700; font-size: .85rem;
+  background: #dde4ef; color: var(--muted); flex-shrink: 0; transition: background var(--t), color var(--t); }
+.aurix-step.active .aurix-step__num { background: var(--gold); color: #fff; }
+.aurix-step.done .aurix-step__num { background: #22c55e; color: #fff; }
+.aurix-step__lbl { font-size: .82rem; font-weight: 500; color: var(--muted); }
+.aurix-step.active .aurix-step__lbl { color: var(--navy); font-weight: 600; }
+.aurix-step-sep { height: 1px; flex: 1; background: #dde4ef; margin: 0 8px; }
+
+/* ── SCROLL TO TOP BUTTON ── */
+#aurix-scroll-top {
+  position: fixed; bottom: 90px; right: 24px; width: 44px; height: 44px;
+  background: var(--navy); color: var(--gold); border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: .9rem;
+  box-shadow: 0 4px 20px rgba(13,27,42,.2); cursor: pointer; z-index: 800;
+  opacity: 0; transform: translateY(16px); transition: opacity .3s, transform .3s, background var(--t);
+}
+#aurix-scroll-top.show { opacity: 1; transform: translateY(0); }
+#aurix-scroll-top:hover { background: var(--gold); color: #fff; }
+
+@media (max-width: 768px) {
+  #aurix-scroll-top { bottom: calc(var(--mob-bot) + 16px); right: 16px; }
+  .aurix-wishlist-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .aurix-dashboard-stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .aurix-stat-card { padding: 14px 10px; }
+  .aurix-stat-card .stat-num { font-size: 1.4rem; }
+  .aurix-checkout-steps { padding: 12px 14px; gap: 0; }
+  .aurix-step__lbl { display: none; }
+  .ahdr-search { display: none !important; }
+}
+@media (max-width: 480px) {
+  .aurix-wishlist-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   v5.0 — Icon Alignment, Search UI, My Account, Mobile Fixes
+============================================================ */
+
+/* ── NAV PILLS: guaranteed icon+text vertical centering ── */
+.anav-pills {
+  display:flex; align-items:center; gap:6px; margin-left:auto;
+  height:var(--nav-h);
+}
+.anav-pill, .anav-track {
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important; line-height:1 !important;
+}
+.anav-pill i, .anav-track i { vertical-align:middle; line-height:1; }
+
+/* ── IMPROVED LIVE SEARCH DROPDOWN ── */
+.asrch-dropdown {
+  border-radius:14px !important;
+  overflow:hidden;
+  box-shadow:0 16px 60px rgba(13,27,42,.22) !important;
+}
+
+/* Type badges in results */
+.asrch-group-label {
+  padding:8px 14px 5px !important;
+  font-size:.65rem !important; font-weight:800 !important;
+  letter-spacing:.1em !important;
+  background:linear-gradient(90deg,#f5f1eb 0%,#faf8f4 100%) !important;
+  border-bottom:1px solid rgba(184,146,90,.15) !important;
+  border-top:1px solid var(--border) !important;
+}
+.asrch-group:first-child .asrch-group-label { border-top:none !important; }
+.asrch-group-label i { color:var(--gold) !important; }
+
+/* Item improvements */
+.asrch-item {
+  gap:14px !important; padding:10px 14px !important;
+  transition:background .15s !important;
+}
+.asrch-item:hover { background:var(--gold-pale) !important; }
+.asrch-item__img {
+  width:52px !important; height:52px !important;
+  border-radius:8px !important;
+  border:1.5px solid rgba(184,146,90,.2) !important;
+}
+.asrch-item__icon-wrap {
+  width:52px !important; height:52px !important;
+  background:linear-gradient(135deg,#f0eae0,#f9f5f0) !important;
+  border:1.5px solid rgba(184,146,90,.2) !important;
+  border-radius:8px !important; color:var(--gold) !important;
+  font-size:.95rem !important;
+}
+.asrch-item__title { font-size:.88rem !important; font-weight:600 !important; color:var(--navy) !important; }
+.asrch-item__title mark {
+  background:rgba(184,146,90,.18) !important;
+  color:var(--gold-dk) !important; border-radius:3px !important;
+  padding:0 3px !important; font-weight:700 !important;
+}
+.asrch-item__price {
+  font-size:.82rem !important; color:var(--gold) !important;
+  font-weight:700 !important; margin-top:3px !important; display:block !important;
+}
+.asrch-item__sku {
+  font-size:.7rem !important; color:var(--muted) !important;
+  background:#f5f5f5 !important; display:inline-block !important;
+  padding:1px 6px !important; border-radius:4px !important; margin-top:2px !important;
+}
+.asrch-item__count {
+  font-size:.72rem !important; color:var(--muted) !important;
+  background:var(--off) !important; padding:2px 8px !important; border-radius:10px !important;
+  font-weight:500 !important;
+}
+.asrch-item__date { font-size:.72rem !important; color:var(--muted) !important; margin-top:2px !important; }
+
+/* Footer of dropdown */
+.asrch-footer {
+  padding:9px 14px !important;
+  background:#fafbfd !important;
+  border-top:1px solid var(--border) !important;
+}
+
+/* Empty */
+.asrch-empty {
+  padding:32px 16px !important; flex-direction:column !important;
+  text-align:center !important; gap:8px !important;
+}
+.asrch-empty i { font-size:2.2rem !important; color:#dde4ef !important; }
+.asrch-empty span { font-size:.88rem !important; }
+
+/* Loading */
+.asrch-loading { padding:20px !important; }
+
+/* ── MY ACCOUNT — FULL REDESIGN ── */
+/* Hero banner at top of account */
+.aurix-account-hero {
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
+  border-radius:var(--r-lg); padding:28px 32px; margin-bottom:28px;
+  display:flex; align-items:center; gap:20px; color:#fff;
+  position:relative; overflow:hidden;
+}
+.aurix-account-hero::before {
+  content:''; position:absolute; right:-40px; top:-40px;
+  width:200px; height:200px; border-radius:50%;
+  background:rgba(184,146,90,.08); pointer-events:none;
+}
+.aurix-account-hero__avatar {
+  width:64px; height:64px; border-radius:50%; flex-shrink:0;
+  background:var(--gold); display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:700; color:#fff;
+  border:3px solid rgba(255,255,255,.2);
+}
+.aurix-account-hero__info h3 {
+  font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700;
+  color:#fff; margin:0 0 3px;
+}
+.aurix-account-hero__info p { font-size:.82rem; color:rgba(255,255,255,.62); margin:0; }
+.aurix-account-hero__badge {
+  margin-left:auto; background:var(--gold); color:var(--navy);
+  padding:6px 16px; border-radius:20px; font-size:.74rem; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; white-space:nowrap;
+}
+
+/* Navigation sidebar — redesigned */
+.woocommerce-MyAccount-navigation {
+  background:#fff !important;
+  border-radius:var(--r-lg) !important;
+  border:1px solid var(--border) !important;
+  overflow:visible !important;
+  box-shadow:var(--shadow-sm) !important;
+  position:sticky !important;
+  top:calc(60px + var(--nav-h) + 20px) !important;
+}
+.woocommerce-MyAccount-navigation ul {
+  list-style:none !important; margin:0 !important; padding:8px !important;
+}
+.woocommerce-MyAccount-navigation ul li a {
+  display:flex !important; align-items:center !important; gap:11px !important;
+  padding:12px 14px !important; color:#4a5568 !important;
+  font-size:.88rem !important; font-weight:500 !important;
+  border-radius:9px !important; text-decoration:none !important;
+  border-left:none !important; border-bottom:none !important;
+  transition:background var(--t), color var(--t) !important;
+  position:relative !important;
+}
+.woocommerce-MyAccount-navigation ul li a::before {
+  font-family:'Font Awesome 6 Free' !important; font-weight:900 !important;
+  width:18px !important; height:18px !important; text-align:center !important;
+  font-size:.85rem !important; color:var(--muted) !important; flex-shrink:0 !important;
+  transition:color var(--t) !important; line-height:1 !important;
+  display:inline-flex !important; align-items:center !important; justify-content:center !important;
+}
+.woocommerce-MyAccount-navigation ul li a:hover,
+.woocommerce-MyAccount-navigation ul li.is-active a {
+  background:var(--gold-pale) !important; color:var(--navy) !important;
+  padding-left:14px !important; border-left:none !important;
+}
+.woocommerce-MyAccount-navigation ul li a:hover::before,
+.woocommerce-MyAccount-navigation ul li.is-active a::before { color:var(--gold) !important; }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a {
+  margin-top:4px !important; border-top:1px solid var(--border) !important;
+  padding-top:14px !important;
+}
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a::before { color:#e55 !important; }
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a:hover { background:#fff5f5 !important; color:#e55 !important; }
+
+/* Active chevron indicator */
+.woocommerce-MyAccount-navigation ul li.is-active a::after {
+  content:'\f054'; font-family:'Font Awesome 6 Free'; font-weight:900;
+  font-size:.62rem; color:var(--gold); margin-left:auto;
+}
+
+/* Content area */
+.woocommerce-MyAccount-content {
+  background:#fff !important;
+  border-radius:var(--r-lg) !important;
+  border:1px solid var(--border) !important;
+  padding:32px !important;
+  box-shadow:var(--shadow-sm) !important;
+  min-height:400px !important;
+}
+.woocommerce-MyAccount-content h2 {
+  font-family:'Cormorant Garamond',serif !important;
+  font-size:1.5rem !important; color:var(--navy) !important;
+  margin:0 0 20px !important; padding-bottom:12px !important;
+  border-bottom:2px solid var(--gold) !important; display:inline-block !important;
+}
+.woocommerce-MyAccount-content > p:first-child {
+  background:var(--gold-pale) !important;
+  border-left:3px solid var(--gold) !important;
+  padding:12px 16px !important; border-radius:0 var(--r) var(--r) 0 !important;
+  font-size:.9rem !important; line-height:1.6 !important; margin-bottom:20px !important;
+}
+
+/* Dashboard quick links grid */
+.woocommerce-MyAccount-content .woocommerce-MyAccount-content p a {
+  color:var(--gold) !important; font-weight:600 !important;
+}
+
+/* ── MOBILE: cart button goes to cart page ── */
+/* handled in header.php — no JS panel open */
+
+/* ── MOBILE: menu panel now slides from RIGHT ── */
+/* (apanel--right already handles this) */
+
+/* ── MOBILE BOTTOM NAV improvements ── */
+#aurix-mob-bot {
+  height:60px !important;
+}
+.amob-nav {
+  padding:0 4px !important; gap:5px !important;
+}
+.amob-nav span { font-size:.56rem !important; letter-spacing:.05em !important; }
+.amob-nav i {
+  font-size:1.15rem !important;
+  display:block !important; line-height:1 !important;
+  margin:0 auto !important;
+}
+.amob-nav--home {
+  width:50px !important; height:50px !important;
+  flex:0 0 50px !important; margin-top:-20px !important;
+}
+.amob-nav--home i { font-size:1.15rem !important; margin:0 !important; }
+
+/* ── SEARCH AREA responsive ── */
+@media (min-width:769px) {
+  .ahdr-search { display:flex !important; }
+}
+
+/* ── ACCOUNT RESPONSIVE ── */
+@media (max-width:900px) {
+  .user-logged-in.aurix-account-page .woocommerce {
+    grid-template-columns:200px 1fr !important;
+    gap:20px !important;
+  }
+}
+@media (max-width:768px) {
+  .user-logged-in.aurix-account-page .woocommerce {
+    grid-template-columns:1fr !important;
+    gap:16px !important;
+  }
+  .aurix-account-page .aurix-woo-wrap { padding:16px !important; }
+  .aurix-account-hero { padding:20px !important; gap:14px !important; }
+  .aurix-account-hero__badge { display:none !important; }
+  .woocommerce-MyAccount-navigation { position:static !important; }
+  .woocommerce-MyAccount-navigation ul { display:flex !important; flex-wrap:wrap !important; padding:8px !important; gap:4px !important; }
+  .woocommerce-MyAccount-navigation ul li { flex:1 0 calc(50% - 4px) !important; }
+  .woocommerce-MyAccount-navigation ul li a { font-size:.78rem !important; padding:10px !important; border-radius:8px !important; justify-content:center !important; gap:7px !important; }
+  .woocommerce-MyAccount-navigation ul li a::after { display:none !important; }
+  .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout { flex:0 0 100% !important; }
+  .woocommerce-MyAccount-content { padding:20px 16px !important; }
+  body { padding-bottom:calc(60px + 8px) !important; }
+}
+
+/* ── ACCOUNT HERO STATS ── */
+.aurix-account-hero__stats {
+  display:flex; align-items:center; gap:24px; margin-left:auto;
+}
+@media (max-width:600px) {
+  .aurix-account-hero__stats { display:none; }
+}
+.ahero-stat { text-align:center; }
+.ahero-stat__num { display:block; font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:#fff; line-height:1; }
+.ahero-stat__lbl { display:block; font-size:.68rem; color:rgba(255,255,255,.55); text-transform:uppercase; letter-spacing:.08em; margin-top:2px; }
+.aurix-account-inner { display:grid; grid-template-columns:260px 1fr; gap:28px; align-items:start; }
+@media (max-width:900px) { .aurix-account-inner { grid-template-columns:200px 1fr; gap:18px; } }
+@media (max-width:768px) {
+  .aurix-account-inner { grid-template-columns:1fr; gap:14px; }
+  .aurix-account-hero { padding:18px !important; }
+  .aurix-account-hero__badge { padding:6px 12px; font-size:.7rem; }
+}
+
+/* ── SEARCH ITEM META (price+sku+date row) ── */
+.asrch-item__meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px; }
+.asrch-item__meta i { font-size:.65rem; }
+.asrch-item__arrow { font-size:.65rem; color:#c0ccd8; margin-left:auto; flex-shrink:0; transition:color .15s, transform .15s; }
+.asrch-item:hover .asrch-item__arrow { color:var(--gold); transform:translateX(3px); }
+
+/* ── SEARCH INPUT — clear & look great ── */
+.ahdr-search__input:focus + .asrch-dropdown,
+.ahdr-search__input:focus ~ .asrch-dropdown { /* controlled by JS */ }
+
+/* Fix search area position context */
+#ahdrSearch { position:relative; z-index:200; }
+
+/* ── MOBILE CART LINK looks same as button ── */
+.amob-nav--cart-link { all:unset; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:5px; color:#8a9ab0; font-size:.56rem; font-weight:500;
+  letter-spacing:.05em; text-transform:uppercase; padding:0 4px; flex:1;
+  position:relative; transition:color var(--t); text-decoration:none !important; cursor:pointer; }
+.amob-nav--cart-link:hover { color:var(--gold); }
+.amob-nav--cart-link i { font-size:1.15rem; display:block; line-height:1; }
+
+/* ── ACCOUNT PAGE woocommerce override — remove duplicate nav/content structure ── */
+.aurix-account-page .woocommerce-account .woocommerce > .woocommerce-MyAccount-navigation,
+.aurix-account-page .woocommerce-account .woocommerce > .woocommerce-MyAccount-content {
+  display:none; /* Hidden — we use .aurix-account-inner instead */
+}
+.aurix-account-page .aurix-account-inner > .woocommerce-MyAccount-navigation,
+.aurix-account-page .aurix-account-inner > .woocommerce-MyAccount-content { display:block; }
+
+/* ============================================================
+   v5.0 — DEFINITIVE FIXES
+   1. Search bar restored to original style
+   2. All header icons perfectly centered
+   3. My Account full responsive redesign
+   4. Mobile panels: top=categories LEFT, bottom=pages LEFT
+   5. Mobile bottom nav icon alignment
+============================================================ */
+
+/* ═══════════════════════════════════════════════════
+   1. SEARCH BAR — restored to original dark-button style
+   (matches screenshot 1: light input + dark circle submit)
+═══════════════════════════════════════════════════ */
+.ahdr-search {
+  position:relative !important;
+  max-width:520px !important;
+  width:100% !important;
+  justify-self:center !important;
+}
+.ahdr-search form { position:relative; display:flex; align-items:center; }
+.ahdr-search__icon {
+  position:absolute !important; left:18px !important; top:50% !important;
+  transform:translateY(-50%) !important; color:#a8b4c6 !important;
+  font-size:.82rem !important; pointer-events:none !important; z-index:1 !important;
+}
+.ahdr-search__input {
+  width:100% !important; height:46px !important;
+  padding:0 60px 0 44px !important;
+  border:1.5px solid #e2e8f0 !important; border-radius:24px !important;
+  font-family:'Outfit',sans-serif !important; font-size:.88rem !important;
+  color:var(--navy) !important; background:#f7f9fc !important;
+  outline:none !important; box-shadow:none !important;
+  transition:border-color .2s, box-shadow .2s, background .2s !important;
+}
+.ahdr-search__input::placeholder { color:#a8b4c6 !important; font-size:.86rem !important; }
+.ahdr-search__input:focus {
+  border-color:#c9d5e0 !important; background:#fff !important;
+  box-shadow:0 0 0 3px rgba(13,27,42,.06) !important;
+}
+body.scrolled .ahdr-search__input { height:40px !important; }
+.ahdr-search__btn {
+  position:absolute !important; right:6px !important; top:50% !important;
+  transform:translateY(-50%) !important;
+  width:34px !important; height:34px !important;
+  background:var(--navy) !important; border:none !important; border-radius:50% !important;
+  color:#fff !important; font-size:.82rem !important; cursor:pointer !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  transition:background .2s !important; flex-shrink:0 !important;
+}
+body.scrolled .ahdr-search__btn { width:30px !important; height:30px !important; }
+.ahdr-search__btn:hover { background:var(--gold) !important; }
+
+/* ═══════════════════════════════════════════════════
+   2. HEADER ICONS — perfectly centered
+═══════════════════════════════════════════════════ */
+.ahdr-actions {
+  display:flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  flex-shrink:0 !important;
+}
+/* Pills */
+.ahdr-pill {
+  display:inline-flex !important; align-items:center !important;
+  justify-content:center !important; gap:5px !important;
+  height:34px !important; line-height:1 !important;
+  padding:0 13px !important; white-space:nowrap !important;
+  border:1.5px solid #dde4ef !important; border-radius:17px !important;
+  color:var(--navy) !important; font-size:.76rem !important; font-weight:500 !important;
+  background:#fff !important; text-decoration:none !important;
+  transition:border-color .2s, color .2s !important;
+}
+.ahdr-pill i { font-size:.74rem !important; color:var(--gold) !important;
+  line-height:1 !important; display:flex !important; align-items:center !important; }
+.ahdr-pill:hover { border-color:var(--gold) !important; color:var(--gold) !important; }
+
+/* Icon buttons (account, wishlist, cart) */
+.ahdr-ibtn {
+  width:40px !important; height:40px !important; border-radius:50% !important;
+  border:1.5px solid #dde4ef !important; background:#fff !important;
+  color:var(--navy) !important; font-size:.92rem !important;
+  display:inline-flex !important; align-items:center !important;
+  justify-content:center !important; position:relative !important;
+  text-decoration:none !important; cursor:pointer !important;
+  transition:border-color .2s, color .2s, background .2s !important;
+  flex-shrink:0 !important;
+}
+.ahdr-ibtn:hover { border-color:var(--gold) !important; color:var(--gold) !important; background:var(--gold-pale) !important; }
+body.scrolled .ahdr-ibtn { width:36px !important; height:36px !important; font-size:.84rem !important; }
+.ahdr-ibtn i { line-height:1 !important; display:flex !important; align-items:center !important; justify-content:center !important; }
+.ahdr-ibtn__badge {
+  position:absolute !important; top:-4px !important; right:-4px !important;
+  background:var(--gold) !important; color:#fff !important;
+  min-width:17px !important; height:17px !important; border-radius:9px !important;
+  font-size:.56rem !important; font-weight:700 !important; padding:0 4px !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  border:2px solid #fff !important; line-height:1 !important;
+}
+.ahdr-ibtn__dot {
+  position:absolute !important; bottom:3px !important; right:3px !important;
+  width:7px !important; height:7px !important; border-radius:50% !important;
+  background:#22c55e !important; border:1.5px solid #fff !important;
+}
+
+/* Call block */
+.ahdr-call {
+  display:inline-flex !important; align-items:center !important;
+  gap:10px !important; text-decoration:none !important;
+  margin:0 4px !important; flex-shrink:0 !important;
+  overflow:hidden !important; max-width:190px !important;
+  transition:max-width .2s, opacity .2s !important;
+}
+body.scrolled .ahdr-call { max-width:0 !important; opacity:0 !important; pointer-events:none !important; }
+.ahdr-call__ico {
+  width:38px !important; height:38px !important; flex-shrink:0 !important;
+  background:var(--navy) !important; border-radius:50% !important;
+  display:inline-flex !important; align-items:center !important; justify-content:center !important;
+  color:var(--gold) !important; font-size:.82rem !important;
+}
+.ahdr-call__ico i { line-height:1 !important; }
+.ahdr-call__info { white-space:nowrap !important; }
+.ahdr-call__lbl { display:block !important; font-size:.56rem !important; color:var(--muted) !important; letter-spacing:.07em !important; text-transform:uppercase !important; }
+.ahdr-call__num { display:block !important; font-size:.85rem !important; font-weight:600 !important; color:var(--navy) !important; }
+
+/* Nav bar pills icon alignment */
+.anav-pills {
+  display:flex !important; align-items:center !important;
+  gap:6px !important; margin-left:auto !important; height:100% !important;
+}
+.anav-pill, .anav-track {
+  display:inline-flex !important; align-items:center !important;
+  justify-content:center !important; gap:5px !important;
+  line-height:1 !important; height:30px !important; padding:0 13px !important;
+  border-radius:15px !important; font-size:.75rem !important;
+  white-space:nowrap !important; cursor:pointer !important;
+}
+.anav-pill i, .anav-track i {
+  line-height:1 !important; font-size:.76rem !important;
+  display:inline-flex !important; align-items:center !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   3. MOBILE PANELS
+   - Top hamburger → opens CAT panel (slides from LEFT)
+   - Bottom "Menu" → opens PAGES panel (slides from LEFT)
+   - Both LEFT side on mobile
+═══════════════════════════════════════════════════ */
+
+/* apanel--mob-left: always slides from LEFT */
+.apanel--mob-left {
+  left:0 !important; right:auto !important;
+  transform:translateX(-100%) !important;
+  box-shadow:4px 0 40px rgba(13,27,42,.18) !important;
+}
+.apanel--mob-left.open { transform:translateX(0) !important; }
+
+/* Override apanel--right only on mobile to become left */
+@media (max-width:768px) {
+  .apanel--right {
+    left:0 !important; right:auto !important;
+    transform:translateX(-100%) !important;
+    box-shadow:4px 0 40px rgba(13,27,42,.18) !important;
+  }
+  .apanel--right.open { transform:translateX(0) !important; }
+}
+
+/* ═══════════════════════════════════════════════════
+   4. MOBILE BOTTOM NAV — perfect icon centering
+═══════════════════════════════════════════════════ */
+#aurix-mob-bot {
+  height:62px !important;
+  display:none !important;
+  padding:0 !important;
+}
+@media (max-width:768px) {
+  #aurix-mob-bot { display:flex !important; }
+}
+
+.amob-nav, .amob-nav--cart-link {
+  display:flex !important; flex-direction:column !important;
+  align-items:center !important; justify-content:center !important;
+  gap:4px !important; flex:1 !important; height:100% !important;
+  padding:0 !important; border:none !important; background:none !important;
+  color:#8a9ab0 !important; text-decoration:none !important;
+  font-size:.54rem !important; font-weight:600 !important;
+  letter-spacing:.05em !important; text-transform:uppercase !important;
+  position:relative !important; cursor:pointer !important;
+  transition:color .2s !important;
+}
+.amob-nav i, .amob-nav--cart-link i {
+  font-size:1.18rem !important;
+  display:flex !important; align-items:center !important;
+  justify-content:center !important; line-height:1 !important;
+  height:22px !important;
+}
+.amob-nav span:not(.amob-nav__badge):not(.aurix-cart-count):not(.aurix-wishlist-count) {
+  line-height:1 !important; display:block !important;
+}
+.amob-nav:hover, .amob-nav.active,
+.amob-nav--cart-link:hover { color:var(--gold) !important; }
+
+/* Home center button */
+.amob-nav--home {
+  background:var(--navy) !important; color:#fff !important;
+  width:52px !important; height:52px !important;
+  flex:0 0 52px !important; border-radius:50% !important;
+  margin-top:-18px !important; border:3px solid #fff !important;
+  box-shadow:0 4px 20px rgba(13,27,42,.25) !important;
+  flex-direction:row !important;
+  gap:0 !important;
+}
+.amob-nav--home i {
+  font-size:1.18rem !important; color:var(--gold) !important;
+  height:auto !important;
+}
+.amob-nav--home:hover { background:var(--gold) !important; }
+.amob-nav--home:hover i { color:#fff !important; }
+.amob-nav--home span:not(.amob-nav__badge) { display:none !important; }
+
+/* Badges */
+.amob-nav__badge, .amob-badge {
+  position:absolute !important; top:4px !important;
+  left:calc(50% + 4px) !important; transform:none !important;
+  background:var(--gold) !important; color:#fff !important;
+  min-width:15px !important; height:15px !important;
+  border-radius:8px !important; font-size:.52rem !important;
+  font-weight:700 !important; padding:0 3px !important;
+  display:flex !important; align-items:center !important;
+  justify-content:center !important; border:2px solid #fff !important;
+  line-height:1 !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   5. MY ACCOUNT PAGE — COMPLETE RESPONSIVE REDESIGN
+═══════════════════════════════════════════════════ */
+
+/* Override any conflicting old rules */
+.aurix-account-page .aurix-woo-wrap {
+  max-width:1200px !important; margin:0 auto !important; padding:36px 40px !important;
+}
+/* Remove old grid on .woocommerce — we use .aurix-account-inner instead */
+.user-logged-in.aurix-account-page .woocommerce {
+  display:block !important;
+}
+/* Use the my-account.php template's .aurix-account-inner for grid */
+.aurix-account-inner {
+  display:grid !important;
+  grid-template-columns:260px 1fr !important;
+  gap:28px !important;
+  align-items:start !important;
+  margin-top:0 !important;
+}
+
+/* Hero banner */
+.aurix-account-hero {
+  background:linear-gradient(135deg,#0d1b2a 0%,#1a3050 100%) !important;
+  border-radius:14px !important; padding:26px 32px !important;
+  margin-bottom:24px !important; display:flex !important;
+  align-items:center !important; gap:18px !important;
+  position:relative !important; overflow:hidden !important; color:#fff !important;
+  box-shadow:0 8px 32px rgba(13,27,42,.25) !important;
+}
+.aurix-account-hero::before {
+  content:'' !important; position:absolute !important; right:-60px !important; top:-60px !important;
+  width:220px !important; height:220px !important; border-radius:50% !important;
+  background:rgba(184,146,90,.06) !important; pointer-events:none !important;
+}
+.aurix-account-hero::after {
+  content:'' !important; position:absolute !important; left:0 !important; bottom:0 !important;
+  right:0 !important; height:2px !important;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent) !important;
+}
+.aurix-account-hero__avatar {
+  width:58px !important; height:58px !important; border-radius:50% !important;
+  background:var(--gold) !important; flex-shrink:0 !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  font-family:'Cormorant Garamond',serif !important; font-size:1.7rem !important;
+  font-weight:700 !important; color:#fff !important;
+  border:2.5px solid rgba(255,255,255,.25) !important;
+  box-shadow:0 4px 16px rgba(0,0,0,.2) !important;
+}
+.aurix-account-hero__info { flex:1 !important; min-width:0 !important; }
+.aurix-account-hero__info h3 {
+  font-family:'Cormorant Garamond',serif !important; font-size:1.4rem !important;
+  font-weight:700 !important; color:#fff !important; margin:0 0 3px !important; line-height:1.2 !important;
+}
+.aurix-account-hero__info p { font-size:.8rem !important; color:rgba(255,255,255,.55) !important; margin:0 !important; }
+.aurix-account-hero__stats {
+  display:flex !important; align-items:center !important;
+  gap:28px !important; margin-right:4px !important;
+}
+.ahero-stat { text-align:center !important; }
+.ahero-stat__num {
+  display:block !important; font-family:'Cormorant Garamond',serif !important;
+  font-size:1.7rem !important; font-weight:700 !important; color:#fff !important; line-height:1 !important;
+}
+.ahero-stat__lbl { display:block !important; font-size:.62rem !important; color:rgba(255,255,255,.5) !important; text-transform:uppercase !important; letter-spacing:.08em !important; margin-top:3px !important; }
+.aurix-account-hero__badge {
+  background:var(--gold) !important; color:var(--navy) !important;
+  padding:8px 18px !important; border-radius:20px !important;
+  font-size:.72rem !important; font-weight:700 !important;
+  letter-spacing:.06em !important; text-transform:uppercase !important;
+  white-space:nowrap !important; text-decoration:none !important; flex-shrink:0 !important;
+  display:inline-flex !important; align-items:center !important; gap:6px !important;
+  transition:background .2s !important;
+}
+.aurix-account-hero__badge:hover { background:#fff !important; color:var(--navy) !important; }
+
+/* Account nav sidebar */
+.aurix-account-inner .woocommerce-MyAccount-navigation {
+  background:#fff !important; border-radius:12px !important;
+  border:1px solid var(--border) !important;
+  box-shadow:0 2px 16px rgba(13,27,42,.07) !important;
+  overflow:hidden !important;
+  position:sticky !important; top:calc(60px + var(--nav-h) + 16px) !important;
+}
+.aurix-account-inner .woocommerce-MyAccount-navigation ul {
+  list-style:none !important; margin:0 !important; padding:8px !important;
+}
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li a {
+  display:flex !important; align-items:center !important; gap:10px !important;
+  padding:11px 13px !important; border-radius:8px !important;
+  color:#4a5568 !important; font-size:.86rem !important; font-weight:500 !important;
+  text-decoration:none !important; border:none !important;
+  border-left:3px solid transparent !important;
+  transition:background .15s, color .15s, border-color .15s !important;
+}
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li a::before {
+  font-family:'Font Awesome 6 Free' !important; font-weight:900 !important;
+  width:16px !important; text-align:center !important; font-size:.78rem !important;
+  color:#b0bec5 !important; flex-shrink:0 !important; line-height:1 !important;
+}
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li a:hover,
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li.is-active a {
+  background:var(--gold-pale) !important; color:var(--navy) !important;
+  border-left-color:var(--gold) !important;
+}
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li a:hover::before,
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li.is-active a::before { color:var(--gold) !important; }
+/* logout */
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout { border-top:1px solid var(--border) !important; padding-top:4px !important; margin-top:4px !important; }
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a::before { color:#e55 !important; }
+.aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a:hover { background:#fff5f5 !important; color:#e55 !important; border-left-color:#e55 !important; }
+
+/* Account content area */
+.aurix-account-inner .woocommerce-MyAccount-content {
+  background:#fff !important; border-radius:12px !important;
+  border:1px solid var(--border) !important; padding:28px !important;
+  box-shadow:0 2px 16px rgba(13,27,42,.07) !important; min-height:320px !important;
+}
+
+/* Fix WC default text — "Hello name (not name? Log out)" */
+.woocommerce-MyAccount-content > p:first-child {
+  background:var(--gold-pale) !important;
+  border-left:3px solid var(--gold) !important;
+  padding:12px 16px !important; border-radius:0 8px 8px 0 !important;
+  font-size:.88rem !important; color:var(--navy) !important;
+  line-height:1.6 !important; margin-bottom:20px !important;
+}
+.woocommerce-MyAccount-content > p:first-child a { color:var(--gold) !important; font-weight:600 !important; }
+
+/* ═══════════════════════════════════════════════════
+   6. MOBILE ACCOUNT RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media (max-width:960px) {
+  .aurix-account-inner { grid-template-columns:210px 1fr !important; gap:20px !important; }
+}
+@media (max-width:768px) {
+  .aurix-account-page .aurix-woo-wrap { padding:16px !important; }
+  .aurix-account-hero { flex-wrap:wrap !important; padding:18px 16px !important; gap:12px !important; }
+  .aurix-account-hero__stats { gap:18px !important; }
+  .aurix-account-hero__badge { padding:7px 14px !important; font-size:.68rem !important; }
+  .aurix-account-inner { grid-template-columns:1fr !important; gap:14px !important; }
+  .aurix-account-inner .woocommerce-MyAccount-navigation { position:static !important; }
+  .aurix-account-inner .woocommerce-MyAccount-navigation ul {
+    display:grid !important; grid-template-columns:1fr 1fr !important; gap:4px !important; padding:8px !important;
+  }
+  .aurix-account-inner .woocommerce-MyAccount-navigation ul li a { font-size:.8rem !important; padding:10px !important; border-left:none !important; border-bottom:2px solid transparent !important; justify-content:center !important; gap:8px !important; border-radius:8px !important; }
+  .aurix-account-inner .woocommerce-MyAccount-navigation ul li a:hover,
+  .aurix-account-inner .woocommerce-MyAccount-navigation ul li.is-active a { border-left:none !important; border-bottom-color:var(--gold) !important; }
+  .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout { grid-column:1/-1 !important; border-top:1px solid var(--border) !important; margin-top:0 !important; padding-top:0 !important; }
+  .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a { justify-content:center !important; }
+  .aurix-account-inner .woocommerce-MyAccount-content { padding:18px 14px !important; }
+}
+@media (max-width:480px) {
+  .aurix-account-hero__stats { display:none !important; }
+  .ahero-stat { display:none !important; }
+}
+
+/* ── Footer: block WooCommerce's mobile padding:15px override ── */
+@media (max-width:768px) {
+  footer .woocommerce,
+  .aurix-footer .woocommerce,
+  .aurix-footer .woocommerce-page {
+    padding: 0 !important;
+  }
+}
+
+/* ================================================================
+   FINAL MOBILE FIX — Overrides all previous conflicting rules
+   Fixes: header overflow, footer side space, body width
+================================================================ */
+@media (max-width:768px) {
+
+  /* ── 1. PREVENT ALL HORIZONTAL OVERFLOW ── */
+  html, body {
+    overflow-x:hidden !important;
+    max-width:100vw !important;
+    width:100% !important;
+  }
+
+  /* ── 2. MOBILE TOP HEADER — strict full width, no overflow ── */
+  #aurix-mob-top {
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    max-width:100vw !important;
+    box-sizing:border-box !important;
+    padding:0 12px !important;
+    overflow:hidden !important;
+  }
+  /* Logo image in header */
+  .amob-logo-link,
+  .amob-logo-img { max-width:140px !important; overflow:hidden !important; }
+  .amob-logo-img { max-height:32px !important; width:auto !important; object-fit:contain !important; }
+
+  /* ── 3. MOBILE BOTTOM NAV — strict full width ── */
+  #aurix-mob-bot {
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    max-width:100vw !important;
+    box-sizing:border-box !important;
+    padding:0 !important;
+  }
+
+  /* ── 4. FOOTER — zero side padding everywhere ── */
+  .aurix-footer {
+    width:100% !important;
+    max-width:100vw !important;
+    box-sizing:border-box !important;
+    overflow-x:hidden !important;
+    padding:0 !important;
+    margin:0 !important;
+  }
+  .footer-mob {
+    width:100% !important;
+    padding:0 !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+  }
+  .mob-accord {
+    width:100% !important;
+    box-sizing:border-box !important;
+    margin:0 !important;
+  }
+  .mob-accord__btn {
+    width:100% !important;
+    box-sizing:border-box !important;
+    padding:14px 16px !important;
+  }
+  .mob-accord__body ul {
+    padding:4px 16px 14px !important;
+  }
+  .mob-brand {
+    width:100% !important;
+    box-sizing:border-box !important;
+    padding:22px 16px !important;
+    margin:0 !important;
+  }
+  .footer-bottom {
+    width:100% !important;
+    max-width:100vw !important;
+    box-sizing:border-box !important;
+    padding:0 !important;
+    margin:0 !important;
+  }
+  .footer-bottom__inner {
+    width:100% !important;
+    box-sizing:border-box !important;
+    padding:12px 16px !important;
+    margin:0 !important;
+  }
+
+  /* ── 5. MAIN BODY — 8px side padding, no overflow ── */
+  #page.site {
+    overflow-x:hidden !important;
+    width:100% !important;
+    max-width:100vw !important;
+  }
+  #main.site-main {
+    overflow-x:hidden !important;
+    width:100% !important;
+    max-width:100vw !important;
+    box-sizing:border-box !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+
+  /* ── 6. WooCommerce wrapper — zero padding (theme handles spacing) ── */
+  .woocommerce,
+  .woocommerce-page {
+    padding:0 !important;
+    margin:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    overflow-x:hidden !important;
+  }
+  /* But NOT in footer */
+  footer .woocommerce,
+  .aurix-footer .woocommerce { padding:0 !important; }
+
+  /* ── 7. PANELS (slide menus) — contained ── */
+  .apanel {
+    max-width:88vw !important;
+    width:88vw !important;
+  }
+
+  /* ── 8. SEARCH OVERLAY ── */
+  #aurix-search-overlay .asrch-box {
+    width:calc(100vw - 24px) !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+}
+
+/* ── Remove all remaining side padding on mobile product/shop pages ── */
+@media (max-width:768px) {
+  #main.site-main,
+  .aurix-woo-wrap,
+  .aurix-woo-inner,
+  .aurix-page-wrap,
+  .site-main .woocommerce,
+  #main .woocommerce,
+  .woocommerce-page #main {
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+}
