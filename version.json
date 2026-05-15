@@ -1,5 +1,5 @@
 {
-  "version": "17.0.0",
+  "version": "17.1.0",
   "name": "Aurix International",
   "slug": "aurix-v17",
   "author": "ZaheerAbbas",
@@ -9,5 +9,5 @@
   "last_updated": "2026-05-15",
   "requires": "5.8",
   "requires_php": "7.4",
-  "changelog": "v17.0.0 — Shop page sidebar categories, product card improvements, gallery quick view, mobile fixes."
+  "changelog": "v17.1.0 — Shop page sidebar categories, product card improvements, gallery quick view, mobile fixes."
 }
