@@ -1,0 +1,445 @@
+/* ================================================================
+   AURIX — Shop Page Styles v3.0 | Author: ZaheerAbbas
+   Fixes: title alignment, grid layout, mobile ATC bar, double sort
+================================================================ */
+
+/* ── SHOP PAGE OUTER WRAPPER ── */
+.aurix-shop-page {
+  /* Full-width container with controlled padding */
+  width:100%;
+  max-width:1360px;
+  margin:0 auto;
+  padding:28px 40px 60px;
+  box-sizing:border-box;
+}
+
+/* ── PAGE TITLE ── */
+.aurix-shop-page-head { margin-bottom:20px; padding:0; }
+.aurix-shop-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem; font-weight:700; color:#0d1b2a;
+  padding-bottom:8px; border-bottom:2px solid #b8925a;
+  display:inline-block; margin:0;
+}
+
+/* ── 2-COLUMN LAYOUT: sidebar + main ── */
+.aurix-shop-layout {
+  display:grid;
+  grid-template-columns:240px 1fr;
+  gap:28px;
+  align-items:start;
+  /* Ensure grid fills full width */
+  width:100%;
+}
+
+/* ── SIDEBAR ── */
+.aurix-shop-sidebar {
+  background:#fff;
+  border:1px solid rgba(13,27,42,.09);
+  border-radius:12px;
+  overflow:hidden;
+  position:sticky;
+  top:calc(56px + 16px);
+}
+.asb-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; background:#0d1b2a;
+}
+.asb-title {
+  font-family:'Outfit',sans-serif; font-size:.82rem; font-weight:700;
+  color:#fff; letter-spacing:.05em; text-transform:uppercase;
+  margin:0; display:flex; align-items:center; gap:8px; line-height:1;
+}
+.asb-title i { color:#b8925a; display:flex; align-items:center; justify-content:center; line-height:1; }
+.asb-close-btn {
+  display:none; width:26px; height:26px; border:none;
+  background:rgba(255,255,255,.1); border-radius:50%; color:#fff;
+  font-size:.78rem; align-items:center; justify-content:center; cursor:pointer;
+}
+.asb-close-btn i { display:flex; align-items:center; justify-content:center; line-height:1; }
+.asb-close-btn:hover { background:rgba(255,255,255,.2); }
+.asb-body { padding:8px 0; }
+
+/* Category list */
+.asb-cat-list { list-style:none; padding:0; margin:0; }
+.asb-cat-item > a {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:9px 16px; text-decoration:none; font-size:.84rem;
+  color:#4a5568; font-weight:500;
+  transition:background .15s,color .15s;
+  border-left:3px solid transparent;
+}
+.asb-cat-item > a:hover { background:rgba(184,146,90,.07); color:#0d1b2a; border-left-color:#b8925a; }
+.asb-cat-item.active > a { background:rgba(184,146,90,.1); color:#b8925a; border-left-color:#b8925a; font-weight:600; }
+.asb-cat-name { flex:1; }
+.asb-cat-count {
+  font-size:.7rem; background:rgba(13,27,42,.07); color:#8a9ab0;
+  padding:2px 7px; border-radius:10px; font-weight:500; min-width:22px; text-align:center; flex-shrink:0;
+}
+.asb-cat-item.active .asb-cat-count { background:rgba(184,146,90,.15); color:#9a7440; }
+
+/* Subcategories */
+.asb-subcat-list { list-style:none; padding:0; margin:0; display:none; }
+.asb-cat-item.active .asb-subcat-list,
+.asb-subcat-list.open { display:block; }
+.asb-subcat-item a {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:7px 16px 7px 28px; text-decoration:none; font-size:.8rem;
+  color:#718096; transition:background .15s,color .15s;
+}
+.asb-subcat-item a:hover { color:#b8925a; background:rgba(184,146,90,.05); }
+.asb-subcat-item.active a { color:#b8925a; font-weight:600; }
+
+/* Sidebar divider */
+.asb-section-div { height:1px; background:rgba(13,27,42,.07); margin:4px 0; }
+
+/* ── TOOLBAR ── */
+.aurix-shop-toolbar {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:10px 14px; background:#fff; border:1px solid rgba(13,27,42,.09);
+  border-radius:10px; margin-bottom:16px; flex-wrap:wrap;
+}
+.ast-left { display:flex; align-items:center; gap:10px; }
+.ast-right { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.ast-filter-toggle {
+  display:none; align-items:center; gap:6px; height:32px; padding:0 12px;
+  border:1.5px solid rgba(13,27,42,.14); border-radius:8px; background:#fff;
+  font-family:'Outfit',sans-serif; font-size:.8rem; font-weight:600; color:#0d1b2a;
+  cursor:pointer; transition:border-color .15s,color .15s; line-height:1;
+}
+.ast-filter-toggle i { display:inline-flex; align-items:center; justify-content:center; color:#b8925a; line-height:1; font-size:.78rem; }
+.ast-filter-toggle:hover { border-color:#b8925a; color:#b8925a; }
+.ast-count { font-size:.82rem; color:#8a9ab0; font-weight:500; white-space:nowrap; }
+.ast-perpage { display:flex; align-items:center; gap:7px; }
+.ast-label { font-size:.75rem; color:#8a9ab0; font-weight:500; }
+.ast-perpage-btns { display:flex; align-items:center; gap:2px; background:rgba(13,27,42,.05); border-radius:7px; padding:3px; }
+.ast-pp-btn {
+  width:28px; height:24px; border:none; background:transparent; border-radius:5px;
+  font-family:'Outfit',sans-serif; font-size:.75rem; font-weight:600; color:#8a9ab0;
+  cursor:pointer; transition:background .15s,color .15s;
+  display:flex; align-items:center; justify-content:center; line-height:1;
+}
+.ast-pp-btn.active,.ast-pp-btn:hover { background:#fff; color:#0d1b2a; box-shadow:0 1px 4px rgba(13,27,42,.1); }
+
+/* Sort — hide WC default form labels, style the select */
+.ast-sort { display:flex; align-items:center; }
+.ast-sort .woocommerce-ordering { margin:0; }
+.ast-sort form.woocommerce-ordering { margin:0; display:flex; }
+.ast-sort select {
+  height:32px; padding:0 10px; border:1.5px solid rgba(13,27,42,.12);
+  border-radius:7px; font-family:'Outfit',sans-serif; font-size:.8rem;
+  color:#0d1b2a; background:#fff; outline:none; cursor:pointer; line-height:1;
+}
+.ast-sort select:focus { border-color:#b8925a; }
+
+/* View toggle */
+.ast-view-toggle { display:flex; align-items:center; gap:2px; background:rgba(13,27,42,.05); border-radius:7px; padding:3px; }
+.ast-view-btn {
+  width:28px; height:24px; border:none; background:transparent; border-radius:5px;
+  color:#8a9ab0; cursor:pointer; transition:background .15s,color .15s;
+  display:flex; align-items:center; justify-content:center; line-height:1;
+}
+.ast-view-btn i { display:flex; align-items:center; justify-content:center; line-height:1; font-size:.8rem; }
+.ast-view-btn.active,.ast-view-btn:hover { background:#fff; color:#0d1b2a; box-shadow:0 1px 4px rgba(13,27,42,.1); }
+
+/* ── PRODUCT GRID ── */
+.woocommerce ul.products,
+.woocommerce-page ul.products {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:16px !important; margin:0 !important; padding:0 !important; list-style:none !important;
+}
+.woocommerce ul.products.aurix-list-view,
+.woocommerce-page ul.products.aurix-list-view { grid-template-columns:1fr !important; }
+
+/* ── CARD SHELL ── */
+li.acard { margin:0 !important; padding:0 !important; float:none !important; width:auto !important; }
+.acard-inner {
+  background:#fff; border:1px solid rgba(13,27,42,.09); border-radius:12px;
+  overflow:hidden; transition:box-shadow .25s,transform .25s,border-color .25s;
+  height:100%; display:flex; flex-direction:column;
+}
+.acard-inner:hover { box-shadow:0 10px 40px rgba(13,27,42,.12); transform:translateY(-3px); border-color:rgba(184,146,90,.3); }
+
+/* List view */
+.aurix-list-view li.acard { height:auto; }
+.aurix-list-view .acard-inner { flex-direction:row; height:auto; align-items:stretch; min-height:140px; }
+/* Image col */
+.aurix-list-view .acard-img-wrap {
+  width:160px; min-width:160px; flex-shrink:0;
+  aspect-ratio:unset !important; height:auto;
+  border-radius:12px 0 0 12px;
+  position:relative; /* keep absolute children contained */
+}
+/* Body col */
+.aurix-list-view .acard-body {
+  flex:1; padding:16px 18px;
+  display:flex; flex-direction:column; justify-content:center; gap:6px;
+}
+.aurix-list-view .acard-title { -webkit-line-clamp:2 !important; min-height:unset !important; }
+/* ATC actions — bottom of body, in normal flow */
+.aurix-list-view .acard-atc-bar {
+  position:static !important;
+  transform:none !important;
+  border-radius:0 0 12px 0 !important;
+  background:#0d1b2a;
+  padding:8px 12px;
+  min-width:0;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  width:160px;
+  align-self:stretch;
+}
+.aurix-list-view .acard-inner:hover .acard-atc-bar { transform:none !important; }
+.aurix-list-view .acard-atc-form {
+  flex-direction:column; gap:6px;
+  justify-content:center;
+}
+.aurix-list-view .acard-atc-qty { width:100%; }
+.aurix-list-view .acard-atc-submit {
+  width:100%; height:32px; border-radius:6px !important;
+  font-size:.74rem !important;
+}
+/* Hide overlay/QV in list view - not needed */
+.aurix-list-view .acard-overlay { display:none !important; }
+
+/* ── IMAGE ── */
+.acard-img-wrap { position:relative; width:100%; aspect-ratio:1/1; background:#f7f8fb; overflow:hidden; flex-shrink:0; }
+.acard-img-link { display:block; width:100%; height:100%; }
+.acard-img { width:100%; height:100%; object-fit:contain; object-position:center; display:block; padding:10px; transition:transform .3s cubic-bezier(.25,.46,.45,.94); }
+.acard-inner:hover .acard-img { transform:scale(1.05); }
+.acard-no-img { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#dde4ef; font-size:2.5rem; }
+
+/* Badges — top-left only */
+.acard-badges { position:absolute; top:8px; left:8px; z-index:10; display:flex; flex-direction:column; gap:3px; }
+.acard-badge { display:inline-flex; align-items:center; justify-content:center; font-size:.66rem; font-weight:700; padding:3px 8px; border-radius:20px; letter-spacing:.04em; line-height:1; }
+.acard-badge--sale { background:#b8925a; color:#fff; }
+.acard-badge--oos { background:rgba(239,68,68,.1); color:#dc2626; border:1px solid rgba(239,68,68,.2); }
+
+/* ── HOVER OVERLAY (desktop only) ── */
+.acard-overlay {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:10px;
+  background:rgba(13,27,42,.38); opacity:0; transition:opacity .22s; z-index:20;
+}
+.acard-inner:hover .acard-overlay { opacity:1; }
+
+/* Wishlist btn — top-right, always above overlay */
+.acard-wl-btn {
+  position:absolute !important; top:8px !important; right:8px !important; left:auto !important; bottom:auto !important;
+  width:32px; height:32px; border-radius:50%; border:none; background:#fff; color:#8a9ab0;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  cursor:pointer; transition:color .18s,background .18s; box-shadow:0 2px 8px rgba(13,27,42,.15); z-index:30; line-height:1;
+}
+.acard-wl-btn i { display:flex; align-items:center; justify-content:center; line-height:1; font-size:.85rem; }
+.acard-wl-btn:hover,.acard-wl-btn.in-wishlist { color:#e55; background:#fff5f5; }
+
+/* Quick view btn */
+.acard-qv-btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  height:34px; padding:0 16px; background:#fff; color:#0d1b2a; border:none; border-radius:17px;
+  font-family:'Outfit',sans-serif; font-size:.78rem; font-weight:600; cursor:pointer;
+  transition:background .18s,color .18s,transform .18s;
+  box-shadow:0 4px 16px rgba(13,27,42,.2); transform:translateY(6px); line-height:1;
+}
+.acard-qv-btn i { display:flex; align-items:center; justify-content:center; font-size:.76rem; line-height:1; }
+.acard-inner:hover .acard-qv-btn { transform:translateY(0); }
+.acard-qv-btn:hover { background:#b8925a; color:#fff; }
+
+/* ATC bar — hidden by default, slides up on hover (DESKTOP ONLY) */
+.acard-atc-bar {
+  position:absolute; bottom:0; left:0; right:0; z-index:25;
+  background:#0d1b2a; padding:7px 9px; display:flex; align-items:center;
+  transform:translateY(100%); transition:transform .25s cubic-bezier(.4,0,.2,1);
+}
+.acard-inner:hover .acard-atc-bar { transform:translateY(0); }
+
+.acard-atc-form { display:flex; align-items:center; gap:7px; width:100%; }
+.acard-atc-qty { display:flex; align-items:center; background:rgba(255,255,255,.1); border-radius:7px; overflow:hidden; height:30px; flex-shrink:0; }
+.acard-qty-btn { width:26px; height:30px; border:none; background:transparent; color:#fff; font-size:.88rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; line-height:1; }
+.acard-qty-btn:hover { background:rgba(255,255,255,.15); }
+.acard-qty-input { width:28px; height:30px; border:none; background:transparent; color:#fff; text-align:center; font-size:.82rem; font-weight:600; -moz-appearance:textfield; outline:none; }
+.acard-qty-input::-webkit-outer-spin-button,.acard-qty-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+.acard-atc-submit {
+  flex:1; height:30px; background:#b8925a !important; color:#fff !important; border:none !important;
+  border-radius:7px !important; font-family:'Outfit',sans-serif !important; font-size:.76rem !important;
+  font-weight:600 !important; cursor:pointer !important; display:flex !important;
+  align-items:center !important; justify-content:center !important; gap:5px !important;
+  transition:background .18s !important; padding:0 8px !important; white-space:nowrap !important; line-height:1 !important; text-decoration:none !important;
+}
+.acard-atc-submit i { display:flex; align-items:center; justify-content:center; font-size:.72rem; line-height:1; }
+.acard-atc-submit:hover { background:#9a7440 !important; }
+.acard-atc-submit.atc-success { background:#22c55e !important; }
+.acard-atc-bar--oos { justify-content:center; }
+.acard-oos-label { font-size:.74rem; color:rgba(255,255,255,.7); display:flex; align-items:center; gap:5px; line-height:1; }
+.acard-oos-label a { color:#b8925a; font-weight:600; text-decoration:none; }
+
+/* ── CARD BODY ── */
+.acard-body { padding:12px 14px 14px; display:flex; flex-direction:column; gap:5px; flex:1; }
+.acard-cat { font-size:.65rem; font-weight:700; color:#b8925a; text-transform:uppercase; letter-spacing:.08em; line-height:1; }
+
+/* TITLE — strictly 2 lines max, never 3 */
+.acard-title {
+  font-family:'Outfit',sans-serif; font-size:.86rem; font-weight:600; color:#0d1b2a;
+  line-height:1.5; margin:0;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  /* height = exactly 2 lines, never crop mid-line */
+  height:calc(1.5em * 2);
+}
+.acard-title a { color:inherit; text-decoration:none; transition:color .18s; }
+.acard-title a:hover { color:#b8925a; }
+
+.acard-sku { font-size:.7rem; color:#8a9ab0; display:flex; align-items:center; gap:4px; line-height:1; }
+.acard-sku i { display:flex; align-items:center; justify-content:center; font-size:.66rem; color:#b8925a; line-height:1; }
+.acard-rating { display:flex; align-items:center; gap:5px; line-height:1; }
+.acard-rating .star-rating { font-size:.76rem; line-height:1; }
+.acard-rating .star-rating::before,.acard-rating .star-rating span::before { color:#b8925a; }
+.acard-rating-count { font-size:.68rem; color:#8a9ab0; line-height:1; }
+.acard-price { margin-top:auto; padding-top:4px; }
+.acard-price .price { font-size:.96rem !important; font-weight:700 !important; color:#b8925a !important; line-height:1 !important; }
+.acard-price .price del { font-size:.78rem !important; color:#a0aec0 !important; font-weight:400 !important; }
+.acard-price .price ins { text-decoration:none !important; }
+
+/* ── EMPTY STATE ── */
+.aurix-shop-empty { text-align:center; padding:48px 20px; background:#fff; border:1px solid rgba(13,27,42,.09); border-radius:12px; }
+.aurix-shop-empty i { font-size:2.5rem; color:#dde4ef; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; line-height:1; }
+.aurix-shop-empty h3 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#0d1b2a; margin-bottom:6px; }
+.aurix-shop-empty p { font-size:.88rem; color:#8a9ab0; }
+.aurix-shop-empty a { color:#b8925a; font-weight:600; }
+
+/* ── PAGINATION ── */
+.aurix-shop-pagination { margin-top:24px; }
+.woocommerce-pagination ul { display:flex !important; align-items:center !important; gap:5px !important; list-style:none !important; padding:0 !important; margin:0 !important; justify-content:center !important; flex-wrap:wrap !important; }
+.woocommerce-pagination ul li a,.woocommerce-pagination ul li span { display:inline-flex !important; align-items:center !important; justify-content:center !important; width:34px !important; height:34px !important; border-radius:7px !important; border:1px solid rgba(13,27,42,.12) !important; font-size:.82rem !important; font-weight:500 !important; color:#0d1b2a !important; text-decoration:none !important; transition:background .18s,border-color .18s,color .18s !important; line-height:1 !important; }
+.woocommerce-pagination ul li a:hover { background:#b8925a !important; color:#fff !important; border-color:#b8925a !important; }
+.woocommerce-pagination ul li span.current { background:#0d1b2a !important; color:#fff !important; border-color:#0d1b2a !important; }
+
+/* ── QUICK VIEW MODAL ── */
+.aurix-qv-overlay { position:fixed; inset:0; background:rgba(13,27,42,.6); z-index:9500; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; visibility:hidden; transition:opacity .25s,visibility .25s; }
+.aurix-qv-overlay.open { opacity:1; visibility:visible; }
+.aurix-qv-modal { background:#fff; border-radius:14px; width:min(800px,100%); max-height:88vh; overflow-y:auto; box-shadow:0 24px 80px rgba(13,27,42,.3); display:grid; grid-template-columns:1fr 1fr; }
+.aurix-qv-img-col { background:#f7f8fb; border-radius:14px 0 0 14px; display:flex; align-items:center; justify-content:center; padding:24px; min-height:280px; }
+.aurix-qv-img-col img { width:100%; max-height:300px; object-fit:contain; display:block; }
+.aurix-qv-info-col { padding:24px; display:flex; flex-direction:column; gap:11px; }
+.aurix-qv-close { width:30px; height:30px; background:rgba(13,27,42,.07); border:none; border-radius:50%; color:#0d1b2a; font-size:.86rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .18s; align-self:flex-end; flex-shrink:0; line-height:1; }
+.aurix-qv-close i { display:flex; align-items:center; justify-content:center; line-height:1; }
+.aurix-qv-close:hover { background:#0d1b2a; color:#fff; }
+.aurix-qv-cat { font-size:.68rem; font-weight:700; color:#b8925a; text-transform:uppercase; letter-spacing:.08em; }
+.aurix-qv-title { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:700; color:#0d1b2a; line-height:1.25; margin:0; }
+.aurix-qv-sku { font-size:.76rem; color:#8a9ab0; display:flex; align-items:center; gap:5px; line-height:1; }
+.aurix-qv-sku i { display:flex; align-items:center; justify-content:center; color:#b8925a; line-height:1; }
+.aurix-qv-price .price { font-size:1.5rem !important; font-weight:700 !important; color:#b8925a !important; }
+.aurix-qv-price .price del { font-size:.95rem !important; color:#a0aec0 !important; font-weight:400 !important; }
+.aurix-qv-price .price ins { text-decoration:none !important; }
+.aurix-qv-desc { font-size:.86rem; color:#4a5568; line-height:1.7; border-top:1px solid rgba(13,27,42,.09); padding-top:10px; }
+.aurix-qv-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.aurix-qv-atc { flex:1; min-width:120px; height:42px; background:#0d1b2a; color:#fff; border:none; border-radius:21px; font-family:'Outfit',sans-serif; font-size:.88rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; transition:background .2s; line-height:1; }
+.aurix-qv-atc i { display:flex; align-items:center; justify-content:center; line-height:1; }
+.aurix-qv-atc:hover { background:#b8925a; }
+.aurix-qv-wl { width:42px; height:42px; border:1.5px solid rgba(13,27,42,.14); border-radius:21px; background:#fff; color:#8a9ab0; font-size:.95rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .18s; line-height:1; }
+.aurix-qv-wl i { display:flex; align-items:center; justify-content:center; line-height:1; }
+.aurix-qv-wl:hover,.aurix-qv-wl.in-wishlist { border-color:#e55; color:#e55; background:#fff5f5; }
+.aurix-qv-view-btn { display:inline-flex; align-items:center; gap:5px; font-size:.8rem; color:#b8925a; font-weight:600; text-decoration:none; border-bottom:1px dashed rgba(184,146,90,.4); line-height:1; }
+.aurix-qv-view-btn i { display:flex; align-items:center; justify-content:center; line-height:1; }
+.aurix-qv-view-btn:hover { color:#0d1b2a; border-bottom-color:#0d1b2a; }
+.aurix-qv-loader { grid-column:1/-1; padding:56px; display:flex; align-items:center; justify-content:center; color:#b8925a; font-size:2rem; }
+
+/* Sidebar mobile overlay */
+.aurix-sb-overlay { display:none; position:fixed; inset:0; background:rgba(13,27,42,.5); z-index:4999; }
+.aurix-sb-overlay.open { display:block; }
+
+/* ================================================================
+   RESPONSIVE
+================================================================ */
+@media (max-width:1100px) {
+  .aurix-shop-page { padding:20px 24px 48px; }
+  .aurix-shop-layout { grid-template-columns:210px 1fr; gap:20px; }
+  .woocommerce ul.products,.woocommerce-page ul.products { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:14px !important; }
+}
+
+@media (max-width:860px) {
+  /* Sidebar becomes slide-in drawer */
+  .aurix-shop-page { padding:calc(56px + 12px) 16px calc(64px + 16px); }
+  .aurix-shop-layout { grid-template-columns:1fr; }
+  .aurix-shop-sidebar {
+    position:fixed !important; top:0; left:0; bottom:0;
+    width:80vw; max-width:280px; z-index:5000; overflow-y:auto;
+    transform:translateX(-110%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+    border-radius:0; box-shadow:4px 0 40px rgba(13,27,42,.2);
+  }
+  .aurix-shop-sidebar.open { transform:translateX(0); }
+  .asb-close-btn { display:flex !important; }
+  .ast-filter-toggle { display:flex !important; }
+  .woocommerce ul.products,.woocommerce-page ul.products { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:12px !important; }
+}
+
+@media (max-width:600px) {
+  .aurix-shop-page { padding:calc(56px + 12px) 12px calc(64px + 16px); }
+  .aurix-shop-title { font-size:1.5rem; }
+  .woocommerce ul.products,.woocommerce-page ul.products { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px !important; }
+  /* Mobile: hide overlay, ALWAYS show ATC bar */
+  .acard-overlay { display:none !important; }
+  .acard-atc-bar { transform:translateY(0) !important; position:static !important; }
+  .acard-img-wrap { aspect-ratio:1/1; }
+  .acard-body { padding:9px 10px 10px; gap:4px; }
+  .acard-title { font-size:.78rem; }
+  .acard-sku { font-size:.66rem; }
+  .acard-price .price { font-size:.88rem !important; }
+  .ast-perpage,.ast-label { display:none; }
+  .aurix-shop-toolbar { padding:9px 10px; gap:8px; }
+  /* Quick view modal: single col */
+  .aurix-qv-modal { grid-template-columns:1fr; }
+  .aurix-qv-img-col { border-radius:14px 14px 0 0; min-height:160px; }
+}
+
+@media (max-width:380px) {
+  .woocommerce ul.products,.woocommerce-page ul.products { grid-template-columns:1fr !important; }
+}
+
+/* ── Quick view gallery tweaks ── */
+.aurix-qv-img-col {
+  flex-direction:column !important;
+  gap:10px !important;
+  padding:20px !important;
+}
+#qvImgWrap img {
+  width:100%;
+  max-height:280px;
+  object-fit:contain;
+  display:block;
+  transition:opacity .12s ease;
+}
+.aurix-qv-thumbs {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+/* ── List view tweaks ── */
+.aurix-list-view .acard-inner {
+  position:relative;
+}
+.aurix-list-view .acard-atc-bar {
+  border-left:1px solid rgba(255,255,255,.1);
+}
+
+/* ── Title height fix — ensure 2 full lines always show ── */
+.acard-body {
+  /* Ensure consistent card body height regardless of content */
+  min-height:120px;
+}
+
+/* ── Global shop page: override any #main padding ── */
+body.woocommerce #main.site-main,
+body.woocommerce-page #main.site-main,
+body.post-type-archive-product #main.site-main,
+body.tax-product_cat #main.site-main,
+body.tax-product_tag #main.site-main {
+  padding:0 !important;
+  margin:0 !important;
+}
