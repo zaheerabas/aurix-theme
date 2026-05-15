@@ -35,7 +35,7 @@ Edit `version.json` and change the version number and changelog:
 
 ```json
 {
-  "version": "18.0.0",
+  "version": "17.1.0",
   "download_url": "https://github.com/zaheerabas/aurix-theme/releases/latest/download/aurix-theme.zip",
   "changelog": "v18.0.0 — Description of what changed."
 }
