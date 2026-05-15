@@ -507,7 +507,7 @@ add_action('wp_head', function() {
    GitHub repo: https://github.com/zaheerabas/aurix-theme
 ================================================================ */
 
-define('AURIX_THEME_SLUG',    'aurix-v17');
+define('AURIX_THEME_SLUG',    'aurix-theme');
 define('AURIX_VERSION_URL',   'https://raw.githubusercontent.com/zaheerabas/aurix-theme/main/version.json');
 define('AURIX_DOWNLOAD_URL',  'https://github.com/zaheerabas/aurix-theme/releases/latest/download/aurix-theme.zip');
 define('AURIX_DETAILS_URL',   'https://github.com/zaheerabas/aurix-theme');
