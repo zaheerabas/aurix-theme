@@ -1,0 +1,569 @@
+ <!-- =====================================================
+     AURIX INTERNATIONAL — Shop by Categories (CLEAN)
+     - No dots
+     - Only the new incoming bubble animates (pop-in)
+     - No auto-play
+     - Infinite loop, one item at a time
+     - Hover clip fixed
+     ===================================================== -->
+    <style>
+        #aurix-cat-section * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #aurix-cat-section {
+            padding: 60px 0;
+            background: #fff;
+            font-family: 'Segoe UI', sans-serif;
+
+            /* FIX */
+            overflow: visible;
+        }
+
+        #aurix-cat-section .ax-container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 0 20px;
+            overflow: hidden;
+        }
+
+        /* =========================
+   HEADER
+========================= */
+
+        #aurix-cat-section .ax-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 45px;
+        }
+
+        #aurix-cat-section .ax-head h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        #aurix-cat-section .ax-head h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 55px;
+            height: 3px;
+            background: #c9a84c;
+            border-radius: 10px;
+        }
+
+        /* =========================
+   ARROWS
+========================= */
+
+        #aurix-cat-section .ax-arrows {
+            display: flex;
+            gap: 12px;
+        }
+
+        #aurix-cat-section .ax-arrow {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1.5px solid #111827;
+            background: #fff;
+            color: #111827;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .3s ease;
+        }
+
+        #aurix-cat-section .ax-arrow:hover {
+            background: #111827;
+            color: #c9a84c;
+            transform: scale(1.05);
+        }
+
+        /* =========================
+   SLIDER
+========================= */
+
+        #aurix-cat-section .ax-overflow {
+
+            /* FIX */
+            overflow: visible;
+
+            /* FIX */
+            padding-top: 25px;
+            padding-bottom: 20px;
+        }
+
+        #aurix-cat-section .ax-track {
+            display: flex;
+            gap: 22px;
+            transition: transform .45s ease;
+            will-change: transform;
+        }
+
+        /* =========================
+   ITEM
+========================= */
+
+        #aurix-cat-section .ax-item {
+            flex: 0 0 calc((100% - 5 * 22px) / 6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            gap: 18px;
+            min-width: 0;
+        }
+
+        /* =========================
+   CIRCLE
+========================= */
+
+        #aurix-cat-section .ax-circle-outer {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            flex-shrink: 0;
+        }
+
+        #aurix-cat-section .ax-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+            background: #f3f4f6;
+
+            transition:
+                transform .35s ease,
+                border-color .35s ease,
+                box-shadow .35s ease;
+        }
+
+        #aurix-cat-section .ax-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .4s ease;
+        }
+
+        /* FIXED HOVER */
+
+        #aurix-cat-section .ax-item:hover .ax-circle {
+            transform: scale(1.05);
+            border-color: #c9a84c;
+            box-shadow: 0 12px 32px rgba(201, 168, 76, .28);
+        }
+
+        #aurix-cat-section .ax-item:hover .ax-circle img {
+            transform: scale(1.04);
+        }
+
+        /* =========================
+   OVERLAY
+========================= */
+
+        #aurix-cat-section .ax-ov {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(17, 24, 39, .72);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        #aurix-cat-section .ax-item:hover .ax-ov {
+            opacity: 1;
+        }
+
+        #aurix-cat-section .ax-ov span {
+            color: #c9a84c;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        /* =========================
+   LABEL
+========================= */
+
+        #aurix-cat-section .ax-lbl {
+            font-size: 15px;
+            font-weight: 600;
+            color: #555;
+            text-align: center;
+            line-height: 1.4;
+            transition: color .3s ease;
+        }
+
+        #aurix-cat-section .ax-item:hover .ax-lbl {
+            color: #111827;
+        }
+
+        /* =========================
+   RESPONSIVE
+========================= */
+
+        /* Large Tablet */
+
+        @media(max-width:1200px) {
+
+            #aurix-cat-section .ax-item {
+                flex: 0 0 calc((100% - 4 * 20px) / 5);
+            }
+
+            #aurix-cat-section .ax-circle-outer {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        /* Tablet */
+
+        @media(max-width:900px) {
+
+            #aurix-cat-section .ax-track {
+                gap: 18px;
+            }
+
+            #aurix-cat-section .ax-item {
+                flex: 0 0 calc((100% - 2 * 18px) / 3);
+            }
+
+            #aurix-cat-section .ax-circle-outer {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+        /* Mobile */
+
+        @media(max-width:640px) {
+
+            #aurix-cat-section {
+                padding: 40px 0;
+            }
+
+            #aurix-cat-section .ax-head h3 {
+                font-size: 24px;
+            }
+
+            #aurix-cat-section .ax-track {
+                gap: 12px;
+            }
+
+            #aurix-cat-section .ax-item {
+                flex: 0 0 calc((100% - 14px) / 2);
+            }
+
+            #aurix-cat-section .ax-circle-outer {
+                width: 185px;
+                height: 185px;
+            }
+
+            #aurix-cat-section .ax-lbl {
+                font-size: 14px;
+            }
+        }
+
+        /* Small Mobile */
+
+        @media(max-width:420px) {
+
+            #aurix-cat-section .ax-circle-outer {
+                width: 145px;
+                height: 145px;
+            }
+
+            #aurix-cat-section .ax-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            #aurix-cat-section .ax-head {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+
+
+    <section id="aurix-cat-section">
+        <div class="ax-container">
+
+            <div class="ax-head">
+                <h3>Shop by Categories</h3>
+                <div class="ax-arrows">
+                    <button class="ax-arrow" id="axPrev" aria-label="Previous">&#8249;</button>
+                    <button class="ax-arrow" id="axNext" aria-label="Next">&#8250;</button>
+                </div>
+            </div>
+
+            <div class="ax-overflow">
+                <div class="ax-track" id="axTrack">
+
+                    <!-- EDIT: replace src with your WordPress image URLs, update href and label -->
+
+                    <a class="ax-item" href="/product-category/extracting-forceps/">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/Extracting-Forceps-1.png" alt="Surgical Scissors"
+                                    loading="lazy">
+                            </div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Extracting Forceps</span>
+                    </a>
+
+                    <a class="ax-item" href="/product-category/Retractor">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/Retractor.png" alt="Forceps" loading="lazy">
+                            </div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Retractor</span>
+                    </a>
+
+                    <a class="ax-item" href="/product-category/explorer/">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/Explorar-1.png" alt="Dental Instruments"
+                                    loading="lazy"></div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Explorar</span>
+                    </a>
+
+                    <a class="ax-item" href="/product-category/matrix-band-retainer/">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/matrix-retainer.png" alt="Retractors"
+                                    loading="lazy">
+                            </div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">matrix</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/needle-holders">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="Needle Holders"
+                                    loading="lazy"></div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Needle Holders</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/clamps">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="Clamps" loading="lazy">
+                            </div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Clamps</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/procedure-kits">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="Procedure Kits"
+                                    loading="lazy"></div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Procedure Kits</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/needle-drivers">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="Needle Drivers"
+                                    loading="lazy"></div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Needle Drivers</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/oem-manufacturing">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="OEM Manufacturing"
+                                    loading="lazy"></div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">OEM Manufacturing</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/private-label">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="Private Label"
+                                    loading="lazy"></div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Private Label</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/custom-kits">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="Custom Kits"
+                                    loading="lazy">
+                            </div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Custom Kits</span>
+                    </a>
+
+                    <a class="ax-item" href="/category/surgical-kits">
+                        <div class="ax-circle-outer">
+                            <div class="ax-circle"><img src="https://aurixinternational.com/wp-content/uploads/2026/05/01-scaled.png" alt="Surgical Kits"
+                                    loading="lazy"></div>
+                            <div class="ax-ov"><span>View<br>More</span></div>
+                        </div>
+                        <span class="ax-lbl">Surgical Kits</span>
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var track = document.getElementById('axTrack');
+            var btnPrev = document.getElementById('axPrev');
+            var btnNext = document.getElementById('axNext');
+
+            /* Clone items for infinite loop */
+            var origItems = Array.from(track.querySelectorAll('.ax-item'));
+            var total = origItems.length;
+
+            /* Prepend + append clones */
+            origItems.forEach(function (el) {
+                var c = el.cloneNode(true);
+                c.setAttribute('aria-hidden', 'true');
+                track.appendChild(c);
+            });
+            origItems.forEach(function (el) {
+                var c = el.cloneNode(true);
+                c.setAttribute('aria-hidden', 'true');
+                track.insertBefore(c, track.firstChild);
+            });
+
+            var all = Array.from(track.querySelectorAll('.ax-item'));
+            var curIdx = total;   /* start at real set */
+            var sliding = false;
+            var dir = 1;       /* 1 = next (right→left), -1 = prev */
+
+            function calcVis() {
+                var w = document.getElementById('aurix-cat-section').offsetWidth;
+                if (w <= 400) return 2;
+                if (w <= 640) return 3;
+                if (w <= 860) return 4;
+                if (w <= 1024) return 5;
+                return 6;
+            }
+
+            function gap() {
+                return parseFloat(getComputedStyle(track).gap) || 20;
+            }
+
+            function iw() {
+                return (all[0] ? all[0].offsetWidth : 100) + gap();
+            }
+
+            /* Silent jump — no animation */
+            function jumpTo(idx) {
+                track.style.transition = 'none';
+                track.style.transform = 'translateX(-' + (idx * iw()) + 'px)';
+                curIdx = idx;
+            }
+
+            /* Pop-in only the single newly revealed bubble */
+            function popIncoming() {
+                var vis = calcVis();
+                /* The incoming item index in `all` */
+                var incomingIdx = dir === 1
+                    ? curIdx + vis - 1    /* next: rightmost item entering */
+                    : curIdx;             /* prev: leftmost item entering */
+
+                var el = all[incomingIdx];
+                if (!el) return;
+
+                el.classList.add('ax-pop');
+                /* force reflow */
+                void el.offsetWidth;
+                el.classList.add('ax-in');
+
+                /* clean up after animation */
+                setTimeout(function () {
+                    el.classList.remove('ax-pop', 'ax-in');
+                }, 500);
+            }
+
+            /* Slide with animation */
+            function slideTo(idx, direction) {
+                if (sliding) return;
+                sliding = true;
+                dir = direction;
+
+                track.style.transition = 'transform .45s cubic-bezier(.4,0,.2,1)';
+                track.style.transform = 'translateX(-' + (idx * iw()) + 'px)';
+                curIdx = idx;
+            }
+
+            track.addEventListener('transitionend', function () {
+                sliding = false;
+                popIncoming();
+
+                /* Seamless wrap */
+                if (curIdx >= total * 2) { jumpTo(curIdx - total); }
+                if (curIdx < total) { jumpTo(curIdx + total); }
+            });
+
+            /* Init — jump silently to real set, no pop animation */
+            jumpTo(total);
+
+            /* Buttons — one item at a time */
+            btnNext.addEventListener('click', function () {
+                slideTo(curIdx + 1, 1);
+            });
+            btnPrev.addEventListener('click', function () {
+                slideTo(curIdx - 1, -1);
+            });
+
+            /* Touch / swipe */
+            var tx0 = 0;
+            track.addEventListener('touchstart', function (e) {
+                tx0 = e.touches[0].clientX;
+            }, { passive: true });
+            track.addEventListener('touchend', function (e) {
+                var dx = e.changedTouches[0].clientX - tx0;
+                if (Math.abs(dx) > 45) {
+                    var d = dx < 0 ? 1 : -1;
+                    slideTo(curIdx + d, d);
+                }
+            }, { passive: true });
+
+            /* Resize */
+            var rt;
+            window.addEventListener('resize', function () {
+                clearTimeout(rt);
+                rt = setTimeout(function () { jumpTo(curIdx); }, 150);
+            });
+
+        }());
+    </script>
