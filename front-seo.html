@@ -1,0 +1,383 @@
+<!-- AURIX — CEO Section | Elementor HTML Widget | Compact Light Layout -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+<style>
+  .ac *, .ac *::before, .ac *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .ac {
+    font-family: 'Jost', 'Segoe UI', sans-serif;
+    background: #ffffff;
+    border: 0.5px solid #e0dbd3;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 1200px;
+    max-width: 96%;
+    margin: 2vw auto 2vw auto;
+  }
+
+  /* ── TOP ROW ── */
+  .ac-top {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 28px;
+    padding: 32px 36px;
+    border-bottom: 0.5px solid #e0dbd3;
+  }
+
+  /* Photo */
+  .ac-photo-wrap {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+  .ac-ring {
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 1.176px dashed rgba(176,141,91,0.4);
+    animation: ac-spin 20s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .ac-ring::after {
+    content: '';
+    position: absolute;
+    top: 1px; left: 50%;
+    transform: translateX(-50%);
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #b08d5b;
+  }
+  .ac-photo-circle {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #ede9e3;
+    z-index: 1;
+  }
+  .ac-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .ac-photo-wrap:hover .ac-photo { transform: scale(1.07); }
+  .ac-photo-wrap:hover .ac-ring  { animation-play-state: paused; }
+
+  @keyframes ac-spin { to { transform: rotate(360deg); } }
+
+  /* Identity */
+  .ac-name {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: #1c1a17;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .ac-name em { font-style: italic; color: #b08d5b; }
+
+  .ac-role {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9a9088;
+    margin-bottom: 12px;
+  }
+
+  /* Social icon buttons */
+  .ac-socials { display: flex; gap: 6px; flex-wrap: wrap; }
+  .ac-soc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px;
+    border: 0.5px solid #ddd8d0;
+    border-radius: 6px;
+    color: #142a389b;
+    text-decoration: none;
+    font-size: 15px;
+    background: #faf8f5;
+    transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.18s;
+  }
+  .ac-soc:hover {
+    background: #b08d5b;
+    border-color: #b08d5b;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  .ac-soc i{
+      font-size: 32px;
+  }
+
+  /* Stats strip */
+  .ac-stats {
+    display: flex;
+    gap: 0.5px;
+    background: #e0dbd3;
+    border: 0.5px solid #e0dbd3;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .ac-stat {
+    background: #faf8f5;
+    padding: 14px 22px;
+    text-align: center;
+    cursor: default;
+    transition: background 0.18s;
+  }
+  .ac-stat:hover { background: #f2ede5; }
+  .ac-stat-num {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: #b08d5b;
+    display: block;
+    line-height: 1;
+    margin-bottom: 3px;
+    opacity: 0;
+  }
+  .ac-stat-num.ac-counted { animation: ac-pop 0.4s ease forwards; }
+  .ac-stat-lbl {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9a9088;
+    white-space: nowrap;
+  }
+  @keyframes ac-pop {
+    from { opacity: 0; transform: scale(0.65); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── BOTTOM ROW ── */
+  .ac-bio-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 36px;
+    padding: 28px 36px;
+  }
+
+  .ac-eyebrow {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #b08d5b;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ac-eyebrow::before { content: ''; width: 16px; height: 0.5px; background: #b08d5b; }
+
+  .ac-headline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.35;
+    color: #1c1a17;
+    margin-bottom: 12px;
+  }
+  .ac-headline em { font-style: italic; color: #b08d5b; }
+
+  .ac-bio {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #5a534c;
+    border-left: 1.5px solid #b08d5b;
+    border-radius: 0;
+    padding-left: 14px;
+  }
+
+  /* Connect pills */
+  .ac-pills { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+  .ac-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 0.5px solid #ddd8d0;
+    border-radius: 7px;
+    color: #142a38;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: #faf8f5;
+    white-space: nowrap;
+    transition: all 0.18s ease;
+  }
+  .ac-pill i { font-size: 22px; }
+  .ac-pill:hover { background: #b08d5b; border-color: #b08d5b; color: #ffffff; }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .ac-anim {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .ac-anim.ac-in { opacity: 1; transform: none; }
+  .ac-d1 { transition-delay: 0.05s; }
+  .ac-d2 { transition-delay: 0.15s; }
+  .ac-d3 { transition-delay: 0.25s; }
+  .ac-d4 { transition-delay: 0.35s; }
+  .ac-d5 { transition-delay: 0.45s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .ac-top {
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      padding: 24px 20px;
+    }
+    .ac-stats { display: none; }
+    .ac-bio-row {
+      grid-template-columns: 1fr;
+      padding: 24px 20px;
+      gap: 20px;
+    }
+    .ac-pills { flex-direction: row; flex-wrap: wrap; }
+  }
+
+  @media (max-width: 420px) {
+    .ac-name { font-size: 22px; }
+    .ac-headline { font-size: 18px; }
+  }
+</style>
+
+<div class="ac" role="region" aria-label="Abdul Raffay — Founder and CEO, Aurix">
+
+  <!-- ── TOP ROW ── -->
+  <div class="ac-top">
+
+    <!-- Photo -->
+    <div class="ac-photo-wrap ac-anim ac-d1">
+      <div class="ac-ring"></div>
+      <div class="ac-photo-circle">
+        <!--
+          ★ Replace the src below with your CEO photo URL.
+            Recommended: square crop, min 300×300px, face centred.
+        -->
+        <img
+          class="ac-photo"
+          src="https://aurixinternational.com/wp-content/uploads/2026/05/WhatsApp-Image-2026-05-16-at-11.09.03-AM-1.jpeg"
+          alt="Abdul Raffay – Founder & CEO, Aurix"
+          loading="lazy"
+        >
+      </div>
+    </div>
+
+    <!-- Name / Role / Socials -->
+    <div class="ac-anim ac-d2">
+      <div class="ac-name">Abdul <em>Raffay</em></div>
+      <div class="ac-role">Founder &amp; CEO · Aurix</div>
+      <div class="ac-socials">
+        <a class="ac-soc" href="https://www.linkedin.com/in/abdul-raffay-2564742a9/recent-activity/all/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <i class="ti ti-brand-linkedin"></i>
+        </a>
+        <a class="ac-soc" href="https://instagram.com/YOUR-HANDLE" target="_blank" rel="noopener" aria-label="Instagram" style="display:none">
+          <i class="ti ti-brand-instagram"></i>
+        </a>
+        <a class="ac-soc" href="https://twitter.com/YOUR-HANDLE" target="_blank" rel="noopener" aria-label="X / Twitter" style="display:none">
+          <i class="ti ti-brand-x"></i>
+        </a>
+        <a class="ac-soc" href="https://facebook.com/YOUR-PROFILE" target="_blank" rel="noopener" aria-label="Facebook" style="display:none">
+          <i class="ti ti-brand-facebook"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="ac-stats ac-anim ac-d3">
+      <div class="ac-stat">
+        <span class="ac-stat-num">4</span>
+        <span class="ac-stat-lbl">Generations</span>
+      </div>
+      <div class="ac-stat">
+        <span class="ac-stat-num">130+</span>
+        <span class="ac-stat-lbl">Yrs Heritage</span>
+      </div>
+      <div class="ac-stat">
+        <span class="ac-stat-num">16</span>
+        <span class="ac-stat-lbl">Age Started</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── BOTTOM ROW ── -->
+  <div class="ac-bio-row">
+
+    <!-- Bio content -->
+    <div class="ac-anim ac-d4">
+      <div class="ac-eyebrow">Meet our leader</div>
+      <div class="ac-headline">
+        Four generations of craft.<br>
+        One <em>modern vision.</em>
+      </div>
+      <p class="ac-bio">
+        Abdul Raffay leads Aurix with a legacy rooted in nearly four generations of surgical
+        and dental instrument craftsmanship dating to the late 1800s. Beginning on the factory
+        floor at just 16, he mastered both craft and commerce — shaping Aurix into a
+        clinician-focused brand built on precision, trust, and real-world usability.
+      </p>
+    </div>
+
+    <!-- Connect pills -->
+    <div class="ac-pills ac-anim ac-d5">
+      <a class="ac-pill" href="https://www.linkedin.com/in/abdul-raffay-2564742a9/recent-activity/all/" target="_blank" rel="noopener">
+        <i class="ti ti-brand-linkedin"></i>LinkedIn
+      </a>
+      <a class="ac-pill" href="https://instagram.com/YOUR-HANDLE" target="_blank" rel="noopener" style="display:none">
+        <i class="ti ti-brand-instagram"></i>Instagram
+      </a>
+      <a class="ac-pill" href="https://twitter.com/YOUR-HANDLE" target="_blank" rel="noopener" style="display:none">
+        <i class="ti ti-brand-x"></i>X
+      </a>
+      <a class="ac-pill" href="https://facebook.com/YOUR-PROFILE" target="_blank" rel="noopener" style="display:none">
+        <i class="ti ti-brand-facebook"></i>Facebook
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var els  = document.querySelectorAll('.ac-anim');
+  var nums = document.querySelectorAll('.ac-stat-num');
+
+  function reveal() {
+    els.forEach(function(el) { el.classList.add('ac-in'); });
+    nums.forEach(function(el, i) {
+      setTimeout(function() { el.classList.add('ac-counted'); }, 420 + i * 120);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) { reveal(); obs.disconnect(); }
+    }, { threshold: 0.1 });
+    var card = document.querySelector('.ac');
+    if (card) obs.observe(card);
+  } else {
+    reveal();
+  }
+})();
+</script>
