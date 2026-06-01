@@ -1,0 +1,172 @@
+<section>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <section class="tata-slider" style="padding:0;margin:0">
+            <div class="tata-slider-track" id="tataSliderTrack"
+                style="transition: transform 0.5s ease-in-out; transform: translateX(-200%);">
+
+             
+                
+                
+                <div class="tata-slide">
+                    <picture>
+                        <source media="(max-width: 600px)"
+                            srcset="https://aurixinternational.com/wp-content/uploads/2026/05/website-banner-1-2.png">
+                        <source media="(max-width: 1024px)"
+                            srcset="https://aurixinternational.com/wp-content/uploads/2026/05/website-banner-1-2.png">
+                        <img decoding="async"
+                            src="https://aurixinternational.com/wp-content/uploads/2026/05/website-banner-1-2.png"
+                            alt="Tata Surgical - Single Use Instruments">
+                    </picture>
+                </div>
+                <div class="tata-slide">
+                    <picture>
+                        <source media="(max-width: 600px)"
+                            srcset="https://aurixinternational.com/wp-content/uploads/2026/05/website-banner-2-1.png">
+                        <source media="(max-width: 1024px)"
+                            srcset="https://aurixinternational.com/wp-content/uploads/2026/05/website-banner-2-1.png">
+                        <img decoding="async"
+                            src="https://aurixinternational.com/wp-content/uploads/2026/05/website-banner-2-1.png"
+                            alt="Tata Surgical - Eye Instruments">
+                    </picture>
+                </div>
+                <div class="tata-slide">
+                    <picture>
+                        <source media="(max-width: 600px)"
+                            srcset="https://aurixinternational.com/wp-content/uploads/2026/05/Website-Banner-3-1.png">
+                        <source media="(max-width: 1024px)"
+                            srcset="https://aurixinternational.com/wp-content/uploads/2026/05/Website-Banner-3-1.png">
+                        <img decoding="async"
+                            src="https://aurixinternational.com/wp-content/uploads/2026/05/Website-Banner-3-1.png"
+                            alt="Tata Surgical - E R Suture Instruments">
+                    </picture>
+                </div>
+
+
+            </div>
+
+            <!-- Navigation Arrows -->
+            <button class="tata-prev" id="tataPrev"><i class="fas fa-chevron-left"></i></button>
+            <button class="tata-next" id="tataNext"><i class="fas fa-chevron-right"></i></button>
+
+
+        </section>
+
+        <style>
+        body{
+            background: #ffffff;
+        }
+            .tata-slider {
+                width: 100%;
+                overflow: hidden;
+                position: relative;
+                border: 0px solid #ffffff;
+
+            }
+
+            .tata-slider-track {
+                display: flex;
+                transition: transform 0.5s ease-in-out;
+            }
+
+            .tata-slide {
+                flex: 0 0 100%;
+            }
+
+            .tata-slide img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            /* Arrows */
+            .tata-prev,
+            .tata-next {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: #354d921a;
+                border: none;
+                color: #354d92;
+                padding: 10px 15px;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 10;
+                transition: background 0.3s;
+            }
+
+            .tata-prev:hover,
+            .tata-next:hover {
+                background: #354d92;
+                color: #ebeeff;
+            }
+
+            .tata-prev {
+                left: 10px;
+            }
+
+            .tata-next {
+                right: 10px;
+            }
+        </style>
+
+        <script>
+            const tataTrack = document.getElementById('tataSliderTrack');
+            const tataSlides = Array.from(tataTrack.children);
+            const tataTotal = tataSlides.length;
+            const tataPrev = document.getElementById('tataPrev');
+            const tataNext = document.getElementById('tataNext');
+
+            let tataIndex = 0;
+            let tataInterval;
+
+            // Clone first slide for smooth infinite loop
+            const tataFirstClone = tataSlides[0].cloneNode(true);
+            tataTrack.appendChild(tataFirstClone);
+
+            function nextSlide() {
+                tataIndex++;
+                tataTrack.style.transition = 'transform 0.5s ease-in-out';
+                tataTrack.style.transform = `translateX(-${tataIndex * 100}%)`;
+
+                if (tataIndex === tataTotal) {
+                    setTimeout(() => {
+                        tataTrack.style.transition = 'none';
+                        tataTrack.style.transform = 'translateX(0)';
+                        tataIndex = 0;
+                    }, 500);
+                }
+            }
+
+            function prevSlide() {
+                tataIndex--;
+                if (tataIndex < 0) {
+                    tataTrack.style.transition = 'none';
+                    tataTrack.style.transform = `translateX(-${tataTotal * 100}%)`;
+                    tataIndex = tataTotal - 1;
+                    setTimeout(() => {
+                        tataTrack.style.transition = 'transform 0.5s ease-in-out';
+                        tataTrack.style.transform = `translateX(-${tataIndex * 100}%)`;
+                    }, 20);
+                } else {
+                    tataTrack.style.transition = 'transform 0.5s ease-in-out';
+                    tataTrack.style.transform = `translateX(-${tataIndex * 100}%)`;
+                }
+            }
+
+            tataNext.addEventListener('click', nextSlide);
+            tataPrev.addEventListener('click', prevSlide);
+
+            function startAutoSlide() {
+                tataInterval = setInterval(nextSlide, 3000);
+            }
+
+            function stopAutoSlide() {
+                clearInterval(tataInterval);
+            }
+
+            document.querySelector('.tata-slider').addEventListener('mouseenter', stopAutoSlide);
+            document.querySelector('.tata-slider').addEventListener('mouseleave', startAutoSlide);
+
+            startAutoSlide();
+        </script>
+    </section>
