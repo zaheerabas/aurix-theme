@@ -1,0 +1,618 @@
+<section style="padding: 2vw">
+    
+<!-- 
+  KIT BUILDER SECTION v3 — Elementor HTML Widget
+  Paste entire contents into: Elementor > HTML Widget > HTML field
+-->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500&display=swap');
+
+.kb *,
+.kb *::before,
+.kb *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.kb {
+  font-family: 'DM Sans', sans-serif;
+  padding: 40px 0;
+  width: 100%;
+}
+
+.kb-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+/* ── LEFT CARD ── */
+.kb-left {
+  border: 1.5px solid #c9a84c;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 48px;
+  text-align: center;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.kb-left-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: #faf5e8;
+  border-bottom-left-radius: 100%;
+}
+
+.kb-left-corner2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: #faf5e8;
+  border-top-right-radius: 100%;
+}
+
+.kb-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 14px;
+}
+
+.kb-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 80px;
+  font-weight: 700;
+  color: #c9a84c;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.kb-subtitle {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ccc;
+  margin-bottom: 24px;
+}
+
+.kb-divider {
+  width: 48px;
+  height: 1.5px;
+  background: #e8d9a0;
+  margin: 0 auto 24px;
+}
+
+.kb-desc {
+  font-size: 15px;
+  color: #777;
+  line-height: 1.8;
+  max-width: 300px;
+  margin-bottom: 36px;
+}
+
+.kb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #1a1a1a;
+  color: #ffffff !important;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 28px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.kb-btn:hover {
+  background: #c9a84c;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+}
+
+.kb-btn:active {
+  transform: translateY(0);
+}
+
+.kb-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.kb-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid #f0ead8;
+  width: 100%;
+  justify-content: center;
+}
+
+.kb-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.kb-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #c9a84c;
+  line-height: 1;
+}
+
+.kb-stat-label {
+  font-size: 11px;
+  color: #bbb;
+  letter-spacing: 0.04em;
+}
+
+/* ── RIGHT COLUMN ── */
+.kb-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Note card */
+.kb-note {
+  background: #fdf8ed;
+  border-radius: 16px;
+  padding: 22px 24px;
+  border: 0.5px solid #e8d5a3;
+}
+
+.kb-note-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.kb-note-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #c9a84c;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.kb-note-season {
+  font-size: 11px;
+  color: #c9a84c;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.kb-note-text {
+  font-size: 14px;
+  color: #5a4a2a;
+  line-height: 1.75;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Email card */
+.kb-email-card {
+  background: #ffffff;
+  border: 0.5px solid #e3e0d8;
+  border-radius: 16px;
+  padding: 22px 24px;
+}
+
+.kb-email-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.kb-email-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.kb-vip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #faf5e8;
+  border: 0.5px solid #e8d5a3;
+  color: #c9a84c;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.kb-email-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.kb-email-input {
+  flex: 1;
+  min-width: 0;
+  background: #f7f6f3;
+  border: 1px solid #e3e0d8;
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-size: 14px;
+  color: #222222;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.kb-email-input::placeholder {
+  color: #c0bdb6;
+}
+
+.kb-email-input:focus {
+  border-color: #c9a84c;
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+  background: #ffffff;
+}
+
+.kb-email-submit {
+  background: #c9a84c;
+  border: none;
+  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.kb-email-submit:hover {
+  background: #b5923e;
+  transform: translateY(-1px);
+}
+
+.kb-email-submit:active {
+  transform: translateY(0);
+}
+
+.kb-email-submit svg {
+  width: 17px;
+  height: 17px;
+  stroke: #ffffff;
+  flex-shrink: 0;
+}
+
+.kb-privacy {
+  font-size: 11px;
+  color: #c0bdb6;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.kb-privacy svg {
+  flex-shrink: 0;
+}
+
+/* How it works card */
+.kb-how {
+  background: #ffffff;
+  border: 0.5px solid #e3e0d8;
+  border-radius: 16px;
+  padding: 22px 24px;
+  flex: 1;
+}
+
+.kb-how-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.kb-how-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.kb-how-badge {
+  background: #f7f6f3;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #999;
+  border: 0.5px solid #e3e0d8;
+}
+
+.kb-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kb-step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f9f8f5;
+  border-radius: 12px;
+  padding: 16px 14px;
+}
+
+.kb-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #c9a84c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #c9a84c;
+  flex-shrink: 0;
+}
+
+.kb-step-title {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #222222;
+  line-height: 1.3;
+}
+
+.kb-step-desc {
+  font-size: 12px;
+  color: #999;
+  line-height: 1.55;
+  flex: 1;
+}
+
+.kb-step-tag {
+  display: inline-block;
+  background: #ffffff;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #bbb;
+  padding: 2px 8px;
+  border: 0.5px solid #e3e0d8;
+  margin-top: auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .kb-grid {
+    grid-template-columns: 1fr;
+  }
+  .kb-left {
+    min-height: auto;
+    padding: 44px 32px;
+  }
+  .kb-title {
+    font-size: 64px;
+  }
+}
+
+@media (max-width: 580px) {
+  .kb-grid {
+    gap: 14px;
+  }
+  .kb-left {
+    padding: 36px 20px;
+  }
+  .kb-title {
+    font-size: 52px;
+  }
+  .kb-stats {
+    gap: 20px;
+  }
+  .kb-steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .kb-note-top {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+</style>
+
+<div class="kb">
+  <div class="kb-grid">
+
+    <!-- LEFT: Build box -->
+    <div class="kb-left">
+      <div class="kb-left-corner"></div>
+      <div class="kb-left-corner2"></div>
+      <div class="kb-eyebrow">Custom instrument trays</div>
+      <p class="kb-title">Build</p>
+      <div class="kb-subtitle">Your kit. Your way.</div>
+      <div class="kb-divider"></div>
+      <p class="kb-desc">Configure your signature instrument tray from scratch. Search any tool, drag &amp; drop your layout, and submit for a custom quote — all in one place.</p>
+      <!-- UPDATE href to your actual kit builder URL -->
+      <a href="/kit-builder" class="kb-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        Open Kit Builder
+      </a>
+      <div class="kb-stats">
+        <div class="kb-stat">
+          <span class="kb-stat-num">500+</span>
+          <span class="kb-stat-label">Instruments</span>
+        </div>
+        <div class="kb-stat">
+          <span class="kb-stat-num">48h</span>
+          <span class="kb-stat-label">Quote turnaround</span>
+        </div>
+        <div class="kb-stat">
+          <span class="kb-stat-num">Global</span>
+          <span class="kb-stat-label">Suppliers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT column -->
+    <div class="kb-right">
+
+      <!-- Note card -->
+      <div class="kb-note">
+        <div class="kb-note-top">
+          <div class="kb-note-tag">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4m0 4h.01"/>
+            </svg>
+            Note
+          </div>
+          <span class="kb-note-season">Fall 2026 Collection</span>
+        </div>
+        <p class="kb-note-text">"Currently manufacturing our Fall 2026 USA Collection. Secure early-access pricing by joining the VIP Waitlist today."</p>
+      </div>
+
+      <!-- Email card -->
+      <div class="kb-email-card">
+        <div class="kb-email-top">
+          <div class="kb-email-label">Join the VIP Waitlist</div>
+          <div class="kb-vip-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Early access
+          </div>
+        </div>
+        <div class="kb-email-row">
+          <input
+            type="email"
+            class="kb-email-input"
+            placeholder="Enter your email address..."
+            aria-label="Email address"
+            id="kb-email"
+          />
+          <button class="kb-email-submit" aria-label="Join waitlist" onclick="kbSubmit()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+        <div class="kb-privacy">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#c0bdb6" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          No spam. Unsubscribe anytime.
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="kb-how">
+        <div class="kb-how-header">
+          <div class="kb-how-title">How the kit builder works</div>
+          <div class="kb-how-badge">3 steps</div>
+        </div>
+        <div class="kb-steps-grid">
+          <div class="kb-step">
+            <div class="kb-step-num">1</div>
+            <div class="kb-step-title">Search any instrument</div>
+            <div class="kb-step-desc">Find tools instantly across global supplier catalogs.</div>
+            <span class="kb-step-tag">500+ instruments</span>
+          </div>
+          <div class="kb-step">
+            <div class="kb-step-num">2</div>
+            <div class="kb-step-title">Drag &amp; drop your tray</div>
+            <div class="kb-step-desc">Assemble your custom kit — your layout, your way.</div>
+            <span class="kb-step-tag">Visual editor</span>
+          </div>
+          <div class="kb-step">
+            <div class="kb-step-num">3</div>
+            <div class="kb-step-title">Get a custom quote</div>
+            <div class="kb-step-desc">Submit your layout and receive pricing fast.</div>
+            <span class="kb-step-tag">48h turnaround</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function kbSubmit() {
+  var el = document.getElementById('kb-email');
+  if (!el) return;
+  var v = el.value.trim();
+  var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+  if (!valid) {
+    el.style.borderColor = '#e24b4a';
+    el.style.boxShadow = '0 0 0 3px rgba(226,75,74,0.15)';
+    el.focus();
+    setTimeout(function () {
+      el.style.borderColor = '';
+      el.style.boxShadow = '';
+    }, 2000);
+    return;
+  }
+
+  /* ── Replace below with your Mailchimp / CF7 / custom endpoint ── */
+  el.style.borderColor = '#1d9e75';
+  el.style.boxShadow = '0 0 0 3px rgba(29,158,117,0.15)';
+  el.value = '';
+  el.placeholder = "You're on the list!";
+  setTimeout(function () {
+    el.style.borderColor = '';
+    el.style.boxShadow = '';
+    el.placeholder = 'Enter your email address...';
+  }, 3500);
+}
+</script>
+
+</section>
