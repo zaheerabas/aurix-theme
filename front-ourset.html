@@ -1,0 +1,404 @@
+<!-- ============================================================
+     OUR SET — Product Grid  |  Elementor HTML Widget
+     HOW TO USE:
+       1. Elementor → Add "HTML" widget
+       2. Paste this entire code
+       3. Replace image src URLs with your Media Library URLs
+       4. Replace href="#" with your product/category page URLs
+     ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.oss-wrap {
+  font-family: 'DM Sans', sans-serif;
+  padding: clamp(24px, 5vw, 48px) clamp(12px, 4vw, 20px);
+  width: 100%;
+  max-width: 1400px;
+  margin: auto;
+  overflow: visible;
+}
+
+/* ── Header ── */
+.oss-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: clamp(16px, 3vw, 28px);
+}
+
+.oss-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 5vw, 34px);
+  font-weight: 700;
+  color: #1B2A3B;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.oss-title span { color: #C9872A; }
+
+.oss-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px 7px 16px;
+  border: 1.5px solid #1B2A3B;
+  border-radius: 100px;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  font-weight: 500;
+  color: #1B2A3B;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .22s, color .22s;
+}
+
+.oss-btn:hover { background: #1B2A3B; color: #fff; }
+.oss-btn:hover .oss-btn-circle { background: #fff; color: #1B2A3B; }
+
+.oss-btn-circle {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #1B2A3B; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .22s, color .22s;
+}
+
+.oss-btn-circle svg {
+  width: 13px; height: 13px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Desktop: 4-column grid ── */
+.oss-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(10px, 2vw, 16px);
+  padding: 2vw 0;
+}
+
+/* ── Card ── */
+.oss-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  opacity: 0;
+  transform: translateY(44px);
+  transition: opacity .6s cubic-bezier(.22,1,.36,1),
+              transform .6s cubic-bezier(.22,1,.36,1);
+}
+
+.oss-card.visible { opacity: 1; transform: translateY(0); }
+
+.oss-card:nth-child(1) { transition-delay: .00s; }
+.oss-card:nth-child(2) { transition-delay: .10s; }
+.oss-card:nth-child(3) { transition-delay: .20s; }
+.oss-card:nth-child(4) { transition-delay: .30s; }
+
+/* ── Square image box ── */
+.oss-img-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  border: 2px solid #1B2A3B;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+  transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+}
+
+.oss-card:hover .oss-img-wrap {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.13);
+}
+
+.oss-img-wrap img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 10%;
+  transition: transform .4s cubic-bezier(.22,1,.36,1);
+  display: block;
+}
+
+.oss-card:hover .oss-img-wrap img { transform: scale(1.07); }
+
+/* ── Label bar ── */
+.oss-label {
+  margin-top: clamp(6px, 1.5vw, 10px);
+  background: #C9872A;
+  border-radius: 7px;
+  padding: clamp(8px, 1.5vw, 12px) clamp(10px, 2vw, 16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  transition: background .22s;
+}
+
+.oss-label:hover { background: #b07320; }
+
+.oss-label-text {
+  font-weight: 600;
+  font-size: clamp(11px, 1.8vw, 14px);
+  color: #fff;
+  letter-spacing: .01em;
+}
+
+.oss-label-icon {
+  width: clamp(13px, 2vw, 18px);
+  height: clamp(13px, 2vw, 18px);
+  flex-shrink: 0;
+  stroke: #fff; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  opacity: .9;
+}
+
+/* ── Scroll controls (mobile only, hidden on desktop) ── */
+.oss-controls {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.oss-arrow {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid #1B2A3B;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background .22s;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.oss-arrow:hover { background: #1B2A3B; }
+.oss-arrow:hover svg { stroke: #fff; }
+
+.oss-arrow svg {
+  width: 16px; height: 16px;
+  stroke: #1B2A3B; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: stroke .22s;
+}
+
+.oss-arrow:disabled { opacity: 0.3; pointer-events: none; }
+
+.oss-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.oss-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #D0C9C0;
+  border: none;
+  padding: 0;
+  transition: background .22s, transform .22s;
+  cursor: pointer;
+}
+
+.oss-dot.active {
+  background: #C9872A;
+  transform: scale(1.4);
+}
+
+/* ── Mobile: horizontal scroll carousel ── */
+@media (max-width: 900px) {
+  .oss-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .oss-grid::-webkit-scrollbar { display: none; }
+
+  .oss-card {
+    flex: 0 0 calc(50% - 6px);
+    scroll-snap-align: start;
+    transform: none;
+    opacity: 1;
+  }
+
+  .oss-card:nth-child(1),
+  .oss-card:nth-child(2),
+  .oss-card:nth-child(3),
+  .oss-card:nth-child(4) {
+    transition-delay: 0s;
+  }
+
+  .oss-controls { display: flex; }
+}
+
+@media (max-width: 520px) {
+  .oss-card { flex: 0 0 calc(75% - 6px); }
+}
+
+@media (max-width: 380px) {
+  .oss-card { flex: 0 0 calc(85% - 6px); }
+}
+</style>
+
+<section class="oss-wrap" aria-label="Our product set">
+
+  <div class="oss-header">
+    <h2 class="oss-title"><span>Our</span> Set</h2>
+    <a href="#" class="oss-btn" aria-label="View all products">
+      View All
+      <span class="oss-btn-circle" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
+    </a>
+  </div>
+
+  <div class="oss-grid" id="ossGrid">
+
+    <!-- CARD 1 — replace src and href -->
+    <div class="oss-card">
+      <div class="oss-img-wrap">
+        <img src="https://aurixinternational.com/wp-content/uploads/2026/05/Scaler-2.png" alt="Rubber Dam Kit" loading="lazy" />
+      </div>
+      <a href="#" class="oss-label">
+        <span class="oss-label-text">Rubber Dam Kit</span>
+        <svg class="oss-label-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- CARD 2 — replace src and href -->
+    <div class="oss-card">
+      <div class="oss-img-wrap">
+        <img src="https://aurixinternational.com/wp-content/uploads/2026/05/Scaler-2.png" alt="Rubber Dam Kit" loading="lazy" />
+      </div>
+      <a href="#" class="oss-label">
+        <span class="oss-label-text">Rubber Dam Kit</span>
+        <svg class="oss-label-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- CARD 3 — replace src and href -->
+    <div class="oss-card">
+      <div class="oss-img-wrap">
+        <img src="https://aurixinternational.com/wp-content/uploads/2026/05/Scaler-2.png" alt="Rubber Dam Kit" loading="lazy" />
+      </div>
+      <a href="#" class="oss-label">
+        <span class="oss-label-text">Rubber Dam Kit</span>
+        <svg class="oss-label-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- CARD 4 — replace src and href -->
+    <div class="oss-card">
+      <div class="oss-img-wrap">
+        <img src="https://aurixinternational.com/wp-content/uploads/2026/05/Scaler-2.png" alt="Rubber Dam Kit" loading="lazy" />
+      </div>
+      <a href="#" class="oss-label">
+        <span class="oss-label-text">Rubber Dam Kit</span>
+        <svg class="oss-label-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Arrow + dot controls — visible on mobile only -->
+  <div class="oss-controls" id="ossControls" aria-label="Carousel controls">
+    <button class="oss-arrow" id="ossLeft" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <div class="oss-dots" id="ossDots" role="tablist"></div>
+    <button class="oss-arrow" id="ossRight" aria-label="Next">
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+
+</section>
+
+<script>
+(function(){
+  var cards  = document.querySelectorAll('#ossGrid .oss-card');
+  var grid   = document.getElementById('ossGrid');
+  var left   = document.getElementById('ossLeft');
+  var right  = document.getElementById('ossRight');
+  var dotsEl = document.getElementById('ossDots');
+
+  if (!cards.length) return;
+
+  /* ── Scroll-in animation (desktop) ── */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    cards.forEach(function(c){ io.observe(c); });
+  } else {
+    cards.forEach(function(c){ c.classList.add('visible'); });
+  }
+
+  /* ── Build dots ── */
+  cards.forEach(function(_, i){
+    var d = document.createElement('button');
+    d.className = 'oss-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Card ' + (i + 1));
+    d.addEventListener('click', function(){ scrollToCard(i); });
+    dotsEl.appendChild(d);
+  });
+
+  function getCardWidth(){
+    if (!cards[0]) return 0;
+    var gap = parseFloat(getComputedStyle(grid).gap) || 12;
+    return cards[0].offsetWidth + gap;
+  }
+
+  function scrollToCard(index){
+    grid.scrollTo({ left: getCardWidth() * index, behavior: 'smooth' });
+  }
+
+  function updateState(){
+    var s   = grid.scrollLeft;
+    var max = grid.scrollWidth - grid.clientWidth;
+    left.disabled  = s <= 2;
+    right.disabled = s >= max - 2;
+
+    var cw   = getCardWidth();
+    var idx  = cw > 0 ? Math.round(s / cw) : 0;
+    var dots = dotsEl.querySelectorAll('.oss-dot');
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+  }
+
+  left.addEventListener('click',  function(){ grid.scrollBy({ left: -getCardWidth(), behavior: 'smooth' }); });
+  right.addEventListener('click', function(){ grid.scrollBy({ left:  getCardWidth(), behavior: 'smooth' }); });
+  grid.addEventListener('scroll', updateState, { passive: true });
+
+  updateState();
+})();
+</script>
