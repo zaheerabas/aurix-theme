@@ -209,7 +209,7 @@ while ( have_posts() ) :
 				<div class="axa-enquiry">
 					<span class="axa-enquiry__icon"><i class="fas fa-tooth" aria-hidden="true"></i></span>
 					<h3>Need these instruments in bulk?</h3>
-					<p>Wholesale pricing, OEM and private label from our Sialkot factory.</p>
+					<p>Wholesale pricing, OEM and private label for clinics and distributors.</p>
 					<a class="axb-btn axb-btn--gold axb-btn--block" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get a quote</a>
 					<?php if ( function_exists( 'wc_get_page_permalink' ) ) : ?>
 						<a class="axa-enquiry__link" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Browse the catalogue <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
