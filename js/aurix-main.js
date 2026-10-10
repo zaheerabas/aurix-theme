@@ -34,6 +34,7 @@
     if (activePanel && activePanel !== panel) closeAllPanels();
     panel.classList.add('open');
     panel.setAttribute('aria-hidden','false');
+    panel.removeAttribute('inert'); // allow keyboard focus into the now-visible panel
     if (overlay) overlay.classList.add('open');
     body.style.overflow = 'hidden';
     activePanel = panel;
@@ -41,9 +42,22 @@
     if (panel === catPanel && catBtn) { catBtn.classList.add('open'); catBtn.setAttribute('aria-expanded','true'); }
   }
 
+  // Global function so product.js can open the cart sidebar
+  window.aurixOpenCartSidebar = function() {
+    if (cartPanel) openPanel(cartPanel);
+  };
+
   function closeAllPanels() {
     [catPanel, cartPanel, pagesPanel].forEach(function(p) {
-      if (p) { p.classList.remove('open'); p.setAttribute('aria-hidden','true'); }
+      if (p) {
+        p.classList.remove('open');
+        p.setAttribute('aria-hidden','true');
+        // Blocks keyboard Tab focus AND screen-reader access to every link/
+        // button inside while closed -- aria-hidden alone doesn't prevent
+        // focus from landing inside an off-screen panel, which is the exact
+        // "accessibility tree not well-formed" issue this fixes.
+        p.setAttribute('inert','');
+      }
     });
     if (overlay) overlay.classList.remove('open');
     body.style.overflow = '';
@@ -51,6 +65,12 @@
     var catBtn = document.getElementById('desktopCatBtn');
     if (catBtn) { catBtn.classList.remove('open'); catBtn.setAttribute('aria-expanded','false'); }
   }
+
+  // Panels start closed -- apply inert on load too, not just after the first
+  // close, since the initial page-load state never runs closeAllPanels().
+  [catPanel, cartPanel, pagesPanel].forEach(function(p) {
+    if (p) p.setAttribute('inert','');
+  });
 
   if (overlay) overlay.addEventListener('click', closeAllPanels);
   ['catPanelClose','pagesPanelClose','cartPanelClose'].forEach(function(id) {
@@ -140,6 +160,7 @@
     if (!drop) return;
     drop.classList.add('open');
     drop.setAttribute('aria-hidden','false');
+    drop.removeAttribute('inert');
     var l = drop.querySelector('.asrch-loading'), r = drop.querySelector('.asrch-results');
     if (l) l.style.display = 'flex';
     if (r) r.innerHTML = '';
@@ -151,6 +172,9 @@
     if (!drop) return;
     drop.classList.remove('open');
     drop.setAttribute('aria-hidden','true');
+    // Same fix as the panels above -- blocks focus on any search result
+    // links left over in the DOM from a previous query, once this closes.
+    drop.setAttribute('inert','');
   }
 
   function doLiveSearch(query, dropdown) {
@@ -336,51 +360,105 @@
 
   if (typeof $ !== 'undefined') {
     $(document.body).on('added_to_cart', function(e, fragments) {
-      if (fragments) {
-        if (fragments['div.aurix-minicart-items']) {
-          var $c = $('#aurix-cart-panel .aurix-minicart-items');
-          if ($c.length) $c.replaceWith(fragments['div.aurix-minicart-items']);
-        }
-        if (fragments['.aurix-cart-count']) {
-          var $b = $(fragments['.aurix-cart-count']);
-          updateCartCount($b.data('count') || parseInt($b.text(),10) || 0);
-        }
-      }
-      // On desktop open cart sidebar; on mobile show toast only (cart btn = link to page)
-      if (window.innerWidth > 768 && cartPanel) openPanel(cartPanel);
-      showToast('<i class="fas fa-cart-plus"></i> Added to Cart', 'success');
+      // Open sidebar immediately
+      if (cartPanel) openPanel(cartPanel);
+      // Always fetch fresh cart from server — guaranteed correct
+      aurixRefreshCartSidebar();
     });
 
+    // ── Central function: refresh sidebar from server ──────────────────
+    function aurixRefreshCartSidebar() {
+      $.post(aurixData.ajaxUrl, { action: 'aurix_get_cart_sidebar', nonce: aurixData.nonce }, function(r) {
+        if (!r || !r.success) return;
+        // Minicart HTML
+        var $body = $('#aurix-cart-panel .acp-body');
+        if ($body.length && r.data.minicart) {
+          $body.html('<div class="aurix-minicart-items">' + r.data.minicart + '</div>');
+        }
+        // Count badge
+        var c = parseInt(r.data.count, 10) || 0;
+        updateCartCount(c);
+        // Subtotal
+        if (r.data.subtotal) {
+          $('#aurix-cart-panel .acp-total-amt').html(r.data.subtotal);
+        }
+      });
+    }
+    window.aurixRefreshCartSidebar = aurixRefreshCartSidebar;
+
+    // When item removed from cart — refresh everything from server
     $(document.body).on('removed_from_cart updated_wc_div wc_fragment_refresh', function() {
-      $.post(aurixData.ajaxUrl, { action:'aurix_get_cart_count', nonce:aurixData.nonce }, function(r) {
-        if (r.success) updateCartCount(r.data.count);
-      });
+      aurixRefreshCartSidebar();
     });
 
+    // When WC refreshes fragments on page load — sync sidebar
     $(document.body).on('wc_fragments_refreshed', function() {
-      if (typeof wc_cart_fragments_params === 'undefined') return;
-      try {
-        var stored = sessionStorage.getItem(wc_cart_fragments_params.fragment_name);
-        if (!stored) return;
-        var parsed = JSON.parse(stored);
-        if (parsed['div.aurix-minicart-items']) {
-          var $c = $('#aurix-cart-panel .aurix-minicart-items');
-          if ($c.length) $c.replaceWith(parsed['div.aurix-minicart-items']);
+      aurixRefreshCartSidebar();
+    });
+  }
+
+  /* ════════ CART SIDEBAR — QTY CONTROLS + REMOVE ════════ */
+  if (typeof $ !== 'undefined') {
+
+    // Qty update via AJAX
+    function acpUpdateQty(key, qty) {
+      $.post(aurixData.ajaxUrl, {
+        action: 'aurix_update_cart_qty',
+        nonce:   aurixData.nonce,
+        key:     key,
+        qty:     qty
+      }, function(r) {
+        if (r && r.success) {
+          aurixRefreshCartSidebar();
+          // update count badge
+          var c = parseInt(r.data.count, 10) || 0;
+          $('.aurix-cart-count').text(c).attr('data-count', c).css('display', c > 0 ? '' : 'none');
+          // update progress bar remaining
+          if (r.data.progress_html) {
+            var $bar = $('#aurix-cart-panel .acp-shipping-bar');
+            if ($bar.length) $bar.replaceWith(r.data.progress_html);
+          }
         }
-        if (parsed['.aurix-cart-count']) {
-          var $b = $(parsed['.aurix-cart-count']);
-          updateCartCount($b.data('count') || parseInt($b.text(),10) || 0);
-        }
-      } catch(err) {}
+      });
+    }
+
+    // Remove item
+    $(document).on('click', '#aurix-cart-panel .acp-remove-btn', function(e) {
+      e.preventDefault();
+      var key  = $(this).data('key');
+      var $row = $(this).closest('.acp-cart-item, .woocommerce-mini-cart-item');
+      $row.css({ opacity:.4, pointerEvents:'none' });
+      acpUpdateQty(key, 0);
     });
 
-    $(document.body).on('wc_fragments_refreshed added_to_cart', function() {
-      var $t = $('#aurix-cart-panel .acp-total-amt');
-      if (!$t.length) return;
-      $.post(aurixData.ajaxUrl, { action:'aurix_get_cart_total', nonce:aurixData.nonce }, function(r) {
-        if (r.success && r.data.total) $t.html(r.data.total);
-      });
+    // − button
+    $(document).on('click', '#aurix-cart-panel .acp-qty-minus', function() {
+      var $ctrl = $(this).closest('.acp-qty-ctrl');
+      var key   = $ctrl.data('key');
+      var $num  = $ctrl.find('.acp-qty-num');
+      var cur   = parseInt($num.text(), 10) || 1;
+      if (cur <= 1) {
+        // qty = 0 means remove — confirm
+        if (!confirm('Remove this item from cart?')) return;
+        acpUpdateQty(key, 0);
+        return;
+      }
+      $num.text(cur - 1);
+      acpUpdateQty(key, cur - 1);
     });
+
+    // + button
+    $(document).on('click', '#aurix-cart-panel .acp-qty-plus', function() {
+      var $ctrl = $(this).closest('.acp-qty-ctrl');
+      var key   = $ctrl.data('key');
+      var max   = parseInt($ctrl.data('max'), 10) || 99;
+      var $num  = $ctrl.find('.acp-qty-num');
+      var cur   = parseInt($num.text(), 10) || 1;
+      if (cur >= max) return;
+      $num.text(cur + 1);
+      acpUpdateQty(key, cur + 1);
+    });
+
   }
 
   /* ════════ FOOTER ACCORDION ════════ */

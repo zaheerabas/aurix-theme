@@ -14,12 +14,293 @@
 }
 
 /* ── PAGE TITLE ── */
-.aurix-shop-page-head { margin-bottom:20px; padding:0; }
-.aurix-shop-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size:2rem; font-weight:700; color:#0d1b2a;
-  padding-bottom:8px; border-bottom:2px solid #b8925a;
-  display:inline-block; margin:0;
+/* ══ SHOP PAGE HEAD v2 ══ */
+.aurix-shop-page-head {
+  margin-bottom:32px;
+  padding:34px 40px 30px;
+  background:#fff;
+  border:1px solid rgba(13,27,42,.07);
+  border-radius:16px;
+  box-shadow:0 4px 20px rgba(13,27,42,.05);
+}
+
+/* Breadcrumb */
+.asph-breadcrumb {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:18px;
+  font-size:.78rem;
+  font-family:'Outfit',sans-serif;
+  flex-wrap:wrap;
+}
+.asph-breadcrumb a {
+  color:#64748b;
+  text-decoration:none;
+  font-weight:500;
+  transition:color .15s;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.asph-breadcrumb a:hover { color:#734608; }
+.asph-breadcrumb a i { font-size:.7rem; }
+.asph-bc-sep { color:#cbd5e1; font-size:.55rem; }
+.asph-bc-current { color:#0d1b2a; font-weight:600; }
+
+/* Title row */
+.asph-title-row {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:32px;
+}
+.asph-title-left { flex:1; min-width:0; }
+
+.aurix-shop-page-head .aurix-shop-title {
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(2rem, 1.4rem + 1.9vw, 2.85rem);
+  font-weight:600;
+  color:#0d1b2a;
+  letter-spacing:-.015em;
+  line-height:1.08;
+  margin:0 0 16px;
+}
+.aurix-shop-page-head .aurix-shop-title em {
+  font-style:italic;
+  font-weight:500;
+  color:#734608;
+}
+.asph-title-accent { color:#0d1b2a; }
+
+/* ── Description (rich category content) ── */
+.asph-desc-wrap { max-width:72ch; }
+.aurix-shop-page-head .asph-desc {
+  font-family:'Outfit',sans-serif;
+  font-size:.95rem;
+  line-height:1.72;
+  color:#475569;
+  position:relative;
+  overflow:hidden;
+  transition:max-height .45s cubic-bezier(.4,0,.2,1);
+}
+.asph-desc--collapsed {
+  max-height:7.2em;
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);
+          mask-image:linear-gradient(180deg,#000 55%,transparent);
+}
+.asph-desc--collapsed.asph-desc--fits {
+  max-height:none;
+  -webkit-mask-image:none;
+          mask-image:none;
+}
+.asph-desc--expanded { -webkit-mask-image:none; mask-image:none; }
+
+.aurix-shop-page-head .asph-desc > *:first-child { margin-top:0; }
+.aurix-shop-page-head .asph-desc > *:last-child  { margin-bottom:0; }
+
+.aurix-shop-page-head .asph-desc p { margin:0 0 .85em; }
+.aurix-shop-page-head .asph-desc p:first-child {
+  font-size:1.02rem;
+  color:#334155;
+}
+
+.aurix-shop-page-head .asph-desc h2,
+.aurix-shop-page-head .asph-desc h3,
+.aurix-shop-page-head .asph-desc h4 {
+  font-family:'Cormorant Garamond',Georgia,serif;
+  color:#0d1b2a;
+  font-weight:600;
+  letter-spacing:-.005em;
+  line-height:1.2;
+  margin:1.5em 0 .45em;
+}
+.aurix-shop-page-head .asph-desc h2 { font-size:1.5rem; }
+.aurix-shop-page-head .asph-desc h3 { font-size:1.25rem; }
+.aurix-shop-page-head .asph-desc h4 { font-size:1.08rem; }
+
+.aurix-shop-page-head .asph-desc ul,
+.aurix-shop-page-head .asph-desc ol {
+  margin:.2em 0 1em;
+  padding:0;
+  list-style:none;
+}
+.aurix-shop-page-head .asph-desc li {
+  position:relative;
+  padding-left:1.35em;
+  margin:0 0 .35em;
+}
+.aurix-shop-page-head .asph-desc ul li::before {
+  content:"";
+  position:absolute;
+  left:.2em;
+  top:.72em;
+  width:6px;
+  height:6px;
+  background:#b8925a;
+  transform:rotate(45deg);
+}
+.aurix-shop-page-head .asph-desc ol { counter-reset:asph; }
+.aurix-shop-page-head .asph-desc ol li { counter-increment:asph; }
+.aurix-shop-page-head .asph-desc ol li::before {
+  content:counter(asph) ".";
+  position:absolute;
+  left:0;
+  font-weight:600;
+  color:#734608;
+}
+
+.aurix-shop-page-head .asph-desc strong,
+.aurix-shop-page-head .asph-desc b { color:#0d1b2a; font-weight:600; }
+
+.aurix-shop-page-head .asph-desc a,
+.aurix-shop-page-head .asph-desc a:visited {
+  color:#734608;
+  font-weight:500;
+  text-decoration:underline;
+  text-decoration-color:rgba(184,146,90,.45);
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  transition:color .15s, text-decoration-color .15s;
+}
+.aurix-shop-page-head .asph-desc a:hover {
+  color:#0d1b2a;
+  text-decoration-color:#0d1b2a;
+}
+.aurix-shop-page-head .asph-desc a:focus-visible,
+.asph-read-more:focus-visible {
+  outline:2px solid #b8925a;
+  outline-offset:2px;
+  border-radius:3px;
+}
+
+/* Read more */
+.asph-read-more {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:12px;
+  background:none;
+  border:none;
+  padding:4px 0;
+  font-size:.84rem;
+  font-weight:600;
+  font-family:'Outfit',sans-serif;
+  color:#734608;
+  cursor:pointer;
+  transition:color .15s;
+}
+.asph-read-more[hidden] { display:none; }
+.asph-read-more span {
+  border-bottom:1px solid rgba(115,70,8,.35);
+  padding-bottom:1px;
+  transition:border-color .15s;
+}
+.asph-read-more:hover { color:#0d1b2a; }
+.asph-read-more:hover span { border-color:#0d1b2a; }
+.asph-read-more i { font-size:.62rem; transition:transform .3s; }
+.asph-read-more[aria-expanded="true"] i { transform:rotate(180deg); }
+
+/* Right: count badge + parent link */
+.asph-title-right {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+  flex-shrink:0;
+}
+.asph-count-badge {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background:#0d1b2a;
+  color:#fff;
+  padding:14px 22px 12px;
+  border-radius:12px;
+  min-width:96px;
+  box-shadow:0 6px 18px rgba(13,27,42,.16);
+}
+.asph-count-num {
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:2.1rem;
+  font-weight:600;
+  line-height:1;
+  color:#d4ae7a;
+}
+.asph-count-label {
+  font-family:'Outfit',sans-serif;
+  font-size:.74rem;
+  font-weight:500;
+  color:rgba(255,255,255,.72);
+  margin-top:5px;
+}
+.asph-parent-link {
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:.74rem;
+  font-weight:600;
+  color:#64748b;
+  text-decoration:none;
+  font-family:'Outfit',sans-serif;
+  border:1px solid rgba(13,27,42,.1);
+  padding:4px 11px;
+  border-radius:20px;
+  transition:all .15s;
+}
+.asph-parent-link:hover { background:#734608; border-color:#734608; color:#fff; }
+.asph-parent-link i { font-size:.65rem; }
+
+/* Decorative rule */
+.asph-rule {
+  margin-top:24px;
+  height:1px;
+  background:rgba(13,27,42,.07);
+  position:relative;
+}
+.asph-rule span {
+  position:absolute;
+  left:0; top:-1px;
+  width:56px; height:2px;
+  background:linear-gradient(90deg,#734608,#b8925a);
+  border-radius:2px;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .aurix-shop-page-head .asph-desc,
+  .asph-read-more i { transition:none; }
+}
+
+/* Tablet */
+@media (max-width:900px) {
+  .aurix-shop-page-head { padding:28px 28px 24px; }
+  .asph-title-row { gap:20px; }
+}
+
+/* Mobile */
+@media (max-width:600px) {
+  .aurix-shop-page-head { padding:20px 18px; border-radius:12px; }
+  .asph-breadcrumb { margin-bottom:14px; }
+  .asph-title-row { flex-direction:column-reverse; gap:14px; }
+  .asph-title-right { flex-direction:row; align-items:center; }
+  .asph-count-badge {
+    flex-direction:row;
+    align-items:baseline;
+    gap:6px;
+    padding:6px 14px;
+    min-width:0;
+    border-radius:20px;
+    box-shadow:none;
+  }
+  .asph-count-num { font-size:1.2rem; }
+  .asph-count-label { margin-top:0; font-size:.72rem; }
+  .aurix-shop-page-head .aurix-shop-title { margin-bottom:12px; }
+  .aurix-shop-page-head .asph-desc { font-size:.92rem; line-height:1.68; }
+  .aurix-shop-page-head .asph-desc p:first-child { font-size:.95rem; }
+  .aurix-shop-page-head .asph-desc h2 { font-size:1.3rem; }
+  .aurix-shop-page-head .asph-desc h3 { font-size:1.15rem; }
+  .asph-desc--collapsed { max-height:8.4em; }
+  .asph-rule { margin-top:18px; }
 }
 
 /* ── 2-COLUMN LAYOUT: sidebar + main ── */
@@ -37,13 +318,30 @@
   background:#fff;
   border:1px solid rgba(13,27,42,.09);
   border-radius:12px;
-  overflow:hidden;
   position:sticky;
-  top:calc(56px + 16px);
+  top:calc(var(--bar-h, 36px) + var(--hdr-h, 76px) + var(--nav-h, 48px) + 54px + 16px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+/* Allow footer to show by only clipping the scrollable body */
+.asb-body-wrap {
+  flex:1;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.asb-body {
+  flex:1;
+  overflow-y:auto;
+  max-height:calc(100vh - 380px);
+  min-height:80px;
+  padding:8px 0;
 }
 .asb-header {
   display:flex; align-items:center; justify-content:space-between;
   padding:14px 16px; background:#0d1b2a;
+  flex-shrink:0;
 }
 .asb-title {
   font-family:'Outfit',sans-serif; font-size:.82rem; font-weight:700;
@@ -58,7 +356,7 @@
 }
 .asb-close-btn i { display:flex; align-items:center; justify-content:center; line-height:1; }
 .asb-close-btn:hover { background:rgba(255,255,255,.2); }
-.asb-body { padding:8px 0; }
+
 
 /* Category list */
 .asb-cat-list { list-style:none; padding:0; margin:0; }
@@ -92,12 +390,76 @@
 
 /* Sidebar divider */
 .asb-section-div { height:1px; background:rgba(13,27,42,.07); margin:4px 0; }
+/* ── Sidebar: View All footer ── */
+.asb-footer {
+  border-top:1px solid rgba(13,27,42,.08);
+  padding:10px 12px;
+  background:#fff;
+  flex-shrink:0;
+}
+.asb-view-all {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 14px;
+  background:#0d1b2a;
+  border-radius:8px;
+  text-decoration:none;
+  color:#fff;
+  font-size:.82rem;
+  font-weight:600;
+  font-family:'Outfit',sans-serif;
+  letter-spacing:.02em;
+  transition:background .18s, transform .15s;
+}
+.asb-view-all:hover {
+  background:#b8925a;
+  color:#fff;
+  transform:translateY(-1px);
+}
+.asb-view-all i {
+  font-size:.8rem;
+  opacity:.85;
+  flex-shrink:0;
+}
+.asb-view-all span { flex:1; }
+.asb-va-count {
+  font-size:.7rem;
+  background:rgba(255,255,255,.18);
+  padding:2px 7px;
+  border-radius:10px;
+  font-weight:500;
+  flex-shrink:0;
+  min-width:22px;
+  text-align:center;
+}
+.asb-view-all:hover .asb-va-count { background:rgba(255,255,255,.25); }
+
 
 /* ── TOOLBAR ── */
 .aurix-shop-toolbar {
   display:flex; align-items:center; justify-content:space-between; gap:12px;
   padding:10px 14px; background:#fff; border:1px solid rgba(13,27,42,.09);
   border-radius:10px; margin-bottom:16px; flex-wrap:wrap;
+  position:sticky;
+  /* Desktop: topbar(36) + header(76) + nav(48) = 160px */
+  top:calc(var(--bar-h, 36px) + var(--hdr-h, 76px) + var(--nav-h, 48px));
+  z-index:200;
+  box-shadow:0 2px 12px rgba(13,27,42,.07);
+}
+/* When scrolled: header shrinks to 60px, topbar hides */
+body.scrolled .aurix-shop-toolbar {
+  top:calc(60px + var(--nav-h, 48px));
+}
+/* Mobile (≤768px): desktop header replaced by mob-top bar (56px) */
+@media (max-width:768px) {
+  .aurix-shop-toolbar {
+    top:calc(var(--mob-top, 56px) + 8px);
+    border-radius:8px;
+  }
+  body.scrolled .aurix-shop-toolbar {
+    top:calc(var(--mob-top, 56px) + 8px);
+  }
 }
 .ast-left { display:flex; align-items:center; gap:10px; }
 .ast-right { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
@@ -142,6 +504,28 @@
 .ast-view-btn i { display:flex; align-items:center; justify-content:center; line-height:1; font-size:.8rem; }
 .ast-view-btn.active,.ast-view-btn:hover { background:#fff; color:#0d1b2a; box-shadow:0 1px 4px rgba(13,27,42,.1); }
 
+/* ── Column count selector (grid view only) ── */
+.ast-cols { display:flex; align-items:center; gap:8px; }
+.ast-cols-btns { display:flex; align-items:center; gap:2px; background:rgba(13,27,42,.05); border-radius:7px; padding:3px; }
+.ast-cols-btn {
+  width:26px; height:24px; border:none; background:transparent; border-radius:5px;
+  color:#8a9ab0; cursor:pointer; font-size:.76rem; font-weight:600;
+  transition:background .15s,color .15s;
+}
+.ast-cols-btn.active,.ast-cols-btn:hover { background:#fff; color:#0d1b2a; box-shadow:0 1px 4px rgba(13,27,42,.1); }
+
+@media (min-width:1101px) {
+  #aurixProductGrid.aurix-cols-2:not(.aurix-list-view) { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+  #aurixProductGrid.aurix-cols-3:not(.aurix-list-view) { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+  #aurixProductGrid.aurix-cols-4:not(.aurix-list-view) { grid-template-columns:repeat(4,minmax(0,1fr)) !important; }
+  .ast-cols-btn--mobile-only { display:none; }
+}
+@media (max-width:1100px) {
+  #aurixProductGrid.aurix-cols-1:not(.aurix-list-view) { grid-template-columns:1fr !important; }
+  #aurixProductGrid.aurix-cols-2:not(.aurix-list-view) { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+  .ast-cols-btn--desktop-only { display:none; }
+}
+
 /* ── PRODUCT GRID ── */
 .woocommerce ul.products,
 .woocommerce-page ul.products {
@@ -149,11 +533,26 @@
   grid-template-columns:repeat(3,minmax(0,1fr)) !important;
   gap:16px !important; margin:0 !important; padding:0 !important; list-style:none !important;
 }
+
+/* Kill WooCommerce clearfix pseudo-elements — they become unwanted grid items */
+.woocommerce ul.products::before,
+.woocommerce ul.products::after,
+.woocommerce-page ul.products::before,
+.woocommerce-page ul.products::after {
+  content:none !important;
+  display:none !important;
+}
 .woocommerce ul.products.aurix-list-view,
 .woocommerce-page ul.products.aurix-list-view { grid-template-columns:1fr !important; }
 
 /* ── CARD SHELL ── */
 li.acard { margin:0 !important; padding:0 !important; float:none !important; width:auto !important; }
+
+/* Hide WooCommerce ghost/clearfix li items that have no content (empty first slot fix) */
+.woocommerce ul.products li.product:not(.acard),
+.woocommerce-page ul.products li.product:not(.acard) {
+  display:none !important;
+}
 .acard-inner {
   background:#fff; border:1px solid rgba(13,27,42,.09); border-radius:12px;
   overflow:hidden; transition:box-shadow .25s,transform .25s,border-color .25s;
@@ -161,48 +560,77 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
 }
 .acard-inner:hover { box-shadow:0 10px 40px rgba(13,27,42,.12); transform:translateY(-3px); border-color:rgba(184,146,90,.3); }
 
-/* List view */
-.aurix-list-view li.acard { height:auto; }
-.aurix-list-view .acard-inner { flex-direction:row; height:auto; align-items:stretch; min-height:140px; }
-/* Image col */
-.aurix-list-view .acard-img-wrap {
-  width:160px; min-width:160px; flex-shrink:0;
-  aspect-ratio:unset !important; height:auto;
-  border-radius:12px 0 0 12px;
-  position:relative; /* keep absolute children contained */
-}
-/* Body col */
-.aurix-list-view .acard-body {
-  flex:1; padding:16px 18px;
-  display:flex; flex-direction:column; justify-content:center; gap:6px;
-}
-.aurix-list-view .acard-title { -webkit-line-clamp:2 !important; min-height:unset !important; }
-/* ATC actions — bottom of body, in normal flow */
-.aurix-list-view .acard-atc-bar {
-  position:static !important;
-  transform:none !important;
-  border-radius:0 0 12px 0 !important;
-  background:#0d1b2a;
-  padding:8px 12px;
-  min-width:0;
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
-  width:160px;
-  align-self:stretch;
-}
-.aurix-list-view .acard-inner:hover .acard-atc-bar { transform:none !important; }
-.aurix-list-view .acard-atc-form {
-  flex-direction:column; gap:6px;
-  justify-content:center;
-}
-.aurix-list-view .acard-atc-qty { width:100%; }
-.aurix-list-view .acard-atc-submit {
-  width:100%; height:32px; border-radius:6px !important;
-  font-size:.74rem !important;
-}
-/* Hide overlay/QV in list view - not needed */
-.aurix-list-view .acard-overlay { display:none !important; }
+/* ══ DESKTOP LIST VIEW (601px+) ══
+   DOM: acard-inner > [acard-img-wrap] [acard-body] [acard-atc-bar]
+   acard-inner = flex-row, position:relative, overflow:visible
+   acard-atc-bar = absolute right edge of acard-inner
+*/
+@media (min-width:601px) {
+  .aurix-list-view li.acard { height:auto; }
+
+  .aurix-list-view .acard-inner {
+    flex-direction:row !important;
+    align-items:stretch !important;
+    min-height:160px !important;
+    height:auto !important;
+    overflow:visible !important;       /* allow ATC to hang off right edge */
+    position:relative !important;      /* ATC bar positions against this */
+    border-radius:12px !important;
+    padding-right:160px !important;    /* reserve space for ATC bar */
+    box-sizing:border-box !important;
+  }
+
+  /* Image column */
+  .aurix-list-view .acard-img-wrap {
+    width:160px !important; min-width:160px !important; height:160px !important;
+    flex-shrink:0 !important; aspect-ratio:unset !important;
+    border-radius:12px 0 0 12px !important;
+    overflow:hidden !important; position:relative !important;
+    background:#f7f8fb !important; flex-grow:0 !important;
+  }
+  .aurix-list-view .acard-img-wrap .acard-img-link { display:block !important; width:100% !important; height:100% !important; }
+  .aurix-list-view .acard-img-wrap .acard-img      { width:100% !important; height:100% !important; object-fit:contain !important; padding:10px !important; transform:none !important; }
+  .aurix-list-view .acard-img-wrap .acard-no-img   { width:100% !important; height:100% !important; display:flex !important; align-items:center !important; justify-content:center !important; color:#dde4ef !important; font-size:2rem !important; }
+
+  /* Card body */
+  .aurix-list-view .acard-body {
+    flex:1 1 auto !important; padding:16px 18px !important;
+    display:flex !important; flex-direction:column !important;
+    justify-content:center !important; gap:5px !important;
+    min-height:0 !important; min-width:0 !important;
+  }
+  .aurix-list-view .acard-title {
+    overflow:hidden !important;
+    display:-webkit-box !important;
+    -webkit-box-orient:vertical !important;
+    -webkit-line-clamp:2 !important;
+    height:auto !important;
+    min-height:unset !important;
+  }
+
+  /* ATC bar: pinned to right edge of acard-inner — reset grid defaults */
+  .aurix-list-view .acard-atc-bar {
+    position:absolute !important;
+    top:0 !important; right:0 !important; bottom:0 !important; left:auto !important;
+    width:160px !important;
+    margin-top:0 !important;          /* reset grid in-flow margin */
+    transform:none !important;
+    border-radius:0 12px 12px 0 !important;
+    border-left:1px solid rgba(255,255,255,.08) !important;
+    background:#0d1b2a !important;
+    padding:12px 10px !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+    z-index:20 !important;
+  }
+  .aurix-list-view .acard-inner:hover .acard-atc-bar { transform:none !important; }
+
+  .aurix-list-view .acard-atc-form   { flex-direction:column !important; gap:8px !important; justify-content:center !important; width:100% !important; }
+  .aurix-list-view .acard-atc-qty    { width:100% !important; }
+  .aurix-list-view .acard-atc-submit { width:100% !important; height:34px !important; border-radius:6px !important; font-size:.76rem !important; }
+
+  .aurix-list-view .acard-overlay { display:none !important; }
+  .aurix-list-view .acard-wl-btn  { display:none !important; }
+} /* end @media (min-width:601px) desktop list view */
 
 /* ── IMAGE ── */
 .acard-img-wrap { position:relative; width:100%; aspect-ratio:1/1; background:#f7f8fb; overflow:hidden; flex-shrink:0; }
@@ -247,26 +675,56 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
 .acard-inner:hover .acard-qv-btn { transform:translateY(0); }
 .acard-qv-btn:hover { background:#b8925a; color:#fff; }
 
-/* ATC bar — hidden by default, slides up on hover (DESKTOP ONLY) */
+/* ── ATC BAR — desktop grid: in-flow between image and body
+   Sits between acard-img-wrap and acard-body in flex-column.
+   Default: hidden below image via translateY(100%) + overflow:hidden clips it.
+   Hover: slides up to sit at image bottom via translateY(0).
+   acard-inner overflow:hidden is the clip boundary.
+   bottom/top not used — pure transform-based reveal.             */
 .acard-atc-bar {
-  position:absolute; bottom:0; left:0; right:0; z-index:25;
-  background:#0d1b2a; padding:7px 9px; display:flex; align-items:center;
-  transform:translateY(100%); transition:transform .25s cubic-bezier(.4,0,.2,1);
+  position:relative;
+  z-index:25;
+  background:#0d1b2a;
+  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  /* Pull it up so it overlaps the bottom of the image wrap */
+  margin-top:-44px;
+  /* Start fully hidden below the image (translateY pushes it down) */
+  transform:translateY(44px);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;
 }
-.acard-inner:hover .acard-atc-bar { transform:translateY(0); }
+/* acard-inner: clips the hidden ATC bar */
+.acard-inner {
+  position:relative !important;
+  overflow:hidden !important;
+}
+/* On hover: slide ATC up to sit at image bottom */
+.acard-inner:hover .acard-atc-bar {
+  transform:translateY(0);
+}
 
-.acard-atc-form { display:flex; align-items:center; gap:7px; width:100%; }
+li.acard { position:relative; overflow:hidden; }
+
+.acard-atc-form { display:flex; align-items:center; justify-content:center; gap:7px; width:100%; }
 .acard-atc-qty { display:flex; align-items:center; background:rgba(255,255,255,.1); border-radius:7px; overflow:hidden; height:30px; flex-shrink:0; }
 .acard-qty-btn { width:26px; height:30px; border:none; background:transparent; color:#fff; font-size:.88rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; line-height:1; }
 .acard-qty-btn:hover { background:rgba(255,255,255,.15); }
 .acard-qty-input { width:28px; height:30px; border:none; background:transparent; color:#fff; text-align:center; font-size:.82rem; font-weight:600; -moz-appearance:textfield; outline:none; }
 .acard-qty-input::-webkit-outer-spin-button,.acard-qty-input::-webkit-inner-spin-button { -webkit-appearance:none; }
 .acard-atc-submit {
-  flex:1; height:30px; background:#b8925a !important; color:#fff !important; border:none !important;
+  flex:0 1 auto; height:30px; background:#b8925a !important; color:#fff !important; border:none !important;
   border-radius:7px !important; font-family:'Outfit',sans-serif !important; font-size:.76rem !important;
   font-weight:600 !important; cursor:pointer !important; display:flex !important;
   align-items:center !important; justify-content:center !important; gap:5px !important;
-  transition:background .18s !important; padding:0 8px !important; white-space:nowrap !important; line-height:1 !important; text-decoration:none !important;
+  transition:background .18s !important; padding:0 16px !important; white-space:nowrap !important; line-height:1 !important; text-decoration:none !important;
+  /* WooCommerce core (.woocommerce ul.products li.product .button) sets
+     margin-top:1em by default -- higher specificity than our class alone,
+     so !important is needed to actually override it. That margin was
+     nudging the button down within the bar, undermining the centering. */
+  margin-top:0 !important;
 }
 .acard-atc-submit i { display:flex; align-items:center; justify-content:center; font-size:.72rem; line-height:1; }
 .acard-atc-submit:hover { background:#9a7440 !important; }
@@ -276,7 +734,7 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
 .acard-oos-label a { color:#b8925a; font-weight:600; text-decoration:none; }
 
 /* ── CARD BODY ── */
-.acard-body { padding:12px 14px 14px; display:flex; flex-direction:column; gap:5px; flex:1; }
+.acard-body { padding:12px 14px 14px; display:flex; flex-direction:column; gap:5px; flex:1; min-height:0; }
 .acard-cat { font-size:.65rem; font-weight:700; color:#b8925a; text-transform:uppercase; letter-spacing:.08em; line-height:1; }
 
 /* TITLE — strictly 2 lines max, never 3 */
@@ -287,8 +745,12 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
   display:-webkit-box;
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2;
-  /* height = exactly 2 lines, never crop mid-line */
-  height:calc(1.5em * 2);
+  /* min-height reserves space for 2 lines so cards stay uniform height;
+     no max-height -- that was fighting -webkit-line-clamp (which already
+     handles the 2-line truncation on its own) and clipping descenders
+     (g/p/y) off the bottom of the second line since the two combined left
+     zero buffer for character rendering below the calculated line box. */
+  min-height:calc(1.5em * 2);
 }
 .acard-title a { color:inherit; text-decoration:none; transition:color .18s; }
 .acard-title a:hover { color:#b8925a; }
@@ -312,11 +774,85 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
 .aurix-shop-empty a { color:#b8925a; font-weight:600; }
 
 /* ── PAGINATION ── */
-.aurix-shop-pagination { margin-top:24px; }
-.woocommerce-pagination ul { display:flex !important; align-items:center !important; gap:5px !important; list-style:none !important; padding:0 !important; margin:0 !important; justify-content:center !important; flex-wrap:wrap !important; }
-.woocommerce-pagination ul li a,.woocommerce-pagination ul li span { display:inline-flex !important; align-items:center !important; justify-content:center !important; width:34px !important; height:34px !important; border-radius:7px !important; border:1px solid rgba(13,27,42,.12) !important; font-size:.82rem !important; font-weight:500 !important; color:#0d1b2a !important; text-decoration:none !important; transition:background .18s,border-color .18s,color .18s !important; line-height:1 !important; }
-.woocommerce-pagination ul li a:hover { background:#b8925a !important; color:#fff !important; border-color:#b8925a !important; }
-.woocommerce-pagination ul li span.current { background:#0d1b2a !important; color:#fff !important; border-color:#0d1b2a !important; }
+.aurix-shop-pagination {
+  margin-top:32px;
+  padding:20px 0 4px;
+  border-top:1px solid rgba(13,27,42,.07);
+}
+.woocommerce-pagination ul {
+  display:flex !important;
+  align-items:center !important;
+  gap:4px !important;
+  list-style:none !important;
+  padding:0 !important;
+  margin:0 !important;
+  justify-content:center !important;
+  flex-wrap:wrap !important;
+}
+/* Base item */
+.woocommerce-pagination ul li a,
+.woocommerce-pagination ul li span {
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-width:38px !important;
+  height:38px !important;
+  padding:0 6px !important;
+  border-radius:9px !important;
+  border:1.5px solid rgba(13,27,42,.11) !important;
+  font-size:.84rem !important;
+  font-weight:500 !important;
+  color:#4a5568 !important;
+  text-decoration:none !important;
+  background:#fff !important;
+  transition:background .18s, border-color .18s, color .18s, transform .15s, box-shadow .18s !important;
+  line-height:1 !important;
+  font-family:'Outfit',sans-serif !important;
+}
+/* Hover */
+.woocommerce-pagination ul li a:hover {
+  background:#b8925a !important;
+  color:#fff !important;
+  border-color:#b8925a !important;
+  transform:translateY(-1px) !important;
+  box-shadow:0 4px 12px rgba(184,146,90,.25) !important;
+}
+/* Active/current */
+.woocommerce-pagination ul li span.current {
+  background:#0d1b2a !important;
+  color:#fff !important;
+  border-color:#0d1b2a !important;
+  font-weight:700 !important;
+  box-shadow:0 3px 10px rgba(13,27,42,.2) !important;
+  transform:none !important;
+}
+/* Prev / Next arrows — wider tap target */
+.woocommerce-pagination ul li a[rel="prev"],
+.woocommerce-pagination ul li a[rel="next"] {
+  min-width:42px !important;
+  font-size:.78rem !important;
+  letter-spacing:.03em !important;
+  color:#0d1b2a !important;
+  background:#f5f6f8 !important;
+  border-color:rgba(13,27,42,.1) !important;
+}
+.woocommerce-pagination ul li a[rel="prev"]:hover,
+.woocommerce-pagination ul li a[rel="next"]:hover {
+  background:#0d1b2a !important;
+  color:#fff !important;
+  border-color:#0d1b2a !important;
+}
+/* Mobile: bigger tap targets */
+@media (max-width:600px) {
+  .woocommerce-pagination ul li a,
+  .woocommerce-pagination ul li span {
+    min-width:42px !important;
+    height:42px !important;
+    font-size:.88rem !important;
+    border-radius:10px !important;
+  }
+  .aurix-shop-pagination { margin-top:24px; padding:16px 0 0; }
+}
 
 /* ── QUICK VIEW MODAL ── */
 .aurix-qv-overlay { position:fixed; inset:0; background:rgba(13,27,42,.6); z-index:9500; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; visibility:hidden; transition:opacity .25s,visibility .25s; }
@@ -373,7 +909,7 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
   }
   .aurix-shop-sidebar.open { transform:translateX(0); }
   .asb-close-btn { display:flex !important; }
-  .ast-filter-toggle { display:flex !important; }
+  .ast-filter-toggle { display:none !important; }
   .woocommerce ul.products,.woocommerce-page ul.products { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:12px !important; }
 }
 
@@ -381,19 +917,220 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
   .aurix-shop-page { padding:calc(56px + 12px) 12px calc(64px + 16px); }
   .aurix-shop-title { font-size:1.5rem; }
   .woocommerce ul.products,.woocommerce-page ul.products { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px !important; }
-  /* Mobile: hide overlay, ALWAYS show ATC bar */
   .acard-overlay { display:none !important; }
-  .acard-atc-bar { transform:translateY(0) !important; position:static !important; }
-  .acard-img-wrap { aspect-ratio:1/1; }
-  .acard-body { padding:9px 10px 10px; gap:4px; }
-  .acard-title { font-size:.78rem; }
-  .acard-sku { font-size:.66rem; }
-  .acard-price .price { font-size:.88rem !important; }
+  .acard-wl-btn  { display:none !important; }
   .ast-perpage,.ast-label { display:none; }
   .aurix-shop-toolbar { padding:9px 10px; gap:8px; }
-  /* Quick view modal: single col */
   .aurix-qv-modal { grid-template-columns:1fr; }
   .aurix-qv-img-col { border-radius:14px 14px 0 0; min-height:160px; }
+
+  /* ════════════════════════════════════════
+     MOBILE GRID VIEW
+     Card layout (flex-column):
+       [img-wrap  — aspect-ratio:4/3       ]
+       [body      — category/title/sku/price]
+       [atc-bar   — dark strip, always shown]
+     ════════════════════════════════════════ */
+  .woocommerce ul.products:not(.aurix-list-view) li.acard,
+  .woocommerce-page ul.products:not(.aurix-list-view) li.acard {
+    overflow:visible !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-inner,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-inner {
+    display:flex !important;
+    flex-direction:column !important;
+    overflow:visible !important;   /* don't clip — we use natural flow */
+    height:auto !important;
+    border-radius:12px !important;
+    border:1px solid rgba(13,27,42,.09) !important;
+    background:#fff !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-img-wrap,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-img-wrap {
+    aspect-ratio:4/3 !important;
+    width:100% !important; height:auto !important;
+    overflow:hidden !important;
+    border-radius:12px 12px 0 0 !important;
+    flex-shrink:0 !important; position:relative !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-body,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-body {
+    padding:8px 10px !important;
+    gap:3px !important; flex:0 0 auto !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-title,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-title {
+    font-size:.76rem !important;
+    overflow:hidden !important;
+    display:-webkit-box !important;
+    -webkit-box-orient:vertical !important;
+    -webkit-line-clamp:2 !important;
+    min-height:unset !important;
+    height:auto !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-sku,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-sku {
+    font-size:.64rem !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-price .price,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-price .price {
+    font-size:.84rem !important;
+  }
+  /* ATC bar: always visible at card bottom — reset ALL desktop positioning */
+  .woocommerce ul.products:not(.aurix-list-view) .acard-atc-bar,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-atc-bar {
+    position:static !important;
+    margin-top:0 !important;
+    transform:none !important;
+    inset:auto !important;
+    width:100% !important;
+    background:#0d1b2a !important;
+    padding:7px 8px !important;
+    display:flex !important;
+    align-items:center !important;
+    border-radius:0 0 12px 12px !important;
+    flex-shrink:0 !important;
+    z-index:1 !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-atc-form,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-atc-form {
+    width:100% !important; gap:5px !important;
+    display:flex !important; align-items:center !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-atc-qty,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-atc-qty {
+    height:28px !important; flex-shrink:0 !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-qty-btn,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-qty-btn {
+    width:24px !important; height:28px !important; font-size:.82rem !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-qty-input,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-qty-input {
+    width:24px !important; height:28px !important; font-size:.78rem !important;
+  }
+  .woocommerce ul.products:not(.aurix-list-view) .acard-atc-submit,
+  .woocommerce-page ul.products:not(.aurix-list-view) .acard-atc-submit {
+    flex:1 !important; height:28px !important;
+    font-size:.7rem !important; padding:0 5px !important;
+    border-radius:5px !important; white-space:nowrap !important;
+  }
+
+  /* ════════════════════════════════════════
+     MOBILE LIST VIEW
+     acard-inner = CSS grid with named areas:
+       "img  body"
+       "atc  atc"
+     acard-img-wrap → img area
+     acard-body     → body area
+     acard-atc-bar  → atc area (full width)
+     ════════════════════════════════════════ */
+  .woocommerce ul.products.aurix-list-view,
+  .woocommerce-page ul.products.aurix-list-view {
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  .woocommerce ul.products.aurix-list-view li.acard,
+  .woocommerce-page ul.products.aurix-list-view li.acard {
+    display:block !important;
+    overflow:visible !important;
+    position:static !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-inner,
+  .woocommerce-page ul.products.aurix-list-view .acard-inner {
+    display:grid !important;
+    grid-template-columns:110px 1fr !important;
+    grid-template-rows:auto auto !important;
+    grid-template-areas:"img body" "atc atc" !important;
+    flex-direction:unset !important;
+    overflow:hidden !important;
+    border-radius:12px !important;
+    position:static !important;
+    padding-right:0 !important;
+    background:#fff !important;
+    box-shadow:0 2px 16px rgba(13,27,42,.1) !important;
+    border:1px solid rgba(13,27,42,.09) !important;
+    height:auto !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-img-wrap,
+  .woocommerce-page ul.products.aurix-list-view .acard-img-wrap {
+    grid-area:img !important;
+    width:110px !important; min-width:110px !important; height:130px !important;
+    aspect-ratio:unset !important;
+    overflow:hidden !important; position:relative !important;
+    background:#f7f8fb !important;
+    border-radius:0 !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-img-wrap .acard-img,
+  .woocommerce-page ul.products.aurix-list-view .acard-img-wrap .acard-img {
+    width:100% !important; height:100% !important;
+    object-fit:contain !important; padding:8px !important; transform:none !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-body,
+  .woocommerce-page ul.products.aurix-list-view .acard-body {
+    grid-area:body !important;
+    padding:12px 14px !important;
+    display:flex !important; flex-direction:column !important;
+    justify-content:center !important; gap:5px !important;
+    min-height:130px !important; flex:none !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-title,
+  .woocommerce-page ul.products.aurix-list-view .acard-title {
+    font-size:.84rem !important;
+    overflow:hidden !important;
+    display:-webkit-box !important;
+    -webkit-box-orient:vertical !important;
+    -webkit-line-clamp:2 !important;
+    min-height:unset !important;
+    height:auto !important;
+    color:#0d1b2a !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-sku,
+  .woocommerce-page ul.products.aurix-list-view .acard-sku { font-size:.68rem !important; }
+  .woocommerce ul.products.aurix-list-view .acard-price .price,
+  .woocommerce-page ul.products.aurix-list-view .acard-price .price { font-size:.9rem !important; }
+  /* ATC bar: full-width bottom row — reset ALL desktop positioning */
+  .woocommerce ul.products.aurix-list-view .acard-atc-bar,
+  .woocommerce-page ul.products.aurix-list-view .acard-atc-bar {
+    grid-area:atc !important;
+    position:static !important;
+    margin-top:0 !important;
+    transform:none !important; inset:auto !important;
+    display:flex !important; width:100% !important;
+    background:#0d1b2a !important;
+    padding:8px 12px !important;
+    border-radius:0 !important;
+    align-items:center !important;
+    z-index:1 !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-atc-form,
+  .woocommerce-page ul.products.aurix-list-view .acard-atc-form {
+    flex-direction:row !important; gap:8px !important;
+    width:100% !important; align-items:center !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-atc-qty,
+  .woocommerce-page ul.products.aurix-list-view .acard-atc-qty {
+    flex-shrink:0 !important; height:36px !important;
+    background:rgba(255,255,255,.12) !important; border-radius:7px !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-qty-btn,
+  .woocommerce-page ul.products.aurix-list-view .acard-qty-btn {
+    color:#fff !important; width:30px !important; height:36px !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-qty-input,
+  .woocommerce-page ul.products.aurix-list-view .acard-qty-input {
+    color:#fff !important; width:28px !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-atc-submit,
+  .woocommerce-page ul.products.aurix-list-view .acard-atc-submit {
+    flex:1 !important; height:36px !important;
+    border-radius:18px !important; font-size:.84rem !important; font-weight:700 !important;
+    background:#b8925a !important; color:#fff !important;
+  }
+  .woocommerce ul.products.aurix-list-view .acard-overlay,
+  .woocommerce-page ul.products.aurix-list-view .acard-overlay { display:none !important; }
+  .woocommerce ul.products.aurix-list-view .acard-wl-btn,
+  .woocommerce-page ul.products.aurix-list-view .acard-wl-btn { display:none !important; }
 }
 
 @media (max-width:380px) {
@@ -420,18 +1157,18 @@ li.acard { margin:0 !important; padding:0 !important; float:none !important; wid
   justify-content:center;
 }
 
-/* ── List view tweaks ── */
-.aurix-list-view .acard-inner {
-  position:relative;
-}
-.aurix-list-view .acard-atc-bar {
-  border-left:1px solid rgba(255,255,255,.1);
+/* ── Grid view: ensure img-wrap clips ATC bar correctly ── */
+.woocommerce ul.products:not(.aurix-list-view) .acard-img-wrap,
+.woocommerce-page ul.products:not(.aurix-list-view) .acard-img-wrap {
+  overflow:hidden;
 }
 
-/* ── Title height fix — ensure 2 full lines always show ── */
-.acard-body {
-  /* Ensure consistent card body height regardless of content */
-  min-height:120px;
+/* Override style.css which sets overflow:hidden on all li.product —
+   in list view we need overflow:visible so the ATC bar can position
+   itself on the right edge relative to .acard-inner */
+.woocommerce ul.products.aurix-list-view li.product,
+.woocommerce-page ul.products.aurix-list-view li.product {
+  overflow:visible !important;
 }
 
 /* ── Global shop page: override any #main padding ── */

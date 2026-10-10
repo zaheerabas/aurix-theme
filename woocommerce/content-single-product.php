@@ -65,9 +65,23 @@ if ($terms && !is_wp_error($terms)) {
       <?php if ($sale_pct) : ?>
       <div class="aprod-sale-badge">−<?php echo esc_html($sale_pct); ?>%</div>
       <?php endif; ?>
+      <button type="button"
+              class="aprod-wl-btn aurix-wl-btn aprod-gallery-wl <?php echo $in_wl ? 'in-wishlist' : ''; ?>"
+              data-id="<?php echo esc_attr($product->get_id()); ?>"
+              aria-label="<?php echo $in_wl ? 'Remove from wishlist' : 'Add to wishlist'; ?>">
+        <i class="fas fa-heart"></i>
+      </button>
       <button class="aprod-zoom-btn" id="aprodZoomBtn" aria-label="View full size" title="Click to zoom">
         <i class="fas fa-expand-alt"></i>
       </button>
+      <?php if (count($all_imgs) > 1) : ?>
+      <button class="aprod-main-nav aprod-main-nav-prev" id="aprodMainPrev" aria-label="Previous image">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="aprod-main-nav aprod-main-nav-next" id="aprodMainNext" aria-label="Next image">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <?php endif; ?>
       <div class="aprod-img-wrap" id="aprodImgWrap">
         <?php if ($thumb_id) :
           $full_url = wp_get_attachment_image_url($thumb_id, 'full');
@@ -134,20 +148,16 @@ if ($terms && !is_wp_error($terms)) {
           <i class="fas fa-check-circle"></i>
           <?php echo $stock_qty ? esc_html($stock_qty).' in stock' : 'In Stock'; ?>
         </span>
-      <?php else : ?>
+      <?php else :
+          $oos_badge_text = get_theme_mod('aurix_oos_badge_text', 'Out of Stock');
+          $oos_badge_tip  = get_theme_mod('aurix_oos_badge_tip',  'This item is currently out of stock. Contact us to be notified when it is available, or request a wholesale quote.');
+        ?>
         <span class="aprod-badge aprod-badge--oos aprod-badge-tip"
-              data-tip="This item is currently out of stock. Contact us to be notified when it is available, or request a wholesale quote.">
-          <i class="fas fa-times-circle"></i> Out of Stock
+              data-tip="<?php echo esc_attr($oos_badge_tip); ?>">
+          <i class="fas fa-times-circle"></i> <?php echo esc_html($oos_badge_text); ?>
         </span>
       <?php endif; ?>
-      <span class="aprod-badge aprod-badge--cert aprod-badge-tip"
-            data-tip="ISO 9001 is the international standard for quality management. All Aurix instruments are CE marked and manufactured under ISO 9001:2015 certified conditions in Sialkot, Pakistan.">
-        <i class="fas fa-award"></i> ISO 9001
-      </span>
-      <span class="aprod-badge aprod-badge--ship aprod-badge-tip"
-            data-tip="Orders are processed and dispatched within 2 business days. Worldwide delivery via DHL or FedEx with full tracking. Standard transit: 7–14 days. Express: 3–5 days.">
-        <i class="fas fa-shipping-fast"></i> Ships in 2 days
-      </span>
+
     </div>
 
     <h1 class="aprod-title"><?php the_title(); ?></h1>
@@ -258,14 +268,38 @@ if ($terms && !is_wp_error($terms)) {
             <button type="submit"
                     name="add-to-cart"
                     value="<?php echo esc_attr($product->get_id()); ?>"
-                    class="aprod-atc-btn single_add_to_cart_button button alt">
+                    class="aprod-atc-btn single_add_to_cart_button button alt"
+                    data-product_id="<?php echo esc_attr($product->get_id()); ?>"
+                    data-product_sku="<?php echo esc_attr($sku); ?>">
               <i class="fas fa-shopping-cart"></i>
               <span class="aprod-atc-text"><?php echo esc_html($product->single_add_to_cart_text()); ?></span>
             </button>
-          <?php else : ?>
-            <button type="button" class="aprod-atc-btn aprod-atc-btn--oos" disabled>
-              <i class="fas fa-clock"></i> Out of Stock
-            </button>
+          <?php else :
+              $oos_heading    = get_theme_mod('aurix_oos_waitlist_heading', 'Add to Our Waitlist');
+              $oos_msg        = get_theme_mod('aurix_oos_waitlist_msg',     "This item is currently out of stock. Join the waitlist and we'll notify you the moment it's back.");
+              $oos_notify_btn = get_theme_mod('aurix_oos_notify_btn',       'Notify Me');
+            ?>
+            <!-- OUT OF STOCK — Waitlist form -->
+            <div class="aprod-oos-waitlist">
+              <div class="aprod-oos-badge">
+                <i class="fas fa-bell"></i>
+                <span><?php echo esc_html($oos_heading); ?></span>
+              </div>
+              <p class="aprod-oos-msg"><?php echo esc_html($oos_msg); ?></p>
+              <div class="aprod-oos-form" id="aprodOosForm-<?php echo esc_attr($product->get_id()); ?>">
+                <div class="aprod-oos-row">
+                  <input type="email" class="aprod-oos-email" id="aprodOosEmail-<?php echo esc_attr($product->get_id()); ?>"
+                         placeholder="Your email address" aria-label="Email for back-in-stock notification"/>
+                  <button type="button" class="aprod-oos-submit aprod-atc-btn"
+                          onclick="aprodOosSubmit(<?php echo esc_js($product->get_id()); ?>, '<?php echo esc_js(get_the_title()); ?>', '<?php echo esc_js(wp_create_nonce('aurix_oos_waitlist')); ?>')"
+                          style="white-space:nowrap;">
+                    <i class="fas fa-bell"></i>
+                    <span class="aprod-atc-text"><?php echo esc_html($oos_notify_btn); ?></span>
+                  </button>
+                </div>
+                <p class="aprod-oos-privacy"><i class="fas fa-lock"></i> No spam. One email when back in stock.</p>
+              </div>
+            </div>
           <?php endif; ?>
 
           <button type="button"
@@ -426,21 +460,27 @@ if ($terms && !is_wp_error($terms)) {
 <!-- ═══ LIGHTBOX (isolated, outside product layout) ═══ -->
 <div class="aprod-lightbox" id="aprodLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Product image viewer">
   <div class="aprod-lb-backdrop" id="aprodLbBackdrop"></div>
-  <!-- Image stage -->
-  <div class="aprod-lb-stage">
-    <div class="aprod-lb-spinner" id="aprodLbSpinner"></div>
-    <img id="aprodLbImage" src="" alt="" loading="lazy">
-  </div>
-  <!-- Controls -->
+
   <button class="aprod-lb-close" id="aprodLbClose" aria-label="Close"><i class="fas fa-times"></i></button>
-  <button class="aprod-lb-prev" id="aprodLbPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
-  <button class="aprod-lb-next" id="aprodLbNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
-  <!-- Counter + thumbnail strip inside lightbox -->
-  <div class="aprod-lb-footer" id="aprodLbFooter">
-    <button class="aprod-lb-thumb-prev" id="aprodLbThPrev"><i class="fas fa-chevron-left"></i></button>
-    <div class="aprod-lb-thumbs" id="aprodLbThumbs"></div>
-    <button class="aprod-lb-thumb-next" id="aprodLbThNext"><i class="fas fa-chevron-right"></i></button>
-    <span class="aprod-lb-counter" id="aprodLbCounter"></span>
+  <span class="aprod-lb-counter" id="aprodLbCounter"></span>
+
+  <div class="aprod-lb-body">
+    <!-- Vertical thumbnail column, mirrors the main gallery -->
+    <div class="aprod-lb-thumb-col aprod-lb-footer" id="aprodLbFooter">
+      <button class="aprod-lb-thumb-prev" id="aprodLbThPrev" aria-label="Scroll thumbnails up"><i class="fas fa-chevron-up"></i></button>
+      <div class="aprod-lb-thumbs" id="aprodLbThumbs"></div>
+      <button class="aprod-lb-thumb-next" id="aprodLbThNext" aria-label="Scroll thumbnails down"><i class="fas fa-chevron-down"></i></button>
+    </div>
+
+    <button class="aprod-lb-prev" id="aprodLbPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+
+    <!-- Image stage -->
+    <div class="aprod-lb-stage">
+      <div class="aprod-lb-spinner" id="aprodLbSpinner"></div>
+      <img id="aprodLbImage" src="" alt="" loading="lazy">
+    </div>
+
+    <button class="aprod-lb-next" id="aprodLbNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
   </div>
 </div>
 
@@ -472,12 +512,14 @@ if ($terms && !is_wp_error($terms)) {
 
   <div class="aprod-tab-panel active" id="aprod-tab-desc" role="tabpanel">
     <div class="aprod-desc-content-wrap">
-      <div class="aprod-desc-content entry-content" id="aprodLongDesc">
+      <div class="aprod-desc-body entry-content" id="aprodLongDesc">
         <?php $desc = $product->get_description();
           echo $desc ? wp_kses_post(apply_filters('the_content',$desc)) : '<p class="aprod-no-desc"><i class="fas fa-info-circle"></i> Contact us for full product details and specifications.</p>'; ?>
       </div>
-      <button class="aprod-desc-view-more" id="aprodDescViewMore" aria-expanded="false">
-        Read full description <i class="fas fa-chevron-down"></i>
+      <div class="aprod-desc-fade" id="aprodDescFade"></div>
+      <button class="aprod-desc-toggle" id="aprodDescToggle" aria-expanded="false">
+        <span class="aprod-desc-toggle-text">Read full description</span>
+        <i class="fas fa-chevron-down aprod-desc-toggle-icon"></i>
       </button>
     </div>
   </div>
@@ -651,39 +693,53 @@ if ($terms && !is_wp_error($terms)) {
   <div class="aprod-tab-panel" id="aprod-tab-faqs" role="tabpanel">
     <div class="aprod-faqs-wrap">
 
-      <!-- Static FAQs -->
+      <?php
+      /* ── Per-product FAQs stored as custom field _aurix_faqs (JSON) ── */
+      $product_id   = $product->get_id();
+      $product_faqs = get_post_meta($product_id, '_aurix_faqs', true);
+      $faq_list     = $product_faqs ? json_decode($product_faqs, true) : [];
+
+      /* ── General FAQs always shown below product-specific ones ── */
+      $general_faqs = [
+        [
+          'q' => 'Are all instruments ISO 9001 and CE certified?',
+          'a' => 'Yes. All Aurix International instruments are manufactured under ISO 9001:2015 certified quality management systems and carry CE marking, confirming compliance with European health, safety, and environmental protection standards.',
+        ],
+        [
+          'q' => 'What is your minimum order quantity for wholesale?',
+          'a' => 'For wholesale and bulk orders, the minimum order quantity (MOQ) is typically 10 units per product. OEM and private label MOQ may vary. <a href="' . esc_url(home_url('/contact')) . '">Contact us</a> for a custom quote.',
+        ],
+        [
+          'q' => 'How long does international shipping take?',
+          'a' => 'Standard international shipping via DHL or FedEx takes <strong>7–14 business days</strong>. Express shipping (3–5 business days) is available on request.',
+        ],
+      ];
+
+      /* Combine: product-specific first, then general */
+      $all_faqs = array_merge($faq_list, $general_faqs);
+      ?>
+
+      <!-- FAQs list (product-specific + general) -->
       <div class="aprod-faqs-list" id="aprodFaqsList">
-
-        <div class="aprod-faq-item">
+        <?php foreach ($all_faqs as $idx => $faq) :
+          if (empty($faq['q']) || empty($faq['a'])) continue;
+          $is_product_faq = $idx < count($faq_list);
+        ?>
+        <div class="aprod-faq-item <?php echo $is_product_faq ? 'aprod-faq-product' : ''; ?>">
           <button class="aprod-faq-q" aria-expanded="false">
-            <span>Are all instruments ISO 9001 and CE certified?</span>
-            <i class="fas fa-chevron-down aprod-faq-icon"></i>
+            <span><?php echo esc_html($faq['q']); ?></span>
+            <?php if ($is_product_faq) : ?>
+              <span class="aprod-faq-badge">Product FAQ</span>
+            <?php endif; ?>
+            <span class="aprod-faq-icon-wrap">
+              <i class="fas fa-chevron-down aprod-faq-icon"></i>
+            </span>
           </button>
           <div class="aprod-faq-a">
-            <p>Yes. All Aurix International instruments are manufactured under ISO 9001:2015 certified quality management systems and carry CE marking, confirming compliance with European health, safety, and environmental protection standards. Our manufacturing facility in Sialkot, Pakistan operates under strict quality control with German-grade 4Cr13 stainless steel.</p>
+            <p><?php echo wp_kses_post($faq['a']); ?></p>
           </div>
         </div>
-
-        <div class="aprod-faq-item">
-          <button class="aprod-faq-q" aria-expanded="false">
-            <span>What is your minimum order quantity for wholesale?</span>
-            <i class="fas fa-chevron-down aprod-faq-icon"></i>
-          </button>
-          <div class="aprod-faq-a">
-            <p>For wholesale and bulk orders, the minimum order quantity (MOQ) is typically 10 units per product. However, for OEM and private label orders, MOQ may vary depending on the customization required. Please use the <strong>Request Wholesale Quote</strong> button on the product page or <a href="<?php echo esc_url(home_url('/contact')); ?>">contact us</a> directly for a custom quote.</p>
-          </div>
-        </div>
-
-        <div class="aprod-faq-item">
-          <button class="aprod-faq-q" aria-expanded="false">
-            <span>How long does international shipping take?</span>
-            <i class="fas fa-chevron-down aprod-faq-icon"></i>
-          </button>
-          <div class="aprod-faq-a">
-            <p>Standard international shipping via DHL or FedEx takes <strong>7–14 business days</strong> from dispatch. Express shipping (3–5 business days) is available on request. Orders over $500 qualify for free standard shipping. All shipments include full tracking. Contact us for express shipping rates to your country.</p>
-          </div>
-        </div>
-
+        <?php endforeach; ?>
       </div>
 
       <!-- Ask a question form -->
