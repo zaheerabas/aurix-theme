@@ -51,6 +51,7 @@
     // Update nav arrow states
     if (thumbPrev) thumbPrev.disabled = idx <= 0;
     if (thumbNext) thumbNext.disabled = idx >= imgData.length - 1;
+    if (typeof updateMainNavBtns === 'function') updateMainNavBtns();
     var d = imgData[idx];
     if (!mainImg || !d.src) return;
 
@@ -72,9 +73,10 @@
     mainImg.style.transition = 'opacity .14s ease, transform .14s ease';
   }
 
-  // Wire thumb clicks
+  // Wire thumb clicks + hover (hover swaps the main image immediately, like Alibaba)
   thumbBtns.forEach(function(btn, i) {
     btn.addEventListener('click', function() { switchImage(i); });
+    btn.addEventListener('mouseenter', function() { switchImage(i); });
     btn.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); switchImage(i); }
     });
@@ -86,23 +88,30 @@
   var thumbPrev       = document.getElementById('aprodThumbPrev');
   var thumbNext       = document.getElementById('aprodThumbNext');
   var thumbOffset     = 0;      // current scroll offset in px
-  var THUMB_W         = 64 + 8; // thumb width + gap
+  var THUMB_STEP      = 64 + 8; // thumb size + gap (square thumbs, same size either axis)
+
+  function isVerticalThumbs() {
+    return window.matchMedia('(min-width:1025px)').matches;
+  }
 
   function getVisibleCount() {
     if (!thumbsTrack) return 4;
-    return Math.floor(thumbsTrack.offsetWidth / THUMB_W);
+    var trackSize = isVerticalThumbs() ? thumbsTrack.offsetHeight : thumbsTrack.offsetWidth;
+    return Math.max(1, Math.floor(trackSize / THUMB_STEP));
   }
 
   function getMaxOffset() {
     var visible = getVisibleCount();
-    var max = (imgData.length - visible) * THUMB_W;
+    var max = (imgData.length - visible) * THUMB_STEP;
     return Math.max(0, max);
   }
 
   function setThumbOffset(offset) {
     thumbOffset = Math.max(0, Math.min(offset, getMaxOffset()));
     if (thumbsEl) {
-      thumbsEl.style.transform = 'translateX(-' + thumbOffset + 'px)';
+      thumbsEl.style.transform = isVerticalThumbs()
+        ? 'translateY(-' + thumbOffset + 'px)'
+        : 'translateX(-' + thumbOffset + 'px)';
     }
     updateNavBtns();
   }
@@ -114,12 +123,12 @@
 
   function scrollThumbIntoView(idx) {
     var visible = getVisibleCount();
-    var itemLeft  = idx * THUMB_W;
-    var itemRight = itemLeft + THUMB_W;
+    var itemLeft  = idx * THUMB_STEP;
+    var itemRight = itemLeft + THUMB_STEP;
     if (itemLeft < thumbOffset) {
       setThumbOffset(itemLeft);
-    } else if (itemRight > thumbOffset + visible * THUMB_W) {
-      setThumbOffset(itemRight - visible * THUMB_W);
+    } else if (itemRight > thumbOffset + visible * THUMB_STEP) {
+      setThumbOffset(itemRight - visible * THUMB_STEP);
     }
   }
 
@@ -141,6 +150,35 @@
     });
   }
 
+  /* ── Left/right arrows overlaid directly on the main image ── */
+  var mainNavPrev = document.getElementById('aprodMainPrev');
+  var mainNavNext = document.getElementById('aprodMainNext');
+
+  function updateMainNavBtns() {
+    if (mainNavPrev) mainNavPrev.disabled = currentIdx <= 0;
+    if (mainNavNext) mainNavNext.disabled = currentIdx >= imgData.length - 1;
+  }
+  updateMainNavBtns();
+
+  if (mainNavPrev) {
+    mainNavPrev.addEventListener('click', function() {
+      var newIdx = Math.max(0, currentIdx - 1);
+      switchImage(newIdx);
+      if (thumbPrev) thumbPrev.disabled = newIdx <= 0;
+      if (thumbNext) thumbNext.disabled = newIdx >= imgData.length - 1;
+      updateMainNavBtns();
+    });
+  }
+  if (mainNavNext) {
+    mainNavNext.addEventListener('click', function() {
+      var newIdx = Math.min(imgData.length - 1, currentIdx + 1);
+      switchImage(newIdx);
+      if (thumbPrev) thumbPrev.disabled = newIdx <= 0;
+      if (thumbNext) thumbNext.disabled = newIdx >= imgData.length - 1;
+      updateMainNavBtns();
+    });
+  }
+
   // Keep the strip scrolled to show the active thumb
   function syncStripToActive(idx) {
     setThumbOffset(0); // reset first
@@ -157,124 +195,24 @@
   });
 
   // Touch swipe on thumbnail strip
-  var thumbTouchX = 0;
+  var thumbTouchX = 0, thumbTouchY = 0;
   if (thumbsEl) {
-    thumbsEl.addEventListener('touchstart', function(e) { thumbTouchX = e.touches[0].clientX; }, {passive:true});
+    thumbsEl.addEventListener('touchstart', function(e) { thumbTouchX = e.touches[0].clientX; thumbTouchY = e.touches[0].clientY; }, {passive:true});
     thumbsEl.addEventListener('touchend', function(e) {
-      var dx = e.changedTouches[0].clientX - thumbTouchX;
-      if (Math.abs(dx) > 30) setThumbOffset(thumbOffset - dx);
+      if (isVerticalThumbs()) {
+        var dy = e.changedTouches[0].clientY - thumbTouchY;
+        if (Math.abs(dy) > 30) setThumbOffset(thumbOffset - dy);
+      } else {
+        var dx = e.changedTouches[0].clientX - thumbTouchX;
+        if (Math.abs(dx) > 30) setThumbOffset(thumbOffset - dx);
+      }
     });
   }
 
-  /* ════════════════════════════════════════════════════
-     LIGHTBOX — improved with spinner + smooth transitions
-  ════════════════════════════════════════════════════ */
-  var lightbox   = document.getElementById('aprodLightbox');
-  var lbImage    = document.getElementById('aprodLbImage');
-  var lbCounter  = document.getElementById('aprodLbCounter');
-  var lbBackdrop = document.getElementById('aprodLbBackdrop');
-  var lbClose    = document.getElementById('aprodLbClose');
-  var lbPrev     = document.getElementById('aprodLbPrev');
-  var lbNext     = document.getElementById('aprodLbNext');
-  var lbSpinner  = document.getElementById('aprodLbSpinner');
-  var zoomBtn    = document.getElementById('aprodZoomBtn');
-  var imgWrap    = document.getElementById('aprodImgWrap');
-
-  function openLightbox(idx) {
-    if (!lightbox || !imgData.length) return;
-    showLbImage(idx);
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeLightbox() {
-    if (!lightbox) return;
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  function showLbImage(idx) {
-    if (idx !== undefined) currentIdx = idx;
-    var d = imgData[currentIdx];
-    if (!d || !lbImage) return;
-
-    // Show spinner, fade out old image
-    if (lbSpinner) lbSpinner.classList.add('active');
-    lbImage.classList.add('loading');
-
-    var url = d.full || d.src;
-    var preload = new Image();
-    preload.onload = function() {
-      lbImage.src = url;
-      lbImage.alt = d.alt || '';
-      lbImage.classList.remove('loading');
-      if (lbSpinner) lbSpinner.classList.remove('active');
-    };
-    preload.onerror = function() {
-      lbImage.src = url;
-      lbImage.classList.remove('loading');
-      if (lbSpinner) lbSpinner.classList.remove('active');
-    };
-    preload.src = url;
-
-    // Update counter
-    if (lbCounter && imgData.length > 1) {
-      lbCounter.textContent = (currentIdx + 1) + ' / ' + imgData.length;
-      lbCounter.style.display = '';
-    } else if (lbCounter) {
-      lbCounter.style.display = 'none';
-    }
-
-    // Sync thumbnail
-    setActiveThumb(currentIdx);
-  }
-
-  function lbNavigate(dir) {
-    var next = (currentIdx + dir + imgData.length) % imgData.length;
-    showLbImage(next);
-  }
-
-  // Trigger lightbox
-  if (zoomBtn) zoomBtn.addEventListener('click', function() { openLightbox(currentIdx); });
-  if (imgWrap) {
-    imgWrap.addEventListener('click', function() { openLightbox(currentIdx); });
-    imgWrap.style.cursor = 'zoom-in';
-  }
-
-  if (lbClose)    lbClose.addEventListener('click', closeLightbox);
-  if (lbBackdrop) lbBackdrop.addEventListener('click', closeLightbox);
-  if (lbPrev)     lbPrev.addEventListener('click', function() { lbNavigate(-1); });
-  if (lbNext)     lbNext.addEventListener('click', function() { lbNavigate(+1); });
-
-  // Touch swipe in lightbox
-  var lbTouchX = 0;
-  if (lightbox) {
-    lightbox.addEventListener('touchstart', function(e) { lbTouchX = e.touches[0].clientX; }, {passive:true});
-    lightbox.addEventListener('touchend', function(e) {
-      var dx = e.changedTouches[0].clientX - lbTouchX;
-      if (Math.abs(dx) > 50) lbNavigate(dx < 0 ? 1 : -1);
-    });
-  }
-
-  // Keyboard
-  document.addEventListener('keydown', function(e) {
-    if (!lightbox || !lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape')     closeLightbox();
-    if (e.key === 'ArrowLeft')  lbNavigate(-1);
-    if (e.key === 'ArrowRight') lbNavigate(+1);
-  });
-
-  // Hide nav if 0 or 1 image
-  if (imgData.length <= 1) {
-    if (lbPrev) lbPrev.style.display = 'none';
-    if (lbNext) lbNext.style.display = 'none';
-  }
-
-  /* ════════════════════════════════════════════════════
-     PRODUCT TABS
-  ════════════════════════════════════════════════════ */
+  /* Lightbox is implemented once, later in this file (see "v11: Improved
+     lightbox with thumbnail strip"). A second, older implementation used
+     to live here and fire alongside it on every click/keypress, which
+     could skip images — removed. */
   window.switchProdTab = function(id) {
     document.querySelectorAll('.aprod-tab').forEach(function(t) {
       var active = t.getAttribute('onclick') && t.getAttribute('onclick').indexOf("'"+id+"'") > -1;
@@ -311,6 +249,18 @@
       if (isNaN(max) || max < 1 || v < max) {
         qtyInput.value = v + 1;
         qtyInput.dispatchEvent(new Event('change'));
+      }
+    });
+  }
+
+  // Changing the quantity signals intent to add again -- reset the button
+  // out of "View Cart" mode back to "Add to Cart" if it had morphed.
+  if (qtyInput) {
+    qtyInput.addEventListener('change', function() {
+      var $btn = typeof $ !== 'undefined' ? $('.aprod-atc-btn.single_add_to_cart_button.is-view-cart') : null;
+      if ($btn && $btn.length) {
+        $btn.removeClass('is-view-cart');
+        $btn.html('<i class="fas fa-shopping-cart"></i> <span class="aprod-atc-text">Add to Cart</span>');
       }
     });
   }
@@ -362,20 +312,80 @@
   }
 
   /* ════════════════════════════════════════════════════
-     ADD TO CART feedback
+     ADD TO CART — AJAX (stay on page, open cart sidebar)
   ════════════════════════════════════════════════════ */
   if (typeof $ !== 'undefined') {
-    $(document.body).on('added_to_cart', function() {
-      var atcBtn = document.querySelector('.aprod-atc-btn.single_add_to_cart_button');
-      if (atcBtn) {
-        var orig = atcBtn.innerHTML;
-        atcBtn.classList.add('success');
-        atcBtn.innerHTML = '<i class="fas fa-check"></i> <span class="aprod-atc-text">Added!</span>';
-        setTimeout(function() { atcBtn.classList.remove('success'); atcBtn.innerHTML=orig; }, 2500);
+
+    $(document).on('submit', '.aprod-cart-form.cart', function(e) {
+      var $form = $(this);
+      var $btn  = $form.find('.aprod-atc-btn.single_add_to_cart_button');
+
+      // Button is currently showing "View Cart" from a previous add -- go
+      // straight there instead of re-running the add-to-cart flow.
+      if ($btn.hasClass('is-view-cart')) {
+        e.preventDefault();
+        window.location.href = (typeof aurixData !== 'undefined' && aurixData.cartUrl) ? aurixData.cartUrl : '/cart/';
+        return;
       }
+
+      var pid   = $btn.data('product_id') || $btn.val();
+
+      // Variable product: if no variation chosen yet, allow normal submit for WC validation
+      var $varId = $form.find('input[name="variation_id"]');
+      if ($varId.length && (!$varId.val() || $varId.val() === '0')) {
+        return true;
+      }
+
+      e.preventDefault();
+
+      var origHTML = $btn.html();
+      $btn.prop('disabled', true);
+      $btn.html('<i class="fas fa-circle-notch fa-spin"></i> <span class="aprod-atc-text">Adding…</span>');
+
+      // Serialize form + required fields
+      var formData = $form.serialize();
+      formData += '&action=aurix_atc&add-to-cart=' + encodeURIComponent(pid)
+                + '&nonce=' + encodeURIComponent(typeof aurixData !== 'undefined' ? aurixData.nonce : '');
+
+      $.ajax({
+        type: 'POST',
+        url:  typeof aurixData !== 'undefined' ? aurixData.ajaxUrl : '/wp-admin/admin-ajax.php',
+        data: formData,
+        success: function(res) {
+          if (!res || !res.success) {
+            $btn.prop('disabled', false).html(origHTML);
+            return;
+          }
+
+          // ── Open sidebar immediately ──
+          aurixOpenCartSidebar();
+
+          // ── Fetch fresh cart from server and inject into sidebar ──
+          if (typeof window.aurixRefreshCartSidebar === 'function') {
+            window.aurixRefreshCartSidebar();
+          }
+
+          // ── Button success, then morph into "View Cart" (stays this way,
+          // doesn't revert back to "Add to Cart" -- clicking it now goes to
+          // the cart instead of re-adding) ──
+          $btn.prop('disabled', false).addClass('success');
+          $btn.html('<i class="fas fa-check"></i> <span class="aprod-atc-text">Added to Cart!</span>');
+          setTimeout(function() {
+            $btn.removeClass('success').addClass('is-view-cart');
+            $btn.html('<i class="fas fa-shopping-cart"></i> <span class="aprod-atc-text">View Cart</span>');
+          }, 1400);
+
+          // Fire WC event for any other listeners
+          $(document.body).trigger('added_to_cart', [res.data.fragments || {}, res.data.cart_hash || '', $btn]);
+        },
+        error: function() {
+          $btn.prop('disabled', false).html(origHTML);
+          $form.off('submit').submit();
+        }
+      });
     });
 
-    // Variable product variation — update gallery image
+    // Variable product — update gallery image on variation select
     $(document.body).on('found_variation', function(e, variation) {
       if (variation.image && variation.image.src) {
         imgData[0] = {
@@ -588,43 +598,51 @@ document.querySelectorAll('.aprod-sb-info-btn').forEach(function(btn) {
 });
 
 /* ════════════════════════════════════════════════════
-   v11: Long description tab truncation + "Read more"
+   Description — Read more / collapse toggle
 ════════════════════════════════════════════════════ */
 (function() {
   var descEl  = document.getElementById('aprodLongDesc');
-  var moreBtn = document.getElementById('aprodDescViewMore');
-  if (!descEl || !moreBtn) return;
+  var fadeEl  = document.getElementById('aprodDescFade');
+  var toggleBtn = document.getElementById('aprodDescToggle');
+  if (!descEl || !toggleBtn) return;
 
-  function checkDescOverflow() {
-    // Temporarily measure full height
-    var prev = descEl.style.maxHeight;
+  var COLLAPSED_HEIGHT = 260; // px — matches CSS max-height
+  var isExpanded = false;
+
+  function checkNeedToggle() {
+    // Measure full height
     descEl.style.maxHeight = 'none';
-    descEl.classList.add('expanded');
-    var full = descEl.scrollHeight;
-    descEl.classList.remove('expanded');
-    descEl.style.maxHeight = prev;
+    var fullH = descEl.scrollHeight;
+    descEl.style.maxHeight = '';
 
-    if (full <= 190) {
-      moreBtn.classList.add('hidden');
-      descEl.classList.add('expanded'); // show all if short
-    } else {
-      moreBtn.classList.remove('hidden');
+    if (fullH <= COLLAPSED_HEIGHT + 30) {
+      // Content is short — show all, hide toggle
+      descEl.classList.add('expanded');
+      if (fadeEl) fadeEl.classList.add('hidden');
+      toggleBtn.style.display = 'none';
     }
   }
 
-  checkDescOverflow();
-  window.addEventListener('resize', checkDescOverflow);
+  checkNeedToggle();
+  window.addEventListener('resize', checkNeedToggle);
 
-  moreBtn.addEventListener('click', function() {
-    var open = descEl.classList.contains('expanded');
-    if (open) {
-      descEl.classList.remove('expanded');
-      moreBtn.innerHTML = 'Read full description <i class="fas fa-chevron-down"></i>';
-      moreBtn.classList.remove('open');
-    } else {
+  toggleBtn.addEventListener('click', function() {
+    isExpanded = !isExpanded;
+    if (isExpanded) {
       descEl.classList.add('expanded');
-      moreBtn.innerHTML = 'Show less <i class="fas fa-chevron-up"></i>';
-      moreBtn.classList.add('open');
+      if (fadeEl) fadeEl.classList.add('hidden');
+      toggleBtn.classList.add('open');
+      toggleBtn.querySelector('.aprod-desc-toggle-text').textContent = 'Show less';
+      toggleBtn.setAttribute('aria-expanded', 'true');
+    } else {
+      descEl.classList.remove('expanded');
+      if (fadeEl) fadeEl.classList.remove('hidden');
+      toggleBtn.classList.remove('open');
+      toggleBtn.querySelector('.aprod-desc-toggle-text').textContent = 'Read full description';
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      // Scroll back to top of description
+      var tabsEl = document.getElementById('aprod-tabs');
+      if (tabsEl) tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 })();
@@ -685,6 +703,7 @@ document.querySelectorAll('.aprod-sb-info-btn').forEach(function(btn) {
       img.loading = 'lazy';
       btn.appendChild(img);
       btn.addEventListener('click', function() { lbShowImage(i); });
+      btn.addEventListener('mouseenter', function() { lbShowImage(i); });
       lbThumbsEl.appendChild(btn);
     });
   }
@@ -695,10 +714,27 @@ document.querySelectorAll('.aprod-sb-info-btn').forEach(function(btn) {
     lbThumbsEl.querySelectorAll('.aprod-lb-thumb-btn').forEach(function(b,i) {
       b.classList.toggle('active', i === idx);
     });
-    // Scroll active thumb into view
+    // Scroll active thumb into view (vertical column)
     var active = lbThumbsEl.children[idx];
-    if (active) active.scrollIntoView({inline:'center', behavior:'smooth', block:'nearest'});
+    if (active) active.scrollIntoView({block:'nearest', behavior:'smooth'});
+    updateLbThumbNavBtns();
   }
+
+  function updateLbThumbNavBtns() {
+    if (!lbThumbsEl) return;
+    var atTop    = lbThumbsEl.scrollTop <= 0;
+    var atBottom = lbThumbsEl.scrollTop + lbThumbsEl.clientHeight >= lbThumbsEl.scrollHeight - 1;
+    if (lbThPrev) lbThPrev.disabled = atTop;
+    if (lbThNext) lbThNext.disabled = atBottom;
+  }
+
+  if (lbThPrev) lbThPrev.addEventListener('click', function() {
+    lbThumbsEl.scrollBy({ top: -80, behavior: 'smooth' });
+  });
+  if (lbThNext) lbThNext.addEventListener('click', function() {
+    lbThumbsEl.scrollBy({ top: 80, behavior: 'smooth' });
+  });
+  if (lbThumbsEl) lbThumbsEl.addEventListener('scroll', updateLbThumbNavBtns);
 
   function lbShowImage(idx) {
     lbCurrent = idx;
@@ -1032,3 +1068,50 @@ document.querySelectorAll('.aprod-sb-info-btn').forEach(function(btn) {
   });
 
 })();
+
+/* ═══════════════════════════════════════════════════
+   OUT OF STOCK — Waitlist AJAX submit
+═══════════════════════════════════════════════════ */
+function aprodOosSubmit(productId, productName, nonce) {
+  var emailEl = document.getElementById('aprodOosEmail-' + productId);
+  if (!emailEl) return;
+  var email = emailEl.value.trim();
+  var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!valid) {
+    emailEl.style.borderColor = '#dc2626';
+    emailEl.style.boxShadow   = '0 0 0 3px rgba(220,38,38,.12)';
+    emailEl.focus();
+    setTimeout(function() { emailEl.style.borderColor = ''; emailEl.style.boxShadow = ''; }, 2200);
+    return;
+  }
+
+  var btn = emailEl.closest('.aprod-oos-row').querySelector('.aprod-oos-submit');
+  var origHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span class="aprod-atc-text">Sending...</span>';
+
+  var ajaxUrl = (typeof aurixData !== 'undefined') ? aurixData.ajaxUrl : '/wp-admin/admin-ajax.php';
+  var fd = new FormData();
+  fd.append('action',       'aurix_oos_waitlist');
+  fd.append('email',        email);
+  fd.append('product_id',   productId);
+  fd.append('product_name', productName);
+  fd.append('nonce',        nonce);
+
+  fetch(ajaxUrl, { method: 'POST', body: fd })
+    .then(function(r) { return r.json(); })
+    .then(function() {
+      var form = document.getElementById('aprodOosForm-' + productId);
+      if (form) {
+        form.innerHTML = '<div class="aprod-oos-success">'
+          + '<i class="fas fa-check-circle"></i>'
+          + '<span>You\'re on the waitlist! We\'ll email you when it\'s back in stock.</span>'
+          + '</div>';
+      }
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.innerHTML = origHTML;
+    });
+}

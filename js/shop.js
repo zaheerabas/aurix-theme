@@ -41,11 +41,29 @@
   var $grid     = $('#aurixProductGrid');
   var savedView = localStorage.getItem('aurix_shop_view') || 'grid';
 
+  /* ── COLUMN COUNT (grid view only) ── */
+  var $colsWrap = $('#astCols');
+  var savedCols = localStorage.getItem('aurix_shop_cols') || '3';
+
+  function setCols(n) {
+    $grid.removeClass('aurix-cols-2 aurix-cols-3 aurix-cols-4').addClass('aurix-cols-' + n);
+    $('#astCols .ast-cols-btn').each(function () {
+      $(this).toggleClass('active', String($(this).data('cols')) === String(n));
+    });
+    localStorage.setItem('aurix_shop_cols', n);
+  }
+  $('#astCols').on('click', '.ast-cols-btn', function () {
+    setCols($(this).data('cols'));
+  });
+  setCols(savedCols);
+
   function setView(v) {
     if (v === 'list') {
       $grid.addClass('aurix-list-view');
+      $colsWrap.hide(); // column count doesn't apply to the single-column list view
     } else {
       $grid.removeClass('aurix-list-view');
+      $colsWrap.show();
     }
     $('#astViewToggle .ast-view-btn').each(function() {
       $(this).toggleClass('active', $(this).data('view') === v);
@@ -79,7 +97,43 @@
     if (isNaN(max)||max<1||v<max) inp.value = v + 1;
   });
 
-  /* ── ADD TO CART FEEDBACK ── */
+  /* ── ADD TO CART — AJAX (stay on page) ── */
+  $(document).on('submit', '.acard-atc-form', function(e) {
+    e.preventDefault();
+    var $form   = $(this);
+    var $btn    = $form.find('.acard-atc-submit');
+    var pid     = $btn.val();
+    var qty     = parseInt($form.find('.acard-qty-input').val(), 10) || 1;
+    var origHtml = $btn.html();
+
+    if ($btn.hasClass('loading') || $btn.hasClass('atc-success')) return;
+    $btn.addClass('loading').html('<i class="fas fa-circle-notch fa-spin"></i>').prop('disabled', true);
+
+    $.ajax({
+      url: (typeof wc_add_to_cart_params !== 'undefined') ? wc_add_to_cart_params.ajax_url : '/wp-admin/admin-ajax.php',
+      type: 'POST',
+      data: {
+        action:     'woocommerce_add_to_cart',
+        product_id: pid,
+        quantity:   qty,
+        nonce:      (typeof aurixData !== 'undefined') ? aurixData.nonce : ''
+      },
+      success: function() {
+        $btn.removeClass('loading').addClass('atc-success')
+            .html('<i class="fas fa-check"></i> <span>Added!</span>').prop('disabled', false);
+        /* Refresh WC cart fragments (mini-cart count etc.) */
+        $(document.body).trigger('wc_fragment_refresh');
+        setTimeout(function() {
+          $btn.removeClass('atc-success').html(origHtml);
+        }, 2200);
+      },
+      error: function() {
+        $btn.removeClass('loading').html(origHtml).prop('disabled', false);
+      }
+    });
+  });
+
+  /* ── ADD TO CART FEEDBACK (WC native AJAX buttons fallback) ── */
   $(document.body).on('added_to_cart', function(e, fragments, hash, btn) {
     var $btn = $(btn);
     if (!$btn.hasClass('acard-atc-submit')) return;

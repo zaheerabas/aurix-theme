@@ -2,7 +2,7 @@
 Theme Name:  Aurix International
 Theme URI:   https://aurixinternational.com
 Author:      ZaheerAbbas
-Version:     17.1.0
+Version:     36.93.0
 Description: Custom WordPress theme for Aurix International v4.0 — by ZaheerAbbas
 Text Domain: aurix
 Tags:        e-commerce, woocommerce, elementor
@@ -22,7 +22,7 @@ Tags:        e-commerce, woocommerce, elementor
   --white:      #ffffff;
   --off:        #f5f1eb;
   --bg:         #eef1f6;
-  --muted:      #8a9ab0;
+  --muted:      #64748b;
   --border:     rgba(13,27,42,.09);
   --border-md:  rgba(13,27,42,.14);
   --text:       #2d3748;
@@ -59,7 +59,7 @@ button { font-family:inherit; cursor:pointer; }
   color:rgba(255,255,255,.7); overflow:hidden;
   transition:height var(--t), opacity var(--t);
 }
-#aurix-topbar a { color:var(--gold-lt); transition:color var(--t); }
+#aurix-topbar a { color:var(--gold-lt); text-decoration:underline; text-underline-offset:2px; transition:color var(--t); }
 #aurix-topbar a:hover { color:#fff; }
 .atb-left { display:flex; align-items:center; gap:14px; }
 .atb-right { display:flex; align-items:center; gap:16px; }
@@ -74,11 +74,10 @@ body.scrolled #aurix-topbar { height:0; opacity:0; pointer-events:none; }
 ========================================================= */
 #aurix-header {
   position:fixed; top:var(--bar-h); left:0; right:0; z-index:1100;
-  background:#fff; border-bottom:1px solid var(--border);
-  box-shadow:var(--shadow-sm);
+  background:transparent; border-bottom:0px solid var(--border);
   transition:top var(--t), box-shadow var(--t);
 }
-body.scrolled #aurix-header { top:0; box-shadow:var(--shadow-md); }
+body.scrolled #aurix-header { top:0; }
 
 .ahdr-row {
   max-width:1420px; margin:0 auto; padding:0 40px;
@@ -86,6 +85,7 @@ body.scrolled #aurix-header { top:0; box-shadow:var(--shadow-md); }
   grid-template-columns:auto 1fr auto;
   align-items:center; gap:24px;
   transition:height var(--t);
+	background: #ffffff; border-radius: 0 0 12px 12px;
 }
 body.scrolled .ahdr-row { height:60px; }
 
@@ -116,7 +116,7 @@ body.scrolled .alogo__name { font-size:1.18rem; }
 body.scrolled .alogo__sub { opacity:0; height:0; overflow:hidden; }
 
 /* Search */
-.ahdr-search { position:relative; max-width:560px; width:100%; justify-self:center; }
+.ahdr-search { position:relative; width:100%; justify-self:stretch; }
 .ahdr-search__icon { position:absolute; left:16px; top:50%; transform:translateY(-50%);
   color:var(--muted); font-size:.82rem; pointer-events:none; }
 .ahdr-search__input {
@@ -142,15 +142,15 @@ body.scrolled .ahdr-search__input { height:38px; }
 /* Actions */
 .ahdr-actions { display:flex; align-items:center; gap:5px; flex-shrink:0; }
 
-.ahdr-pill {
+.ahdr-pill, .ahdr-pills .anav-pill {
   display:flex; align-items:center; gap:5px;
   border:1.5px solid #dde4ef; border-radius:18px;
   padding:5px 12px; color:var(--navy); font-size:.76rem; font-weight:500;
   background:#fff; white-space:nowrap;
   transition:border-color var(--t), color var(--t);
 }
-.ahdr-pill i { color:var(--gold); font-size:.72rem; }
-.ahdr-pill:hover { border-color:var(--gold); color:var(--gold); }
+.ahdr-pill i, .ahdr-pills .anav-pill i { color:var(--gold); font-size:.72rem; }
+.ahdr-pill:hover, .ahdr-pills .anav-pill:hover { border-color:var(--gold); color:var(--gold); }
 
 .ahdr-call { display:flex; align-items:center; gap:10px; text-decoration:none;
   margin:0 6px; overflow:hidden; max-width:200px;
@@ -192,17 +192,17 @@ body.scrolled .ahdr-ibtn { width:36px; height:36px; font-size:.8rem; }
 ========================================================= */
 #aurix-nav {
   position:fixed; top:calc(var(--bar-h) + var(--hdr-h)); left:0; right:0;
-  z-index:1099; background:var(--navy);
+  z-index:1099; background:transparent;
   transition:top var(--t);
 }
 body.scrolled #aurix-nav { top:60px; }
-.anav-inner { max-width:1420px; margin:0 auto; padding:0 40px;
+.anav-inner { max-width:1420px; margin:0 auto; padding:6px 40px 6px 8px; background: var(--navy); border-radius: 12px;
   display:flex; align-items:center; height:var(--nav-h); }
 
 .anav-cat-btn {
   display:flex; align-items:center; gap:9px;
   background:var(--gold); color:var(--navy);
-  border:none; height:100%; padding:0 22px;
+  border:none; height:100%; padding:0 22px; border-radius: 8px;
   font-family:'Outfit',sans-serif; font-size:.8rem; font-weight:600;
   letter-spacing:.07em; text-transform:uppercase; flex-shrink:0;
   transition:background var(--t);
@@ -216,6 +216,7 @@ body.scrolled #aurix-nav { top:60px; }
 .anav-cat-btn.open .bars span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); }
 
 .anav-links { display:flex; align-items:center; list-style:none; flex:1; padding-left:4px; }
+.anav-links li { position:relative; }
 .anav-links li a { display:flex; align-items:center; height:var(--nav-h); padding:0 14px;
   color:rgba(255,255,255,.78); font-size:.83rem; font-weight:500;
   border-bottom:2px solid transparent; white-space:nowrap;
@@ -226,6 +227,55 @@ body.scrolled #aurix-nav { top:60px; }
 .anav-links li.current_page_item > a {
   color:#fff; border-bottom-color:var(--gold); background:rgba(255,255,255,.05); }
 
+/* Small down-chevron on items that actually have a submenu */
+.anav-links li.menu-item-has-children > a::after {
+  content:'\f107'; font-family:'Font Awesome 6 Free'; font-weight:900;
+  font-size:.68rem; margin-left:7px; opacity:.6; transition:transform var(--t);
+}
+.anav-links li.menu-item-has-children:hover > a::after { transform:rotate(180deg); }
+
+/* Dropdown panel — row of bordered box/cards, not a plain vertical list */
+.anav-links .sub-menu {
+  position:absolute; top:100%; left:0; z-index:1150;
+  display:flex; flex-direction:row; gap:10px;
+  width:max-content; max-width:80vw;
+  list-style:none; margin:0; padding:14px;
+  background:#fff; border-radius:14px;
+  box-shadow:0 16px 44px rgba(13,27,42,.22);
+  opacity:0; visibility:hidden; transform:translateY(-8px);
+  transition:opacity .2s ease, transform .2s ease, visibility .2s;
+}
+.anav-links li.menu-item-has-children:hover > .sub-menu,
+.anav-links li.menu-item-has-children:focus-within > .sub-menu {
+  opacity:1; visibility:visible; transform:translateY(4px);
+}
+.anav-links .sub-menu li { width:auto; flex-shrink:0; display:flex; flex-direction:column; }
+.anav-links .sub-menu li a {
+  height:auto; display:flex !important; align-items:center; justify-content:space-between; gap:14px;
+  padding:14px 18px; border-radius:10px; border:1.5px solid var(--border-md, #e8edf5);
+  border-bottom:1.5px solid var(--border-md, #e8edf5) !important;
+  color:var(--navy); font-size:.88rem; font-weight:600; white-space:nowrap;
+  transition:border-color var(--t), background var(--t);
+}
+.anav-links .sub-menu li a::after {
+  content:'\f35d'; font-family:'Font Awesome 6 Free'; font-weight:900;
+  font-size:.72rem; color:var(--gold); flex-shrink:0;
+}
+.anav-links .sub-menu li a:hover { background:var(--gold-pale); border-color:var(--gold); color:var(--gold-dk, var(--gold)); }
+/* Nested (third-level) submenus: the parent <li> is now flex-column (above),
+   so this just stacks naturally below the parent card as its own small list
+   of cards, rather than trying to span the outer row (which doesn't work --
+   this is nested one level too deep to be a direct flex item of that row). */
+.anav-links .sub-menu .sub-menu {
+  position:static; margin:8px 0 0; padding:8px 0 0;
+  border-top:1px dashed var(--border); display:flex; flex-direction:column; gap:6px;
+  opacity:1; visibility:visible; transform:none; box-shadow:none; width:100%;
+}
+.anav-links .sub-menu .sub-menu li a { padding:9px 14px; font-size:.8rem; }
+
+@media (max-width:1199px) {
+  .anav-links .sub-menu { flex-wrap:wrap; }
+}
 .anav-pills { display:flex; align-items:center; gap:7px; margin-left:auto; }
 .anav-pill { display:inline-flex; align-items:center; justify-content:center; gap:6px;
   background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
@@ -247,7 +297,7 @@ body.scrolled #aurix-nav { top:60px; }
   position:fixed; top:0; left:0; bottom:0; width:min(300px,88vw);
   background:#fff; z-index:1400;
   transform:translateX(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
-  display:flex; flex-direction:column;
+  display:flex; flex-direction:column; overflow:hidden;
   box-shadow:4px 0 40px rgba(13,27,42,.18);
 }
 .apanel--right { left:auto; right:0; transform:translateX(100%); box-shadow:-4px 0 40px rgba(13,27,42,.18); }
@@ -266,7 +316,7 @@ body.scrolled #aurix-nav { top:60px; }
   transition:background var(--t); }
 .apanel__close:hover { background:var(--gold); }
 
-.apanel__body { flex:1; overflow-y:auto; padding:4px 0; }
+.apanel__body { flex:1; overflow-y:auto; padding:4px 0; min-height:0; }
 .apanel__body a {
   display:flex; align-items:center; justify-content:space-between;
   padding:12px 20px; color:var(--navy); font-size:.88rem; font-weight:400;
@@ -280,118 +330,437 @@ body.scrolled #aurix-nav { top:60px; }
 .apanel__body a > .fa-chevron-right { font-size:.68rem; color:#c0ccd8; }
 
 .apanel__divider { height:1px; background:var(--border); margin:8px 0; }
-.apanel__user {
-  display:flex; align-items:center; gap:10px; padding:14px 20px;
-  background:var(--gold-pale); border-bottom:1px solid rgba(0,0,0,.05);
-  color:var(--navy); font-size:.85rem; font-weight:600;
+
+/* ── Category panel: View All footer ── */
+.apanel__foot {
+  flex-shrink:0 !important;
+  padding:10px 12px !important;
+  border-top:1px solid rgba(13,27,42,.10) !important;
+  background:#f5f3ef !important;
 }
-.apanel__user i { color:var(--gold); font-size:1.3rem; }
+/* Override any apanel__body a rules leaking in */
+.apanel__foot a.apanel__view-all,
+a.apanel__view-all {
+  display:flex !important;
+  align-items:center !important;
+  gap:9px !important;
+  padding:11px 15px !important;
+  background:#0d1b2a !important;
+  border-radius:9px !important;
+  text-decoration:none !important;
+  color:#fff !important;
+  font-size:.83rem !important;
+  font-weight:600 !important;
+  font-family:'Outfit',sans-serif !important;
+  letter-spacing:.02em !important;
+  border-bottom:none !important;
+  transition:background .2s, transform .15s, box-shadow .2s !important;
+  box-shadow:0 3px 10px rgba(13,27,42,.18) !important;
+}
+.apanel__foot a.apanel__view-all:hover,
+a.apanel__view-all:hover {
+  background:#b8925a !important;
+  color:#fff !important;
+  transform:translateY(-2px) !important;
+  box-shadow:0 6px 18px rgba(184,146,90,.3) !important;
+  padding-left:15px !important;
+}
+a.apanel__view-all i {
+  font-size:.78rem !important;
+  opacity:.85 !important;
+  flex-shrink:0 !important;
+  color:#b8925a !important;
+  transition:color .2s !important;
+}
+a.apanel__view-all:hover i { color:#fff !important; }
+a.apanel__view-all > span:first-of-type {
+  flex:1 !important;
+  color:#fff !important;
+}
+.apanel__va-count {
+  font-size:.69rem !important;
+  background:rgba(255,255,255,.15) !important;
+  border:1px solid rgba(255,255,255,.2) !important;
+  padding:2px 8px !important;
+  border-radius:20px !important;
+  font-weight:600 !important;
+  min-width:24px !important;
+  text-align:center !important;
+  flex-shrink:0 !important;
+  color:#fff !important;
+}
+a.apanel__view-all:hover .apanel__va-count {
+  background:rgba(255,255,255,.25) !important;
+}
 
 /* =========================================================
    5. CART SIDEBAR PANEL
 ========================================================= */
+/* ═══════════════════════════════════════════
+   CART SIDEBAR — Redesigned UI v36
+═══════════════════════════════════════════ */
 #aurix-cart-panel {
   position:fixed; top:0; right:0; bottom:0;
-  width:min(440px,100vw); background:#fff; z-index:1400;
-  transform:translateX(100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+  width:min(420px,100vw); background:#fff; z-index:1400;
+  transform:translateX(110%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
   display:flex; flex-direction:column;
-  box-shadow:-4px 0 50px rgba(13,27,42,.2);
+  box-shadow:-8px 0 60px rgba(13,27,42,.18);
 }
 #aurix-cart-panel.open { transform:translateX(0); }
 
+/* ── Header ── */
 .acp-header {
-  background:var(--navy); padding:0 22px; height:64px;
-  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+  background:var(--navy);
+  padding:0 20px;
+  height:70px;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0;
+  border-bottom:2px solid rgba(184,146,90,.3);
 }
-.acp-title { display:flex; align-items:center; gap:12px; color:#fff; }
-.acp-title i { color:var(--gold); font-size:1.1rem; }
-.acp-title span { font-family:'Cormorant Garamond',serif; font-size:1.15rem;
-  font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-.acp-close { width:34px; height:34px; background:rgba(255,255,255,.1); border:none;
-  border-radius:50%; color:#fff; font-size:.9rem;
+.acp-title { display:flex; align-items:center; gap:12px; }
+.acp-title-icon {
+  width:38px; height:38px; background:rgba(184,146,90,.15);
+  border:1.5px solid rgba(184,146,90,.35); border-radius:10px;
   display:flex; align-items:center; justify-content:center;
-  transition:background var(--t); }
-.acp-close:hover { background:var(--gold); }
+}
+.acp-title-icon i { color:var(--gold); font-size:1rem; }
+.acp-title-text {
+  display:block; font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color:#fff; line-height:1.1;
+}
+.acp-item-count {
+  display:block; font-size:.72rem; color:rgba(255,255,255,.55);
+  font-family:'Outfit',sans-serif; font-weight:400; margin-top:1px;
+}
+.acp-close {
+  width:36px; height:36px;
+  background:rgba(255,255,255,.08);
+  border:1.5px solid rgba(255,255,255,.12);
+  border-radius:50%; color:rgba(255,255,255,.7); font-size:.85rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:all var(--t); cursor:pointer; flex-shrink:0;
+}
+.acp-close:hover { background:var(--gold); border-color:var(--gold); color:#fff; }
 
-.acp-body { flex:1; overflow-y:auto; }
+/* ── Trust bar (replaces free shipping bar) ── */
+.acp-trust-bar {
+  display:flex; align-items:center; justify-content:space-around;
+  background:#f8f9fc;
+  border-bottom:1px solid #e8edf5;
+  padding:10px 16px;
+  flex-shrink:0;
+}
+.acp-trust-bar-item {
+  display:flex; align-items:center; gap:6px;
+  font-size:.72rem; font-weight:600; color:#475569;
+  flex:1; justify-content:center;
+}
+.acp-trust-bar-item i {
+  font-size:.85rem; color:var(--gold);
+}
+.acp-trust-bar-divider {
+  width:1px; height:28px; background:#e2e8f0; flex-shrink:0;
+}
 
-/* Mini-cart items styling */
+/* ── Body / scroll area ── */
+.acp-body {
+  flex:1; overflow-y:auto;
+  scrollbar-width:thin; scrollbar-color:#dde4ef transparent;
+}
+.acp-body::-webkit-scrollbar { width:4px; }
+.acp-body::-webkit-scrollbar-track { background:transparent; }
+.acp-body::-webkit-scrollbar-thumb { background:#dde4ef; border-radius:2px; }
 .aurix-minicart-items { }
 
-/* Empty cart */
+/* ── Empty cart state ── */
 .woocommerce-mini-cart__empty-message {
-  padding:52px 24px; text-align:center; color:var(--muted); font-size:.92rem; }
+  padding:70px 30px 50px; text-align:center;
+  color:#a0aec0; font-size:.88rem; line-height:1.7;
+}
 .woocommerce-mini-cart__empty-message::before {
-  content:'\f07a'; font-family:'Font Awesome 6 Free'; font-weight:900;
-  display:block; font-size:3rem; color:#dde4ef; margin-bottom:16px; }
+  content:'\f290'; font-family:'Font Awesome 6 Free'; font-weight:900;
+  display:block; font-size:3.8rem; color:#e2e8f0; margin-bottom:20px;
+}
 
-/* Cart items */
-.woocommerce-mini-cart { list-style:none; padding:0; margin:0; }
+/* ── Cart list wrapper ── */
+.woocommerce-mini-cart { list-style:none; padding:8px 0; margin:0; }
+
+/* ── Single cart item ──
+   WC outputs: <li class="woocommerce-mini-cart-item ...">
+     <a class="remove_from_cart_button">×</a>
+     <a href="..."><img /></a>   ← product link wraps image
+     ... (product name as text or link)
+     <span class="quantity">N × <span class="woocommerce-Price-amount">price</span></span>
+   </li>
+── */
 .woocommerce-mini-cart-item {
-  display:flex; align-items:flex-start; gap:14px;
-  padding:16px 20px; border-bottom:1px solid var(--border);
-  transition:background var(--t);
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  grid-template-rows:auto auto;
+  gap:0 14px;
+  padding:14px 18px;
+  border-bottom:1px solid #f0f4f9;
+  transition:background .15s;
+  align-items:start;
 }
+.woocommerce-mini-cart-item:last-child { border-bottom:none; }
 .woocommerce-mini-cart-item:hover { background:#fafbfd; }
+
+/* Image link — col 1, spans 2 rows */
+.woocommerce-mini-cart-item > a:has(img),
+.woocommerce-mini-cart-item > a[href]:first-of-type {
+  grid-column:1; grid-row:1 / 3;
+}
 .woocommerce-mini-cart-item img {
-  width:72px; height:72px; object-fit:cover;
-  border-radius:var(--r); border:1px solid var(--border); flex-shrink:0;
+  display:block;
+  width:72px !important; height:72px !important;
+  object-fit:cover;
+  border-radius:10px;
+  border:1.5px solid #e8edf5;
+  box-shadow:0 2px 8px rgba(0,0,0,.07);
+  flex-shrink:0;
 }
-.woocommerce-mini-cart-item .mini-cart-item-details { flex:1; min-width:0; }
-.woocommerce-mini-cart-item a:not(.remove_from_cart_button) {
-  display:block; font-size:.85rem; font-weight:500; color:var(--navy);
-  margin-bottom:4px; line-height:1.4;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.woocommerce-mini-cart-item a:hover { color:var(--gold); }
-.woocommerce-mini-cart-item .quantity { font-size:.8rem; color:var(--muted); }
-.woocommerce-mini-cart-item .woocommerce-Price-amount { color:var(--navy); font-weight:600; }
-/* SKU / variation label */
-.variation-sku { font-size:.72rem; color:var(--gold); font-weight:500;
-  background:var(--gold-pale); padding:2px 6px; border-radius:4px;
-  display:inline-block; margin-top:3px; }
 
+/* Product name link — col 2, row 1 */
+.woocommerce-mini-cart-item .mini-cart-item-details {
+  grid-column:2; grid-row:1;
+  min-width:0;
+}
+.woocommerce-mini-cart-item .mini-cart-item-details > a,
+.woocommerce-mini-cart-item > a:not(.remove_from_cart_button):not(:has(img)),
+.woocommerce-mini-cart-item > a.cart-item-name {
+  display:block;
+  font-size:.83rem; font-weight:600; color:var(--navy);
+  line-height:1.4; text-decoration:none;
+  overflow:hidden;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  white-space:normal;
+  margin-bottom:0;
+}
+.woocommerce-mini-cart-item > a:not(.remove_from_cart_button):not(:has(img)):hover,
+.woocommerce-mini-cart-item .mini-cart-item-details > a:hover { color:var(--gold); }
+
+/* Quantity + price row — col 2, row 2 */
+.woocommerce-mini-cart-item .quantity {
+  grid-column:2; grid-row:2;
+  font-size:.78rem; color:#718096;
+  display:flex; align-items:center; gap:5px;
+  margin-top:5px; flex-wrap:wrap;
+}
+.woocommerce-mini-cart-item .quantity .woocommerce-Price-amount {
+  color:var(--gold-dk); font-weight:700; font-size:.88rem;
+}
+.woocommerce-mini-cart-item .quantity bdi { font-weight:700; }
+
+/* Remove × button — col 3, row 1 */
 .woocommerce-mini-cart-item .remove_from_cart_button {
-  flex-shrink:0; width:28px; height:28px; background:#fff3f3;
-  border:1.5px solid #fcc; border-radius:50%; color:#e55;
-  display:flex; align-items:center; justify-content:center; font-size:.85rem;
-  line-height:1; transition:background var(--t), color var(--t);
+  grid-column:3; grid-row:1;
+  width:28px; height:28px;
+  background:#fff5f5; border:1.5px solid #fed7d7;
+  border-radius:50%; color:#e53e3e;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.85rem; text-decoration:none; font-style:normal;
+  transition:all .18s; flex-shrink:0;
+  line-height:1;
 }
-.woocommerce-mini-cart-item .remove_from_cart_button:hover { background:#e55; color:#fff; border-color:#e55; }
-
-/* Subtotal row */
-.woocommerce-mini-cart__total {
-  padding:14px 20px 8px; display:flex; justify-content:space-between; align-items:center;
-  font-size:.9rem; font-weight:600; color:var(--navy);
-  border-top:2px solid var(--border);
+.woocommerce-mini-cart-item .remove_from_cart_button:hover {
+  background:#e53e3e; border-color:#e53e3e; color:#fff;
+  transform:scale(1.1);
 }
-.woocommerce-mini-cart__total strong { color:var(--gold); font-size:1rem; }
-.woocommerce-mini-cart__buttons { display:none; }
 
+/* WC built-in subtotal + buttons rows — hidden (we use our own footer) */
+.woocommerce-mini-cart__total  { display:none !important; }
+.woocommerce-mini-cart__buttons { display:none !important; }
+
+/* ── Cart item row ── */
+.woocommerce-mini-cart-item,
+.acp-cart-item {
+  display:flex !important;
+  align-items:center !important;
+  padding:0 !important; gap:0 !important;
+  border-bottom:1px solid #f0f4f9 !important;
+  background:#fff; transition:background .15s;
+}
+.woocommerce-mini-cart-item:last-child,
+.acp-cart-item:last-child { border-bottom:none !important; }
+.woocommerce-mini-cart-item:hover,
+.acp-cart-item:hover { background:#fafbfd !important; }
+
+/* Remove button */
+.acp-remove-btn {
+  flex-shrink:0; width:28px; height:28px;
+  margin:0 2px 0 10px;
+  background:#fff0f0; border:1.5px solid #fecaca;
+  border-radius:50%; color:#dc2626; cursor:pointer;
+  display:flex !important; align-items:center; justify-content:center;
+  font-size:.72rem; transition:all .18s; align-self:center;
+}
+.acp-remove-btn:hover {
+  background:#dc2626 !important; border-color:#dc2626 !important;
+  color:#fff !important; transform:scale(1.1);
+}
+
+/* Image */
+.acp-item-img {
+  flex-shrink:0; width:68px; height:68px;
+  margin:12px 10px 12px 8px;
+}
+.acp-item-img img, .acp-item-img a img {
+  width:68px !important; height:68px !important;
+  object-fit:cover; border-radius:10px;
+  border:1.5px solid #e8edf5;
+  box-shadow:0 2px 8px rgba(0,0,0,.07); display:block;
+}
+.acp-item-img a { display:block; line-height:0; }
+
+/* Details */
+.acp-item-details {
+  flex:1; min-width:0;
+  padding:11px 12px 11px 0;
+}
+.acp-item-name {
+  font-size:.82rem; font-weight:600; color:var(--navy);
+  line-height:1.35; margin-bottom:4px;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.acp-item-name a { color:var(--navy); text-decoration:none; font-size:.82rem; font-weight:600; }
+.acp-item-name a:hover { color:var(--gold); }
+
+.acp-item-sku {
+  display:inline-block; margin-bottom:6px;
+  font-size:.67rem; color:var(--gold); font-weight:600;
+  background:rgba(184,146,90,.1); padding:1px 7px;
+  border-radius:20px; letter-spacing:.02em;
+}
+
+/* Bottom row: qty controls + price */
+.acp-item-bottom {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px; margin-top:2px;
+}
+
+/* [− qty +] controls */
+.acp-qty-ctrl {
+  display:flex; align-items:center;
+  background:#f1f5f9; border-radius:8px;
+  overflow:hidden; height:28px;
+  border:1px solid #e2e8f0;
+}
+.acp-qty-btn {
+  width:28px; height:28px; background:transparent; border:none;
+  color:#475569; font-size:.95rem; font-weight:500; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .15s; line-height:1; padding:0;
+  flex-shrink:0;
+}
+.acp-qty-btn:hover { background:#e2e8f0; color:var(--navy); }
+.acp-qty-num {
+  min-width:26px; text-align:center;
+  font-size:.82rem; font-weight:600; color:var(--navy);
+  padding:0 4px; user-select:none;
+}
+
+/* Price */
+.acp-item-price {
+  font-size:.88rem; font-weight:700; color:var(--gold-dk); white-space:nowrap;
+}
+.acp-item-price .woocommerce-Price-amount,
+.acp-item-price bdi { font-weight:700; color:var(--gold-dk); }
+
+/* ── Empty state ── */
+.acp-empty-cart { padding:60px 24px 50px; text-align:center; }
+.acp-empty-icon {
+  width:72px; height:72px; background:#f1f5f9; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; margin:0 auto 18px;
+}
+.acp-empty-icon i { font-size:1.8rem; color:#94a3b8; }
+.acp-empty-title { font-size:.95rem; font-weight:600; color:var(--navy); margin:0 0 6px; }
+.acp-empty-sub { font-size:.82rem; color:#94a3b8; margin:0 0 20px; }
+.acp-empty-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--navy); color:#fff; padding:10px 22px;
+  border-radius:10px; font-size:.84rem; font-weight:600; text-decoration:none;
+  transition:background .2s;
+}
+.acp-empty-btn:hover { background:var(--gold); color:#fff; }
+
+/* ── Footer ── */
 .acp-footer {
-  padding:18px 20px 22px; background:#f7f9fc;
-  border-top:1px solid var(--border); flex-shrink:0;
+  background:#f8fafc;
+  border-top:1px solid #e8edf5;
+  flex-shrink:0;
+  padding:16px 18px 20px;
 }
-.acp-subtotal { display:flex; justify-content:space-between; align-items:center;
-  margin-bottom:10px; font-size:.92rem; }
-.acp-subtotal span:first-child { color:var(--muted); font-weight:500; }
-.acp-total-amt { font-size:1.15rem; font-weight:700; color:var(--navy); }
-.acp-note { font-size:.74rem; color:var(--muted); line-height:1.5;
-  padding:8px 12px; background:rgba(184,146,90,.08);
-  border-radius:var(--r); border-left:3px solid var(--gold);
-  margin-bottom:14px; }
-.acp-note i { color:var(--gold); margin-right:4px; }
-.acp-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.acp-btn {
-  height:46px; border-radius:23px; display:flex; align-items:center; justify-content:center;
-  gap:8px; font-family:'Outfit',sans-serif; font-size:.88rem; font-weight:600;
-  letter-spacing:.03em; transition:background var(--t), color var(--t), border-color var(--t);
-  border:2px solid transparent;
+
+/* ── Order summary card ── */
+.acp-summary {
+  background:#fff;
+  border:1.5px solid #e8edf5;
+  border-radius:12px;
+  padding:14px 15px;
+  margin-bottom:14px;
 }
-.acp-btn--outline { background:#fff; color:var(--navy); border-color:#dde4ef; }
-.acp-btn--outline:hover { border-color:var(--gold); color:var(--gold); }
-.acp-btn--solid { background:var(--navy); color:#fff; }
-.acp-btn--solid:hover { background:var(--gold); color:#fff; }
+.acp-summary-row {
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:.84rem; margin-bottom:8px;
+}
+.acp-summary-row:last-child { margin-bottom:0; }
+.acp-sum-label { color:#718096; font-weight:500; display:flex; align-items:center; gap:5px; }
+.acp-sum-label i { font-size:.78rem; }
+.acp-total-amt { font-size:1rem; font-weight:700; color:var(--navy); }
+.acp-sum-note { font-size:.75rem; color:#a0aec0; font-style:italic; }
+.acp-free-tag {
+  background:#f0fff4; color:#276749;
+  border:1px solid #c6f6d5; border-radius:20px;
+  padding:2px 9px; font-size:.7rem; font-weight:700; letter-spacing:.03em;
+}
+.acp-summary-divider {
+  height:1px; background:#f0f4f9; margin:10px 0;
+}
+.acp-summary-total {
+  font-size:.9rem; font-weight:700;
+}
+.acp-summary-total span:first-child { color:var(--navy); }
+.acp-grand-total { font-size:1.1rem; font-weight:800; color:var(--gold-dk); }
+
+/* ── Checkout button — full width, prominent ── */
+.acp-checkout-btn {
+  display:flex; align-items:center; justify-content:space-between;
+  width:100%; padding:0 20px; height:52px;
+  background:var(--navy); color:#fff;
+  border-radius:14px; text-decoration:none;
+  font-family:'Outfit',sans-serif; font-size:.9rem; font-weight:700;
+  letter-spacing:.02em; margin-bottom:10px;
+  box-shadow:0 4px 18px rgba(13,27,42,.22);
+  transition:all .2s;
+}
+.acp-checkout-btn:hover { background:var(--gold); box-shadow:0 6px 22px rgba(184,146,90,.35); color:#fff; }
+.acp-checkout-btn i { font-size:.85rem; margin-right:6px; }
+.acp-checkout-amt {
+  background:rgba(255,255,255,.15); border-radius:8px;
+  padding:3px 10px; font-size:.82rem; font-weight:600;
+}
+
+/* ── View cart link ── */
+.acp-viewcart-btn {
+  display:flex; align-items:center; justify-content:center;
+  gap:7px; width:100%; height:40px;
+  background:#fff; color:var(--muted);
+  border:1.5px solid #e2e8f0; border-radius:10px;
+  text-decoration:none; font-size:.82rem; font-weight:500;
+  transition:all .2s;
+}
+.acp-viewcart-btn:hover { border-color:var(--navy); color:var(--navy); }
+.acp-viewcart-btn i { font-size:.75rem; }
+
+/* Mobile */
+@media(max-width:480px) {
+  #aurix-cart-panel { width:100vw; }
+  .acp-checkout-btn { height:50px; }
+}
 
 /* =========================================================
    6. OVERLAY
@@ -471,7 +840,7 @@ body.scrolled #aurix-nav { top:60px; }
 }
 .amob-nav {
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
-  color:#8a9ab0; font-size:.59rem; font-weight:500;
+  color:var(--muted); font-size:.59rem; font-weight:500;
   letter-spacing:.04em; text-transform:uppercase;
   padding:6px 8px; border:none; background:none; position:relative; flex:1;
   transition:color var(--t); text-decoration:none; height:100%;
@@ -493,26 +862,20 @@ body.scrolled #aurix-nav { top:60px; }
 .amob-nav--home:hover i { color:#fff; }
 
 /* =========================================================
-   10. SOCIAL ICONS — BRAND COLORS (theme-override mode off)
+   10. SOCIAL ICONS — THEME COLORS (matches site navy/gold branding
+   instead of each platform's own brand color)
 ========================================================= */
 .footer-socials { display:flex; gap:8px; flex-wrap:wrap; }
 .footer-socials--center { justify-content:center; }
 .fsoc {
   width:36px; height:36px; border-radius:50%;
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  transition:transform .15s, opacity .15s, box-shadow .15s;
+  background:var(--navy);
+  transition:transform .15s, opacity .15s, box-shadow .15s, background .15s;
 }
-.fsoc:hover { transform:translateY(-3px); opacity:.88; box-shadow:0 4px 12px rgba(0,0,0,.2); }
+.fsoc:hover { background:var(--gold); transform:translateY(-3px); opacity:1; box-shadow:0 4px 12px rgba(184,146,90,.35); }
 .fsoc svg { width:15px; height:15px; display:block; }
 .fsoc svg path { fill:#fff; }
-
-/* Brand colors — each platform's official color */
-.fsoc--fb  { background:#1877F2; }
-.fsoc--x   { background:#000000; }
-.fsoc--li  { background:#0A66C2; }
-.fsoc--ig  { background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285AEB 90%); }
-.fsoc--yt  { background:#FF0000; }
-.fsoc--pin { background:#E60023; }
 
 /* =========================================================
    11. FOOTER
@@ -541,7 +904,7 @@ body.scrolled #aurix-nav { top:60px; }
 .footer-brand__desc { font-size:13px; line-height:1.76; color:#4a5568;
   max-width:250px; margin-bottom:20px; }
 
-.footer-col h4 { font-size:13px; font-weight:700; color:#0e1b2e; letter-spacing:.06em;
+.footer-col h3 { font-size:13px; font-weight:700; color:#0e1b2e; letter-spacing:.06em;
   text-transform:uppercase; margin-bottom:16px; padding-bottom:10px;
   border-bottom:2px solid var(--gold); display:inline-block; }
 .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
@@ -558,7 +921,7 @@ body.scrolled #aurix-nav { top:60px; }
 .footer-contact-block > i { color:var(--gold); margin-top:2px; font-size:.82rem; flex-shrink:0; width:14px; }
 .footer-contact-block p, .footer-contact-block a {
   font-size:13px; color:#4a5568; line-height:1.6; }
-.footer-contact-block a { color:var(--gold); }
+.footer-contact-block a { color:#734608; }
 .footer-contact-block a:hover { color:#0e1b2e; }
 
 /* Mobile footer */
@@ -587,9 +950,10 @@ body.scrolled #aurix-nav { top:60px; }
   border-bottom:1px solid #eded; transition:color .15s; }
 .mob-accord__body ul li:last-child a { border-bottom:none; }
 .mob-accord__body ul li a:hover { color:var(--gold); }
+.mob-accord__static { display:block; padding:9px 0; font-size:14px; color:#4a5568; border-bottom:1px solid #eded; }
 
 .mob-brand { padding:28px 20px; text-align:center; border-bottom:1px solid #d8dce4; }
-.mob-brand__logo { display:flex; flex-direction:column; align-items:center; margin-bottom:12px; }
+.mob-brand__logo { display:flex; justify-content:center; margin-bottom:12px; }
 .mob-brand__name { font-size:18px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:#0e1b2e; }
 .mob-brand__sub { font-size:8px; letter-spacing:.3em; text-transform:uppercase; color:#8a96a3; margin-top:2px; }
 .mob-brand__line { width:36px; height:1.5px; background:var(--gold); margin:5px auto 0; }
@@ -605,7 +969,7 @@ body.scrolled #aurix-nav { top:60px; }
 .footer-copy strong { color:var(--gold); }
 .footer-copy a { color:rgba(255,255,255,.55); transition:color .15s; }
 .footer-copy a:hover { color:var(--gold); }
-.footer-dev { font-size:12px; color:rgba(255,255,255,.45); white-space:nowrap; }
+.footer-dev { font-size:12px; color:rgba(255,255,255,.6); white-space:nowrap; }
 .dev-mark { font-weight:700; font-size:12.5px; }
 .footer-pay { display:flex; align-items:center; gap:5px; }
 .pay-chip { height:24px; min-width:38px; padding:0 7px; background:#fff;
@@ -668,6 +1032,15 @@ body.scrolled #aurix-nav { top:60px; }
 
 /* =========================================================
    13. MY ACCOUNT PAGE — Login / Register tabs
+   NOTE: superseded — see "AUTHORITATIVE ACCOUNT PAGE STYLES" at the
+   end of this file. Browser DevTools inspection found 4+ separate,
+   overlapping declarations fighting over this page; rather than keep
+   patching one of them, one final block with maximum specificity now
+   wins regardless of what's declared here or in the other legacy
+   copies further down (search "aurix-account" to find them). Left in
+   place rather than deleted since precisely isolating their boundaries
+   among interspersed unrelated CSS risked breaking something by
+   accident -- they no longer have any visual effect.
 ========================================================= */
 .aurix-account-page .aurix-woo-wrap {
   max-width:1140px; margin:0 auto; padding:40px;
@@ -811,54 +1184,544 @@ mark.order-status.status-cancelled  { background:rgba(229,62,62,.12) !important;
 /* =========================================================
    15. CART PAGE
 ========================================================= */
-.aurix-cart-page .aurix-woo-wrap { max-width:1100px; margin:0 auto; }
-.aurix-cart-page h1.page-title, .aurix-checkout-page h1.page-title {
-  font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--navy);
-  margin-bottom:28px; padding-bottom:12px; border-bottom:2px solid var(--gold); display:inline-block;
+.aurix-cart-page .aurix-woo-wrap { max-width:1200px; margin:0 auto; padding:40px 32px; }
+
+/* Page title */
+.aurix-cart-page h1.page-title {
+  font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:700;
+  color:var(--navy); margin-bottom:36px; padding-bottom:14px;
+  border-bottom:3px solid var(--gold); display:inline-block;
 }
 
-table.shop_table { border-radius:var(--r-lg) !important; overflow:hidden; border:1px solid var(--border) !important; box-shadow:var(--shadow-xs); }
-table.shop_table thead th { background:var(--navy) !important; color:#fff !important;
-  font-size:.75rem !important; letter-spacing:.06em !important; text-transform:uppercase !important;
-  padding:14px 20px !important; border:none !important; }
-table.shop_table tbody td { padding:18px 20px !important; border-color:var(--border) !important; vertical-align:middle !important; }
-table.shop_table tbody tr:last-child td { border-bottom:none !important; }
+/* ── 2-column layout ── */
+/* WC outputs: div.woocommerce > form.woocommerce-cart-form + div.cart-collaterals */
+.aurix-cart-page .woocommerce {
+  display:grid !important;
+  grid-template-columns:1fr 360px !important;
+  gap:32px !important;
+  align-items:start !important;
+}
+.aurix-cart-page .woocommerce-cart-form { grid-column:1 !important; }
+.aurix-cart-page .cart-collaterals      { grid-column:2 !important; }
 
-.woocommerce-cart-form .product-thumbnail img { border-radius:var(--r) !important; border:1px solid var(--border) !important; width:70px !important; height:70px !important; object-fit:cover !important; }
-.woocommerce-cart-form td.product-remove a.remove { background:#fff3f3 !important; color:#e55 !important; border:1.5px solid #fcc !important; border-radius:50% !important; font-size:1rem !important; width:30px !important; height:30px !important; display:flex !important; align-items:center !important; justify-content:center !important; transition:background var(--t) !important; }
-.woocommerce-cart-form td.product-remove a.remove:hover { background:#e55 !important; color:#fff !important; border-color:#e55 !important; }
-.woocommerce .qty { border:1.5px solid #dde4ef !important; border-radius:var(--r) !important; padding:6px 10px !important; width:70px !important; text-align:center !important; font-family:'Outfit',sans-serif !important; }
-.cart_totals { background:#fff; border:1px solid var(--border); border-radius:var(--r-lg); padding:28px; box-shadow:var(--shadow-xs); }
-.cart_totals h2 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; color:var(--navy); margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--gold); }
-.cart_totals .order-total .amount { font-size:1.3rem !important; font-weight:700 !important; color:var(--gold) !important; }
+/* ── Cart table wrapper ── */
+.aurix-cart-page .woocommerce-cart-form table.shop_table {
+  width:100% !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+  border:1.5px solid #e8edf5 !important;
+  box-shadow:0 4px 24px rgba(13,27,42,.08) !important;
+  background:#fff !important;
+}
+
+/* Table head */
+.aurix-cart-page table.shop_table thead { background:var(--navy) !important; }
+.aurix-cart-page table.shop_table thead th {
+  background:var(--navy) !important; color:#fff !important;
+  font-family:'Outfit',sans-serif !important; font-size:.7rem !important;
+  font-weight:600 !important; letter-spacing:.1em !important;
+  text-transform:uppercase !important; padding:16px 20px !important;
+  border:none !important;
+}
+
+/* Table body rows */
+.aurix-cart-page table.shop_table tbody td {
+  padding:20px !important; border:none !important;
+  border-bottom:1px solid #f0f4f9 !important;
+  vertical-align:middle !important; background:#fff !important;
+}
+.aurix-cart-page table.shop_table tbody tr:last-child td {
+  border-bottom:none !important;
+}
+.aurix-cart-page table.shop_table tbody tr:hover td {
+  background:#fafbfd !important;
+}
+
+/* Table foot */
+.aurix-cart-page table.shop_table tfoot td,
+.aurix-cart-page table.shop_table tfoot th {
+  padding:14px 20px !important; background:#f8fafc !important;
+  border-top:1.5px solid #e8edf5 !important;
+  border-bottom:none !important; border-left:none !important; border-right:none !important;
+}
+
+/* ── Product image ── */
+.aurix-cart-page .product-thumbnail { width:90px !important; padding-right:0 !important; }
+.aurix-cart-page .product-thumbnail img {
+  width:80px !important; height:80px !important;
+  object-fit:cover !important; border-radius:12px !important;
+  border:1.5px solid #e8edf5 !important;
+  box-shadow:0 2px 10px rgba(0,0,0,.08) !important; display:block !important;
+}
+
+/* ── Product name ── */
+.aurix-cart-page td.product-name a {
+  color:var(--navy) !important; text-decoration:none !important;
+  font-size:.9rem !important; font-weight:600 !important;
+  line-height:1.45 !important; display:block !important;
+}
+.aurix-cart-page td.product-name a:hover { color:var(--gold) !important; }
+.aurix-cart-page td.product-name .product-short-description {
+  font-size:.78rem !important; color:#94a3b8 !important;
+  margin-top:4px !important; line-height:1.5 !important;
+}
+.aurix-cart-page td.product-name dl.variation {
+  font-size:.75rem !important; color:#718096 !important; margin-top:5px !important;
+}
+
+/* ── Remove button ── */
+.aurix-cart-page td.product-remove { width:36px !important; padding:20px 8px 20px 16px !important; }
+.aurix-cart-page td.product-remove a.remove {
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  width:30px !important; height:30px !important;
+  background:#fff5f5 !important; color:#dc2626 !important;
+  border:1.5px solid #fecaca !important; border-radius:50% !important;
+  font-size:1.1rem !important; line-height:1 !important;
+  transition:all .18s !important; text-decoration:none !important; font-weight:300 !important;
+}
+.aurix-cart-page td.product-remove a.remove:hover {
+  background:#dc2626 !important; color:#fff !important;
+  border-color:#dc2626 !important; transform:scale(1.12) !important;
+}
+
+/* ── Prices ── */
+.aurix-cart-page td.product-price .amount {
+  color:var(--muted) !important; font-size:.85rem !important; font-weight:500 !important;
+}
+.aurix-cart-page td.product-subtotal .amount {
+  color:var(--gold) !important; font-size:1rem !important; font-weight:700 !important;
+}
+.aurix-cart-page .save-badge {
+  display:inline-block; background:#f0fff4; color:#276749;
+  border:1px solid #c6f6d5; border-radius:20px;
+  font-size:.68rem; font-weight:700; padding:2px 8px; margin-top:4px;
+}
+
+/* ── Qty input ── */
+.aurix-cart-page .woocommerce .qty {
+  height:36px !important; width:64px !important;
+  border:1.5px solid #dde4ef !important; border-radius:8px !important;
+  padding:0 10px !important; text-align:center !important;
+  font-family:'Outfit',sans-serif !important; font-size:.9rem !important;
+  font-weight:600 !important; color:var(--navy) !important;
+  background:#fff !important;
+}
+.aurix-cart-page .woocommerce .qty:focus {
+  border-color:var(--gold) !important; outline:none !important;
+  box-shadow:0 0 0 3px rgba(184,146,90,.12) !important;
+}
+
+/* ── Cart actions row (coupon + update) ── */
+.aurix-cart-page .woocommerce-cart-form .actions {
+  padding:16px 20px !important;
+  background:#f8fafc !important;
+  border-top:1.5px solid #e8edf5 !important;
+  display:flex !important; justify-content:space-between !important;
+  align-items:center !important; flex-wrap:wrap !important; gap:12px !important;
+}
+.aurix-cart-page .woocommerce-cart-form .actions .coupon {
+  display:flex !important; align-items:center !important; gap:8px !important;
+}
+.aurix-cart-page .woocommerce-cart-form .actions .coupon input#coupon_code {
+  height:40px !important; width:180px !important;
+  border:1.5px solid #dde4ef !important; border-radius:10px !important;
+  padding:0 14px !important; font-family:'Outfit',sans-serif !important;
+  font-size:.84rem !important; color:var(--navy) !important; background:#fff !important;
+}
+.aurix-cart-page .woocommerce-cart-form .actions .coupon input#coupon_code:focus {
+  border-color:var(--gold) !important; outline:none !important;
+}
+.aurix-cart-page .woocommerce-cart-form .actions .coupon .button {
+  height:40px !important; padding:0 18px !important;
+  background:var(--navy) !important; color:#fff !important;
+  border:none !important; border-radius:10px !important;
+  font-family:'Outfit',sans-serif !important; font-size:.83rem !important;
+  font-weight:600 !important; cursor:pointer !important; transition:background .2s !important;
+}
+.aurix-cart-page .woocommerce-cart-form .actions .coupon .button:hover { background:var(--gold) !important; }
+.aurix-cart-page .woocommerce-cart-form .actions [name="update_cart"] {
+  height:40px !important; padding:0 18px !important;
+  background:#f1f5f9 !important; color:var(--navy) !important;
+  border:1.5px solid #dde4ef !important; border-radius:10px !important;
+  font-family:'Outfit',sans-serif !important; font-size:.83rem !important;
+  font-weight:600 !important; cursor:pointer !important; transition:all .2s !important;
+}
+.aurix-cart-page .woocommerce-cart-form .actions [name="update_cart"]:hover {
+  background:var(--navy) !important; color:#fff !important; border-color:var(--navy) !important;
+}
+
+/* ── Cart totals (right column) ── */
+.aurix-cart-page .cart_totals {
+  background:#fff;
+  border:1.5px solid #e8edf5;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 4px 28px rgba(13,27,42,.1);
+  position:sticky; top:110px;
+}
+
+/* Totals header */
+.aurix-cart-page .cart_totals h2 {
+  font-family:'Cormorant Garamond',serif !important;
+  font-size:1.1rem !important; font-weight:700 !important;
+  letter-spacing:.06em !important; text-transform:uppercase !important;
+  color:#fff !important; background:var(--navy) !important;
+  margin:0 !important; padding:18px 22px !important;
+  border-bottom:none !important; display:block !important;
+}
+
+/* Totals table */
+.aurix-cart-page .cart_totals table.shop_table {
+  border:none !important; box-shadow:none !important;
+  border-radius:0 !important; background:transparent !important;
+}
+.aurix-cart-page .cart_totals table.shop_table th,
+.aurix-cart-page .cart_totals table.shop_table td {
+  padding:15px 22px !important;
+  border-bottom:1px solid #f0f4f9 !important;
+  font-size:.87rem !important;
+  background:transparent !important;
+  vertical-align:middle !important;
+}
+.aurix-cart-page .cart_totals table.shop_table th {
+  color:#718096 !important; font-weight:500 !important;
+  font-size:.82rem !important; width:40% !important;
+}
+.aurix-cart-page .cart_totals table.shop_table td {
+  color:var(--navy) !important; font-weight:600 !important;
+  text-align:right !important;
+}
+.aurix-cart-page .cart_totals .order-total th {
+  color:var(--navy) !important; font-weight:700 !important; font-size:.9rem !important;
+}
+.aurix-cart-page .cart_totals .order-total td {
+  border-top:2px solid #f0f4f9 !important;
+}
+.aurix-cart-page .cart_totals .order-total .amount {
+  font-size:1.35rem !important; font-weight:800 !important; color:var(--gold) !important;
+}
+.aurix-cart-page .cart_totals .shipping-calculator-button,
+.aurix-cart-page .cart_totals .shipping td {
+  font-size:.8rem !important; color:#94a3b8 !important;
+}
+
+/* Proceed to checkout button */
+.aurix-cart-page .wc-proceed-to-checkout { padding:18px 20px 20px !important; }
+.aurix-cart-page .wc-proceed-to-checkout a.checkout-button {
+  display:flex !important; align-items:center !important;
+  justify-content:center !important; gap:10px !important;
+  width:100% !important; height:52px !important;
+  background:var(--navy) !important; color:#fff !important;
+  border-radius:14px !important; font-family:'Outfit',sans-serif !important;
+  font-size:.9rem !important; font-weight:700 !important;
+  letter-spacing:.04em !important; text-decoration:none !important;
+  box-shadow:0 4px 18px rgba(13,27,42,.22) !important;
+  transition:all .22s !important;
+}
+.aurix-cart-page .wc-proceed-to-checkout a.checkout-button:hover {
+  background:var(--gold) !important;
+  box-shadow:0 6px 24px rgba(184,146,90,.4) !important;
+  transform:translateY(-1px) !important;
+}
+.aurix-cart-page .wc-proceed-to-checkout a.checkout-button::before {
+  content:'023'; font-family:'Font Awesome 6 Free'; font-weight:900; font-size:.82rem;
+}
+
+/* Trust strip below button */
+.aurix-cart-page .wc-proceed-to-checkout::after {
+  content:'Secure checkout  ·  ISO 9001  ·  30-Day Returns';
+  display:block; text-align:center;
+  font-size:.68rem; color:#94a3b8; margin-top:10px; letter-spacing:.03em;
+}
+
+/* Coupon accordion in totals */
+.aurix-cart-page .cart_totals .coupon-form,
+.aurix-cart-page .cart_totals .blockOverlay { display:none !important; }
+
+/* Mobile: stack columns */
+@media (max-width:900px) {
+  .aurix-cart-page .woocommerce {
+    grid-template-columns:1fr !important;
+  }
+  .aurix-cart-page .cart_totals { position:static !important; }
+  .aurix-cart-page .woocommerce-cart-form { grid-column:1 !important; }
+  .aurix-cart-page .cart-collaterals { grid-column:1 !important; }
+}
+@media (max-width:600px) {
+  .aurix-cart-page table.shop_table thead { display:none !important; }
+  .aurix-cart-page table.shop_table tbody td {
+    display:block !important; border-bottom:none !important;
+    padding:8px 14px !important;
+  }
+  .aurix-cart-page table.shop_table tbody tr {
+    border-bottom:1px solid #f0f4f9 !important; display:block !important; padding:12px 0 !important;
+  }
+  .aurix-cart-page table.shop_table tbody td::before {
+    content:attr(data-title)': '; font-weight:600; color:#94a3b8; font-size:.72rem;
+    display:block; margin-bottom:4px;
+  }
+}
 
 /* =========================================================
    16. CHECKOUT PAGE
 ========================================================= */
-.woocommerce-checkout #payment { background:#fff; border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; }
-.woocommerce-checkout #payment ul.payment_methods { padding:16px 20px; background:var(--off); border-bottom:1px solid var(--border); }
-.woocommerce-checkout #payment div.payment_box { padding:14px 20px; font-size:.87rem; color:var(--muted); }
-.woocommerce-checkout #payment div.place-order { padding:20px; }
-.woocommerce-order-review { background:#fff; border:1px solid var(--border); border-radius:var(--r-lg); padding:24px; box-shadow:var(--shadow-xs); }
+.aurix-checkout-page .aurix-woo-wrap { max-width:1160px; margin:0 auto; }
+
+/* 2-col layout */
+.woocommerce-checkout .woocommerce-checkout {
+  display:grid !important;
+  grid-template-columns:1fr 380px !important;
+  gap:28px !important;
+  align-items:start !important;
+}
+
+/* Form fields */
+.woocommerce-checkout .woocommerce-input-wrapper input,
+.woocommerce-checkout .woocommerce-input-wrapper select,
+.woocommerce-checkout .woocommerce-input-wrapper textarea,
+.woocommerce-billing-fields input,
+.woocommerce-billing-fields select,
+.woocommerce-shipping-fields input,
+.woocommerce-shipping-fields select,
+.woocommerce-additional-fields textarea,
+.woocommerce-checkout input[type="text"],
+.woocommerce-checkout input[type="email"],
+.woocommerce-checkout input[type="tel"],
+.woocommerce-checkout input[type="number"],
+.woocommerce-checkout select,
+.woocommerce-checkout textarea {
+  border:1.5px solid #dde4ef !important;
+  border-radius:10px !important;
+  padding:12px 16px !important;
+  font-family:'Outfit',sans-serif !important;
+  font-size:.88rem !important; color:var(--navy) !important;
+  background:#fff !important;
+  transition:border-color .2s, box-shadow .2s !important;
+  width:100% !important; box-sizing:border-box !important;
+}
+.woocommerce-checkout input:focus,
+.woocommerce-checkout select:focus,
+.woocommerce-checkout textarea:focus {
+  border-color:var(--gold) !important;
+  box-shadow:0 0 0 3px rgba(184,146,90,.12) !important;
+  outline:none !important;
+}
+
+/* Field labels */
+.woocommerce-checkout .form-row label {
+  font-size:.8rem !important; font-weight:600 !important;
+  color:#475569 !important; margin-bottom:6px !important;
+  display:block !important; letter-spacing:.02em !important;
+}
+.woocommerce-checkout .form-row label abbr {
+  color:#dc2626 !important; text-decoration:none !important; margin-left:2px !important;
+}
+
+/* Section headings */
+.woocommerce-checkout h3,
+.woocommerce-checkout .woocommerce-billing-fields h3,
+.woocommerce-checkout .woocommerce-shipping-fields h3,
+.woocommerce-checkout .woocommerce-additional-fields h3 {
+  font-family:'Cormorant Garamond',serif !important;
+  font-size:1.25rem !important; color:var(--navy) !important;
+  margin:0 0 20px !important; padding-bottom:10px !important;
+  border-bottom:2px solid var(--gold) !important;
+}
+
+/* Billing/Shipping boxes */
+.woocommerce-billing-fields,
+.woocommerce-shipping-fields,
+.woocommerce-additional-fields {
+  background:#fff;
+  border:1.5px solid #e8edf5;
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:20px;
+  box-shadow:0 2px 16px rgba(13,27,42,.06);
+}
+
+/* Payment box */
+.woocommerce-checkout #payment {
+  background:#fff; border:1.5px solid #e8edf5;
+  border-radius:16px; overflow:hidden;
+  box-shadow:0 2px 16px rgba(13,27,42,.06);
+}
+.woocommerce-checkout #payment ul.payment_methods {
+  padding:20px 22px; background:#f8fafc;
+  border-bottom:1.5px solid #e8edf5;
+}
+.woocommerce-checkout #payment ul.payment_methods li {
+  padding:10px 0 !important; font-size:.88rem !important;
+}
+.woocommerce-checkout #payment ul.payment_methods li label {
+  font-weight:600 !important; color:var(--navy) !important; cursor:pointer !important;
+}
+.woocommerce-checkout #payment div.payment_box {
+  padding:14px 22px; font-size:.84rem; color:#718096;
+  background:#f0f4f9; border-top:1px solid #e8edf5;
+}
+.woocommerce-checkout #payment div.place-order { padding:22px; }
+.woocommerce-checkout #payment #place_order {
+  width:100% !important; height:54px !important;
+  background:var(--navy) !important; color:#fff !important;
+  border:none !important; border-radius:14px !important;
+  font-family:'Outfit',sans-serif !important; font-size:.95rem !important;
+  font-weight:700 !important; letter-spacing:.03em !important; cursor:pointer !important;
+  box-shadow:0 4px 18px rgba(13,27,42,.22) !important;
+  transition:all .2s !important; display:flex !important;
+  align-items:center !important; justify-content:center !important; gap:10px !important;
+}
+.woocommerce-checkout #payment #place_order:hover {
+  background:var(--gold) !important;
+  box-shadow:0 6px 22px rgba(184,146,90,.35) !important;
+}
+
+/* Order review (right column) */
+.woocommerce-order-review,
+#order_review {
+  background:#fff; border:1.5px solid #e8edf5;
+  border-radius:16px; overflow:hidden;
+  box-shadow:0 4px 24px rgba(13,27,42,.09);
+  position:sticky; top:120px;
+}
+.woocommerce-checkout h3#order_review_heading {
+  font-family:'Cormorant Garamond',serif !important;
+  font-size:1.15rem !important; color:#fff !important;
+  margin:0 !important; padding:18px 22px !important;
+  background:var(--navy) !important; border-bottom:none !important;
+  letter-spacing:.04em !important;
+}
+.woocommerce-checkout-review-order-table th {
+  background:transparent !important; color:#718096 !important;
+  font-size:.72rem !important; letter-spacing:.06em !important;
+  text-transform:uppercase !important; padding:12px 18px !important;
+  border-color:#f0f4f9 !important;
+}
+.woocommerce-checkout-review-order-table td {
+  padding:14px 18px !important; vertical-align:middle !important;
+  border-color:#f0f4f9 !important; font-size:.85rem !important;
+}
+.woocommerce-checkout-review-order-table .product-name { color:var(--navy) !important; font-weight:600 !important; }
+.woocommerce-checkout-review-order-table .product-total .amount { color:var(--gold) !important; font-weight:700 !important; }
+.woocommerce-checkout-review-order-table .order-total .amount {
+  font-size:1.2rem !important; font-weight:800 !important; color:var(--gold) !important;
+}
+.woocommerce-checkout-review-order-table tfoot tr:last-child { background:#f8fafc !important; }
+
+/* Mobile cart/checkout */
+@media (max-width:900px) {
+  .woocommerce-cart .woocommerce {
+    grid-template-columns:1fr !important;
+  }
+  .woocommerce-cart .cart-collaterals { position:static !important; }
+  .cart_totals { position:static !important; }
+  .woocommerce-checkout .woocommerce-checkout {
+    grid-template-columns:1fr !important;
+  }
+  .woocommerce-order-review, #order_review { position:static !important; }
+}
 
 /* =========================================================
    17. GENERAL CONTENT / BLOG
 ========================================================= */
 .site-main { min-height:55vh; }
-.aurix-woo-wrap, .aurix-page-wrap { max-width:1420px; margin:0 auto; padding:40px; }
+.aurix-woo-wrap, .aurix-page-wrap { max-width:1420px; margin:0 auto; padding:40px 48px; }
 
-.entry-content { font-size:1rem; line-height:1.82; color:var(--text); }
-.entry-content h1,.entry-content h2,.entry-content h3,.entry-content h4 { font-family:'Cormorant Garamond',serif; color:var(--navy); margin:32px 0 14px; }
-.entry-content h1 { font-size:2.1rem; }
-.entry-content h2 { font-size:1.65rem; border-bottom:2px solid var(--gold); padding-bottom:7px; display:inline-block; }
-.entry-content h3 { font-size:1.3rem; }
-.entry-content p { margin-bottom:1.15em; }
-.entry-content a { color:var(--gold); text-decoration:underline; text-decoration-color:rgba(184,146,90,.35); }
-.entry-content a:hover { color:var(--navy); }
-.entry-content ul,.entry-content ol { padding-left:1.5em; margin-bottom:1.15em; }
-.entry-content li { margin-bottom:.45em; }
-.entry-content blockquote { border-left:4px solid var(--gold); padding:14px 22px; background:var(--gold-pale); border-radius:0 var(--r) var(--r) 0; font-style:italic; color:var(--navy-mid); margin:22px 0; }
-.entry-content img { border-radius:var(--r); }
+/* Reading measure constrained to ~720px (roughly 65-75 characters per line,
+   the generally accepted comfortable range) even though the page container
+   itself is 900px -- the old version let text run the full width, which at
+   ~100 characters/line is well past what's comfortable to read. The featured
+   image and TOC/share/author boxes sit outside .entry-content and keep the
+   fuller width. */
+.entry-content {
+  font-size:1.125rem;
+  line-height:1.8;
+  color:var(--text);
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+  letter-spacing:.01em;
+  overflow-x:hidden;
+  hyphens:auto;
+  -webkit-hyphens:auto;
+  -webkit-hyphenate-limit-before:3;
+  -webkit-hyphenate-limit-after:2;
+}
+.entry-content::selection,
+.entry-content ::selection { background:var(--gold-pale, rgba(184,146,90,.25)); color:var(--navy); }
+.entry-content > *:first-child { margin-top:0; }
+.entry-content em, .entry-content i { color:var(--navy-mid, var(--navy)); }
+
+/* Nested lists: less vertical spacing than top-level, and a lighter marker
+   color so the hierarchy reads clearly at a glance. */
+.entry-content li > ul, .entry-content li > ol { margin:.5em 0 0; }
+.entry-content li > ul li, .entry-content li > ol li { margin-bottom:.3em; }
+.entry-content ul ul li::marker { color:var(--muted); }
+
+.entry-content h1,.entry-content h2,.entry-content h3,.entry-content h4 {
+  font-family:'Cormorant Garamond',serif; color:var(--navy); margin:1.7em 0 .6em; line-height:1.3;
+}
+.entry-content h1 { font-size:2.2rem; }
+.entry-content h2 { font-size:1.7rem; border-bottom:2px solid var(--gold); padding-bottom:7px; display:inline-block; }
+.entry-content h3 { font-size:1.35rem; }
+.entry-content h4 { font-size:1.15rem; }
+.entry-content h2 + h3, .entry-content h3 + h4,
+.entry-content h1 + h2, .entry-content h1 + h3 { margin-top:.5em; }
+
+.entry-content p { margin-bottom:1.4em; text-wrap:pretty; }
+/* The opening paragraph gets a touch more presence, a common editorial
+   convention that helps orient a reader into a long article. */
+.entry-content > p:first-of-type {
+  font-size:1.18em;
+  font-weight:500;
+  color:var(--navy-mid, var(--navy));
+  line-height:1.7;
+}
+
+.entry-content a { color:var(--gold); text-decoration:underline; text-decoration-color:rgba(184,146,90,.35); text-underline-offset:2px; }
+.entry-content a:hover { color:var(--navy); text-decoration-color:var(--navy); }
+.entry-content strong, .entry-content b { color:var(--navy); font-weight:700; }
+
+.entry-content ul,.entry-content ol { padding-left:1.4em; margin-bottom:1.4em; }
+.entry-content li { margin-bottom:.55em; padding-left:.2em; text-wrap:pretty; }
+.entry-content ul li::marker { color:var(--gold); }
+.entry-content ol li::marker { color:var(--gold); font-weight:700; }
+
+.entry-content blockquote {
+  position:relative;
+  border-left:4px solid var(--gold); padding:16px 24px 16px 52px; background:var(--gold-pale);
+  border-radius:0 var(--r) var(--r) 0; font-style:italic; color:var(--navy-mid, var(--navy));
+  margin:1.8em 0; font-size:1.05em;
+}
+.entry-content blockquote::before {
+  content:'\201C'; position:absolute; left:14px; top:2px;
+  font-family:'Cormorant Garamond',serif; font-style:normal; font-weight:700;
+  font-size:2.6em; line-height:1; color:var(--gold); opacity:.55;
+}
+.entry-content blockquote p:last-child { margin-bottom:0; }
+
+.entry-content img { border-radius:var(--r); margin:1.6em 0; box-shadow:var(--shadow-xs); max-width:100%; height:auto; display:block; }
+.entry-content figure { margin:1.6em 0; }
+.entry-content figcaption { font-size:.85em; color:var(--muted); text-align:center; margin-top:.6em; font-style:italic; }
+
+.entry-content code { background:var(--off); padding:2px 6px; border-radius:4px; font-size:.9em; }
+.entry-content pre { background:var(--off); padding:16px 20px; border-radius:var(--r); overflow-x:auto; margin:1.6em 0; }
+.entry-content pre code { background:none; padding:0; }
+.entry-content hr { border:none; border-top:1px solid var(--border); margin:2.4em 0; }
+
+.entry-content table { width:100%; border-collapse:collapse; margin:1.6em 0; font-size:.92em; }
+.entry-content th, .entry-content td { padding:10px 14px; border:1px solid var(--border); text-align:left; }
+.entry-content th { background:var(--off); font-weight:700; color:var(--navy); }
+
+@media (max-width:640px) {
+  .entry-content { font-size:1.05rem; }
+  .entry-content h1 { font-size:1.7rem; }
+  .entry-content h2 { font-size:1.4rem; }
+  .entry-content h3 { font-size:1.2rem; }
+  .entry-content > p:first-of-type { font-size:1.1em; }
+}
 .page-title { font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--navy);
   margin-bottom:24px; padding-bottom:12px; border-bottom:2px solid var(--gold); display:inline-block; }
 
@@ -886,7 +1749,7 @@ table.shop_table tbody tr:last-child td { border-bottom:none !important; }
   .footer-container { padding:0 28px; }
   .footer-grid { grid-template-columns:1.6fr 1fr 1fr 1fr; row-gap:32px; }
   .footer-col--contact { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:0 24px; }
-  .footer-col--contact h4 { grid-column:1/-1; }
+  .footer-col--contact h3 { grid-column:1/-1; }
 }
 @media (max-width:900px) { .ahdr-call { display:none; } }
 
@@ -907,7 +1770,7 @@ table.shop_table tbody tr:last-child td { border-bottom:none !important; }
   .woocommerce { padding:0 !important; } /* Aurix handles spacing via its own wrappers */
   /* Restore left/right space in main content only — NOT footer */
   .site-main .woocommerce, #main .woocommerce { padding:0 !important; }
-  .aurix-woo-wrap,.aurix-page-wrap { padding:20px 0; }
+  .aurix-woo-wrap,.aurix-page-wrap { padding:20px 12px; }
 
   /* Account page mobile */
   .user-logged-in.aurix-account-page .woocommerce { grid-template-columns:1fr; }
@@ -948,6 +1811,7 @@ body.scrolled .aurix-logo-img { max-height: 40px; }
 .amob-logo-img { max-height: 34px; width: auto; object-fit: contain; display: block; }
 /* Footer logo image */
 .footer-logo img { max-height: 44px; width: auto; object-fit: contain; }
+.mob-brand__logo img { max-height: 40px; width: auto; object-fit: contain; display: block; }
 /* Panel logo */
 .apanel__logo { padding: 0 4px; }
 .apanel__logo img { max-height: 38px; width: auto; object-fit: contain; }
@@ -962,10 +1826,14 @@ body.scrolled .ahdr-logo img { max-height: 40px; }
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
   border-bottom: 1px solid rgba(255,255,255,.1); }
 .apanel__user-ava { width: 44px; height: 44px; background: var(--gold); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.3rem; flex-shrink: 0; }
+  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.3rem; flex-shrink: 0; overflow:hidden; }
+.apanel__user-ava img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
 .apanel__user-name { display: block; font-weight: 600; color: #fff; font-size: .9rem; }
-.apanel__user-link { display: block; font-size: .76rem; color: var(--gold-lt); margin-top: 2px; }
-.apanel__user-link:hover { color: #fff; }
+.apanel__user-link {
+  display: inline-block; font-size: .72rem; color: #1a1508; font-weight:700; margin-top: 6px;
+  background:#f0d9b8; padding:4px 12px; border-radius:20px; text-decoration:none;
+}
+.apanel__user-link:hover { background:#fff; color:var(--navy); }
 
 /* ── LIVE SEARCH DROPDOWN ── */
 .asrch-dropdown {
@@ -1046,6 +1914,31 @@ body.scrolled .ahdr-logo img { max-height: 40px; }
   display: flex; align-items: center; justify-content: center;
   transition: background var(--t), color var(--t), border-color var(--t), transform .15s;
   box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+/* On SINGLE PRODUCT PAGE — override to inline, not absolute (it's inside flex row) */
+.aprod-atc-group .aurix-wl-btn,
+.aprod-atc-group .aprod-wl-btn {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  width: 50px !important;
+  height: 50px !important;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border-md) !important;
+  border-radius: 25px !important;
+  background: #fff !important;
+  color: var(--muted) !important;
+  font-size: 1rem !important;
+  box-shadow: none !important;
+}
+.aprod-atc-group .aurix-wl-btn:hover,
+.aprod-atc-group .aurix-wl-btn.in-wishlist,
+.aprod-atc-group .aprod-wl-btn:hover,
+.aprod-atc-group .aprod-wl-btn.in-wishlist {
+  border-color: #e55 !important;
+  color: #e55 !important;
+  background: #fff5f5 !important;
+  transform: scale(1.05) !important;
 }
 .aurix-wl-btn:hover { background: #fff0f0; color: #e53e3e; border-color: #fcc; transform: scale(1.12); }
 .aurix-wl-btn.in-wishlist { background: #fff0f0; color: #e53e3e; border-color: #fcc; }
@@ -1142,25 +2035,19 @@ body.scrolled .ahdr-logo img { max-height: 40px; }
 .aurix-stat-card .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--navy); }
 .aurix-stat-card .stat-lbl { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 
-/* ── CHECKOUT IMPROVEMENTS ── */
-.aurix-checkout-page .woocommerce-checkout { max-width: 1060px; margin: 0 auto; }
-.aurix-checkout-page .woocommerce h3#order_review_heading {
-  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--navy);
-  margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--gold);
-}
-/* Checkout steps indicator */
-.aurix-checkout-steps { display: flex; align-items: center; gap: 0; margin-bottom: 32px;
-  background: #fff; border: 1px solid var(--border); border-radius: var(--r-lg);
-  padding: 16px 24px; box-shadow: var(--shadow-xs); }
+/* ── CHECKOUT STEPS (kept for compatibility) ── */
+.aurix-checkout-steps { display: flex; align-items: center; gap: 0; margin-bottom: 28px;
+  background: #fff; border: 1.5px solid #e8edf5; border-radius: 16px;
+  padding: 14px 22px; box-shadow: 0 2px 12px rgba(13,27,42,.07); }
 .aurix-step { display: flex; align-items: center; gap: 10px; flex: 1; }
 .aurix-step__num { width: 32px; height: 32px; border-radius: 50%; display: flex;
   align-items: center; justify-content: center; font-weight: 700; font-size: .85rem;
-  background: #dde4ef; color: var(--muted); flex-shrink: 0; transition: background var(--t), color var(--t); }
-.aurix-step.active .aurix-step__num { background: var(--gold); color: #fff; }
+  background: #e2e8f0; color: #94a3b8; flex-shrink: 0; transition: all .2s; }
+.aurix-step.active .aurix-step__num { background: var(--gold); color: #fff; box-shadow: 0 2px 8px rgba(184,146,90,.4); }
 .aurix-step.done .aurix-step__num { background: #22c55e; color: #fff; }
-.aurix-step__lbl { font-size: .82rem; font-weight: 500; color: var(--muted); }
+.aurix-step__lbl { font-size: .82rem; font-weight: 500; color: #94a3b8; }
 .aurix-step.active .aurix-step__lbl { color: var(--navy); font-weight: 600; }
-.aurix-step-sep { height: 1px; flex: 1; background: #dde4ef; margin: 0 8px; }
+.aurix-step-sep { height: 2px; flex: 1; background: #e2e8f0; margin: 0 8px; border-radius: 1px; }
 
 /* ── SCROLL TO TOP BUTTON ── */
 #aurix-scroll-top {
@@ -1452,13 +2339,11 @@ body.scrolled .ahdr-logo img { max-height: 40px; }
 .ahero-stat { text-align:center; }
 .ahero-stat__num { display:block; font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:#fff; line-height:1; }
 .ahero-stat__lbl { display:block; font-size:.68rem; color:rgba(255,255,255,.55); text-transform:uppercase; letter-spacing:.08em; margin-top:2px; }
-.aurix-account-inner { display:grid; grid-template-columns:260px 1fr; gap:28px; align-items:start; }
-@media (max-width:900px) { .aurix-account-inner { grid-template-columns:200px 1fr; gap:18px; } }
-@media (max-width:768px) {
-  .aurix-account-inner { grid-template-columns:1fr; gap:14px; }
-  .aurix-account-hero { padding:18px !important; }
-  .aurix-account-hero__badge { padding:6px 12px; font-size:.7rem; }
-}
+/* .aurix-account-inner grid rules removed from here — fully superseded by the
+   !important versions further down (search "Use the my-account.php template's
+   .aurix-account-inner for grid"). This exact duplication, with two different
+   breakpoints and pixel widths for the same sidebar, is what caused the nav
+   link text to get clipped between 768–960px. */
 
 /* ── SEARCH ITEM META (price+sku+date row) ── */
 .asrch-item__meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px; }
@@ -1504,9 +2389,8 @@ body.scrolled .ahdr-logo img { max-height: 40px; }
 ═══════════════════════════════════════════════════ */
 .ahdr-search {
   position:relative !important;
-  max-width:520px !important;
   width:100% !important;
-  justify-self:center !important;
+  justify-self:stretch !important;
 }
 .ahdr-search form { position:relative; display:flex; align-items:center; }
 .ahdr-search__icon {
@@ -1551,7 +2435,7 @@ body.scrolled .ahdr-search__btn { width:30px !important; height:30px !important;
   flex-shrink:0 !important;
 }
 /* Pills */
-.ahdr-pill {
+.ahdr-pill, .ahdr-pills .anav-pill {
   display:inline-flex !important; align-items:center !important;
   justify-content:center !important; gap:5px !important;
   height:34px !important; line-height:1 !important;
@@ -1561,9 +2445,10 @@ body.scrolled .ahdr-search__btn { width:30px !important; height:30px !important;
   background:#fff !important; text-decoration:none !important;
   transition:border-color .2s, color .2s !important;
 }
-.ahdr-pill i { font-size:.74rem !important; color:var(--gold) !important;
+.ahdr-pill i, .ahdr-pills .anav-pill i { font-size:.74rem !important; color:var(--gold) !important;
   line-height:1 !important; display:flex !important; align-items:center !important; }
-.ahdr-pill:hover { border-color:var(--gold) !important; color:var(--gold) !important; }
+.ahdr-pill:hover, .ahdr-pills .anav-pill:hover { border-color:var(--gold) !important; color:var(--gold) !important; }
+.ahdr-pills { display:flex; align-items:center; gap:10px; }
 
 /* Icon buttons (account, wishlist, cart) */
 .ahdr-ibtn {
@@ -1853,10 +2738,13 @@ body.scrolled .ahdr-call { max-width:0 !important; opacity:0 !important; pointer
 /* ═══════════════════════════════════════════════════
    6. MOBILE ACCOUNT RESPONSIVE
 ═══════════════════════════════════════════════════ */
+/* (960px account-sidebar-width tweak removed — merged into the breakpoint
+   below, which now starts at 960px instead of 768px. The narrow 210px column
+   here previously kept full desktop font-size/padding on the nav links with
+   nowhere to fit them, and since the sidebar has overflow:hidden, that
+   overflow was silently clipped instead of wrapping -- exactly the "Dash...",
+   "My Ord...", "Acco... Deta..." truncation bug reported. ) */
 @media (max-width:960px) {
-  .aurix-account-inner { grid-template-columns:210px 1fr !important; gap:20px !important; }
-}
-@media (max-width:768px) {
   .aurix-account-page .aurix-woo-wrap { padding:16px !important; }
   .aurix-account-hero { flex-wrap:wrap !important; padding:18px 16px !important; gap:12px !important; }
   .aurix-account-hero__stats { gap:18px !important; }
@@ -2028,4 +2916,798 @@ body.scrolled .ahdr-call { max-width:0 !important; opacity:0 !important; pointer
     padding-left:0 !important;
     padding-right:0 !important;
   }
+}
+
+
+
+
+/* Fix custom logo in header */
+.ahdr-logo .custom-logo-link img,
+.ahdr-logo .custom-logo {
+  max-height: 44px !important;
+  width: auto !important;
+  display: block !important;
+}
+.site-branding { display: none; }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   AUTHORITATIVE ACCOUNT PAGE STYLES
+   This is the single source of truth for the My Account page layout.
+   Everything above this point that also touches .aurix-account-page,
+   .aurix-account-inner, .woocommerce-MyAccount-navigation/-content,
+   .aurix-account-hero, or .ahero-stat is legacy and has been left in
+   place but is intentionally overridden here via body.aurix-account-page
+   (higher specificity than any earlier .aurix-account-page rule, since
+   comparing selectors with an equal class count falls back to element
+   count, and this one adds the `body` tag) plus !important throughout,
+   so there's exactly one place to edit this page's layout going forward.
+   ══════════════════════════════════════════════════════════════════ */
+
+body.aurix-account-page .aurix-woo-wrap {
+  max-width:1200px !important; margin:0 auto !important;
+  padding:40px !important; width:100% !important; box-sizing:border-box !important;
+}
+body.aurix-account-page.user-logged-in .woocommerce { display:block !important; }
+
+/* Hero banner */
+body.aurix-account-page .aurix-account-hero {
+  background:linear-gradient(135deg,#0d1b2a 0%,#1a3050 100%) !important;
+  border-radius:14px !important; padding:26px 32px !important;
+  margin-bottom:24px !important; display:flex !important;
+  align-items:center !important; gap:18px !important; flex-wrap:wrap !important;
+  position:relative !important; overflow:hidden !important; color:#fff !important;
+  box-shadow:0 8px 32px rgba(13,27,42,.25) !important;
+}
+body.aurix-account-page .aurix-account-hero::after {
+  content:'' !important; position:absolute !important; left:0 !important; bottom:0 !important;
+  right:0 !important; height:2px !important;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent) !important;
+}
+body.aurix-account-page .aurix-account-hero__avatar {
+  width:58px !important; height:58px !important; border-radius:50% !important;
+  background:var(--gold) !important; flex-shrink:0 !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  font-family:'Cormorant Garamond',serif !important; font-size:1.7rem !important;
+  font-weight:700 !important; color:#fff !important;
+  border:2.5px solid rgba(255,255,255,.25) !important;
+}
+body.aurix-account-page .aurix-account-hero__info { flex:1 !important; min-width:160px !important; }
+body.aurix-account-page .aurix-account-hero__info h3 {
+  font-family:'Cormorant Garamond',serif !important; font-size:1.4rem !important;
+  font-weight:700 !important; color:#fff !important; margin:0 0 3px !important; line-height:1.2 !important;
+}
+body.aurix-account-page .aurix-account-hero__info p { font-size:.8rem !important; color:rgba(255,255,255,.55) !important; margin:0 !important; }
+body.aurix-account-page .aurix-account-hero__stats { display:flex !important; align-items:center !important; gap:28px !important; }
+body.aurix-account-page .ahero-stat { text-align:center !important; }
+body.aurix-account-page .ahero-stat__num {
+  display:block !important; font-family:'Cormorant Garamond',serif !important;
+  font-size:1.7rem !important; font-weight:700 !important; color:#fff !important; line-height:1 !important;
+}
+body.aurix-account-page .ahero-stat__lbl {
+  display:block !important; font-size:.62rem !important; color:rgba(255,255,255,.5) !important;
+  text-transform:uppercase !important; letter-spacing:.08em !important; margin-top:3px !important;
+}
+body.aurix-account-page .aurix-account-hero__badge {
+  background:var(--gold) !important; color:var(--navy) !important;
+  padding:8px 18px !important; border-radius:20px !important;
+  font-size:.72rem !important; font-weight:700 !important;
+  letter-spacing:.06em !important; text-transform:uppercase !important;
+  white-space:nowrap !important; text-decoration:none !important; flex-shrink:0 !important;
+  display:inline-flex !important; align-items:center !important; gap:6px !important;
+}
+body.aurix-account-page .aurix-account-hero__badge:hover { background:#fff !important; color:var(--navy) !important; }
+
+/* Grid: sidebar + content. width:100% on the children is the actual fix for
+   the reported truncation/squeeze bug -- without it, a grid item defaults to
+   its content's natural size within the track rather than filling it. */
+body.aurix-account-page .aurix-account-inner {
+  display:grid !important;
+  grid-template-columns:260px 1fr !important;
+  gap:28px !important;
+  align-items:start !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin-top:0 !important;
+}
+body.aurix-account-page .aurix-account-inner > .woocommerce-MyAccount-navigation,
+body.aurix-account-page .aurix-account-inner > .woocommerce-MyAccount-content {
+  width:100% !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+  display:block !important;
+}
+
+/* Nav sidebar */
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation {
+  background:#fff !important; border-radius:12px !important;
+  border:1px solid var(--border) !important;
+  box-shadow:0 2px 16px rgba(13,27,42,.07) !important;
+  overflow:hidden !important;
+  position:sticky !important; top:calc(60px + var(--nav-h) + 16px) !important;
+}
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul {
+  list-style:none !important; margin:0 !important; padding:8px !important;
+}
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li a {
+  display:flex !important; align-items:center !important; gap:10px !important;
+  padding:11px 13px !important; border-radius:8px !important;
+  color:#4a5568 !important; font-size:.86rem !important; font-weight:500 !important;
+  text-decoration:none !important; border:none !important;
+  border-left:3px solid transparent !important; white-space:normal !important;
+  transition:background .15s, color .15s, border-color .15s !important;
+}
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li a::before {
+  font-family:'Font Awesome 6 Free' !important; font-weight:900 !important;
+  width:16px !important; text-align:center !important; font-size:.78rem !important;
+  color:#b0bec5 !important; flex-shrink:0 !important; line-height:1 !important;
+}
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--dashboard a::before   { content:'\f3fd' !important; }
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--orders a::before       { content:'\f468' !important; }
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--downloads a::before    { content:'\f019' !important; }
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--edit-address a::before { content:'\f3c5' !important; }
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--edit-account a::before  { content:'\f4ff' !important; }
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a::before { content:'\f2f5' !important; color:#e55 !important; }
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li a:hover,
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.is-active a {
+  background:var(--gold-pale) !important; color:var(--navy) !important;
+  border-left-color:var(--gold) !important;
+}
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li a:hover::before,
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.is-active a::before { color:var(--gold) !important; }
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout {
+  border-top:1px solid var(--border) !important; padding-top:4px !important; margin-top:4px !important;
+}
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a:hover {
+  background:#fff5f5 !important; color:#e55 !important; border-left-color:#e55 !important;
+}
+
+/* Content area */
+body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-content {
+  background:#fff !important; border-radius:12px !important;
+  border:1px solid var(--border) !important; padding:28px !important;
+  box-shadow:0 2px 16px rgba(13,27,42,.07) !important; min-height:320px !important;
+}
+body.aurix-account-page .woocommerce-MyAccount-content h2,
+body.aurix-account-page .woocommerce-MyAccount-content h3 {
+  font-family:'Cormorant Garamond',serif !important; color:var(--navy) !important; margin-bottom:18px !important;
+}
+body.aurix-account-page .woocommerce-MyAccount-content > p:first-child {
+  background:var(--gold-pale) !important; border-left:3px solid var(--gold) !important;
+  padding:12px 16px !important; border-radius:0 8px 8px 0 !important;
+  font-size:.88rem !important; color:var(--navy) !important;
+  line-height:1.6 !important; margin-bottom:20px !important;
+}
+body.aurix-account-page .woocommerce-MyAccount-content > p:first-child a { color:var(--gold) !important; font-weight:600 !important; }
+
+/* ── Responsive: one clean breakpoint, no in-between "narrow column,
+   full-size text" zone (that gap was the actual cause of the reported
+   truncation bug). ── */
+@media (max-width:960px) {
+  body.aurix-account-page .aurix-woo-wrap { padding:16px !important; }
+  body.aurix-account-page .aurix-account-hero { padding:18px 16px !important; gap:12px !important; }
+  body.aurix-account-page .aurix-account-hero__stats { gap:18px !important; }
+  body.aurix-account-page .aurix-account-hero__badge { padding:7px 14px !important; font-size:.68rem !important; }
+  body.aurix-account-page .aurix-account-inner { grid-template-columns:1fr !important; gap:14px !important; }
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation { position:static !important; }
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul {
+    display:grid !important; grid-template-columns:1fr 1fr !important; gap:4px !important; padding:8px !important;
+  }
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li a {
+    font-size:.8rem !important; padding:10px !important; border-left:none !important;
+    border-bottom:2px solid transparent !important; justify-content:center !important;
+    gap:8px !important; border-radius:8px !important;
+  }
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li a:hover,
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.is-active a {
+    border-left:none !important; border-bottom-color:var(--gold) !important;
+  }
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout {
+    grid-column:1/-1 !important; border-top:1px solid var(--border) !important; margin-top:0 !important; padding-top:0 !important;
+  }
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--customer-logout a { justify-content:center !important; }
+  body.aurix-account-page .aurix-account-inner .woocommerce-MyAccount-content { padding:18px 14px !important; }
+}
+@media (max-width:480px) {
+  body.aurix-account-page .aurix-account-hero__stats { display:none !important; }
+  body.aurix-account-page .ahero-stat { display:none !important; }
+  body.aurix-account-page .aurix-account-hero__info h3 { font-size:1.2rem !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BLOG POST PAGE (single.php)
+   ══════════════════════════════════════════════════════════════════ */
+.aurix-blog-post { padding-top:36px; padding-bottom:60px; }
+
+/* ── Header -- clean, light treatment: breadcrumb/category/title/meta on
+   the page's normal background, image (if any) shown as a normal contained
+   image below rather than as a dark overlay banner. ── */
+.abp-header-wrap { padding-top:36px; padding-bottom:24px; margin-bottom:24px; text-align:center; }
+
+.abp-breadcrumb { font-size:.8rem; color:var(--muted); margin-bottom:20px; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; }
+.abp-breadcrumb a { color:var(--muted); text-decoration:none; transition:color var(--t); }
+.abp-breadcrumb a:hover { color:var(--gold-dk, var(--gold)); }
+.abp-breadcrumb span:not(.abp-breadcrumb-current) { color:var(--border-md); font-size:.7rem; }
+.abp-breadcrumb-current { color:var(--navy); font-weight:600; }
+
+.abp-cat-badge {
+  display:inline-flex; align-items:center; gap:6px; background:var(--gold-pale); color:var(--gold-dk, var(--gold));
+  font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  padding:6px 14px; border-radius:20px; margin-bottom:18px; text-decoration:none;
+  transition:background var(--t), color var(--t);
+}
+.abp-cat-badge:hover { background:var(--gold); color:#fff; }
+.abp-cat-badge--inline { margin-bottom:0; padding:4px 12px; font-size:.68rem; }
+
+.abp-title { color:var(--navy); margin:0 auto 18px; font-size:2.35rem; line-height:1.25; letter-spacing:-.01em; max-width:900px; }
+
+.abp-meta { font-size:.85rem; color:var(--muted); margin:0; display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; }
+.abp-meta span { display:inline-flex; align-items:center; }
+.abp-meta span:not(:last-child)::after { content:''; width:4px; height:4px; border-radius:50%; background:var(--border-md); margin:0 14px; }
+.abp-meta i { color:var(--gold); margin-right:6px; }
+.abp-meta-author { display:inline-flex; align-items:center; gap:6px; }
+.abp-meta-avatar { width:22px; height:22px; border-radius:50%; display:block; flex-shrink:0; }
+.abp-meta-author-link { color:inherit; text-decoration:none; }
+.abp-meta-author-link:hover { color:var(--gold-dk, var(--gold)); text-decoration:underline; }
+
+@media (max-width:640px) {
+  .abp-title { font-size:1.7rem; }
+  .abp-meta span:not(:last-child)::after { margin:0 10px; }
+}
+
+.abp-thumb {
+  margin-top:20px; border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow-sm);
+}
+.abp-thumb img { width:100%; height:auto; display:block; }
+
+@media (max-width:768px) {
+  .abp-header-wrap { padding-left:16px !important; padding-right:16px !important; box-sizing:border-box; }
+  .abp-progress-track { display:none; }
+}
+@media (max-width:640px) {
+  .abp-header-wrap { padding-top:20px; }
+  .abp-meta { gap:12px; font-size:.78rem; }
+}
+
+/* ── Reading progress bar -- fixed under the sticky site header ── */
+.abp-progress-track {
+  position:sticky; top:0; z-index:50; height:3px; background:rgba(13,27,42,.06);
+}
+.abp-progress-fill { height:100%; width:0; background:linear-gradient(90deg, var(--gold), var(--gold-dk)); transition:width .1s linear; }
+
+/* Table of contents */
+.abp-toc {
+  background:var(--off); border:1px solid var(--border-md); border-radius:var(--r-lg);
+  padding:20px 24px; margin:0 0 32px;
+}
+.abp-toc-title { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:700; color:var(--navy); margin-bottom:10px; display:flex; align-items:center; gap:8px; cursor:pointer; list-style:none; }
+.abp-toc-title::-webkit-details-marker { display:none; }
+.abp-toc-title i:first-child { color:var(--gold); font-size:.9rem; }
+.abp-toc-chevron { margin-left:auto; font-size:.8rem; color:var(--muted); transition:transform var(--t); }
+.abp-toc[open] .abp-toc-chevron { transform:rotate(180deg); }
+.abp-toc ul { margin:0; padding-left:0; list-style:none; }
+.abp-toc li { margin-bottom:6px; }
+.abp-toc a { color:var(--text); text-decoration:none; font-size:.92rem; }
+.abp-toc a:hover { color:var(--gold); text-decoration:underline; }
+
+/* ── Device-specific layouts, not just scaled versions of one layout ──
+   Mobile (<768px):  TOC collapses via <details>, saving scroll space on a
+                      screen where a 10-item list otherwise eats the whole
+                      first viewport. Sidebar author-card/recent-posts stay
+                      hidden -- the full author bio and related-posts grid
+                      further down the page already cover that content.
+   Tablet (768-1199): single column, TOC as an inline box before the content
+                      (the layout everything used until now); same hidden
+                      sidebar extras as mobile.
+   Desktop (>=1200px): two-column -- the whole sidebar (TOC + a compact
+                      author card + a Recent Posts list) becomes sticky and
+                      stays in view while scrolling, similar to the reference
+                      designs, instead of just a lone TOC box. */
+.abp-sidebar-author, .abp-sidebar-recent { display:none; }
+
+@media (min-width:1200px) {
+  .abp-article {
+    display:grid;
+    grid-template-columns:1fr 300px;
+    gap:48px;
+    align-items:start;
+  }
+  .abp-sidebar {
+    grid-column:2; grid-row:1/-1;
+    position:sticky; top:calc(60px + var(--nav-h, 48px) + 24px);
+    display:flex; flex-direction:column; gap:24px;
+  }
+  .abp-toc { margin:0; }
+  .abp-sidebar-author { display:flex; }
+  .abp-sidebar-recent { display:block; }
+  .entry-content, .abp-tags, .abp-share, .abp-author { grid-column:1; }
+}
+
+/* Sidebar: compact author card */
+.abp-sidebar-author {
+  background:var(--off); border:1px solid var(--border-md); border-radius:var(--r-lg);
+  padding:18px; gap:12px; align-items:flex-start;
+  text-decoration:none; transition:border-color var(--t), background var(--t);
+}
+.abp-sidebar-author:hover { border-color:var(--gold); background:var(--gold-pale); }
+.abp-sidebar-author img { border-radius:50%; flex-shrink:0; }
+.abp-sidebar-author-label { display:block; font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gold-dk, var(--gold)); margin-bottom:3px; }
+.abp-sidebar-author-name { font-weight:700; color:var(--navy); font-size:.88rem; margin-bottom:4px; }
+.abp-sidebar-author-view { display:inline-flex; align-items:center; gap:5px; font-size:.76rem; font-weight:600; color:var(--gold-dk, var(--gold)); }
+.abp-sidebar-author-view i { font-size:.65rem; transition:transform var(--t); }
+.abp-sidebar-author:hover .abp-sidebar-author-view i { transform:translateX(3px); }
+.abp-sidebar-author p { font-size:.8rem; color:var(--muted); line-height:1.5; margin:0; }
+
+/* Sidebar: Recent Posts list */
+.abp-sidebar-recent {
+  background:var(--white); border:1px solid var(--border-md); border-radius:var(--r-lg); padding:18px;
+}
+.abp-sidebar-recent-title { font-family:'Cormorant Garamond',serif; font-weight:700; color:var(--navy); font-size:1.05rem; margin-bottom:12px; }
+.abp-sidebar-recent-item { display:flex; gap:10px; align-items:center; text-decoration:none; padding:8px 0; border-bottom:1px solid var(--border); }
+.abp-sidebar-recent-item:last-child { border-bottom:none; padding-bottom:0; }
+.abp-sidebar-recent-item:first-of-type { padding-top:0; }
+.abp-sidebar-recent-thumb { width:48px; height:48px; border-radius:8px; overflow:hidden; flex-shrink:0; background:var(--bg); }
+.abp-sidebar-recent-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.abp-sidebar-recent-item h4 { font-size:.84rem; color:var(--navy); font-weight:600; margin:0 0 3px; line-height:1.35; }
+.abp-sidebar-recent-item span { font-size:.72rem; color:var(--muted); }
+
+/* Content headings get a scroll offset so the sticky header doesn't cover
+   them when a TOC/prev-next link jumps to an anchor. */
+.entry-content h2[id],
+.entry-content h3[id] { scroll-margin-top:calc(60px + var(--nav-h, 48px) + 20px); }
+
+.abp-tags { display:flex; flex-wrap:wrap; gap:8px; margin:36px 0 0; }
+.abp-tag {
+  background:var(--white); border:1px solid var(--border-md); color:var(--text);
+  font-size:.78rem; padding:5px 13px; border-radius:20px; text-decoration:none;
+  transition:all var(--t);
+}
+.abp-tag:hover { border-color:var(--gold); color:var(--gold-dk); }
+.abp-tag::before { content:'#'; color:var(--gold); margin-right:2px; }
+
+.abp-share {
+  display:flex; align-items:center; gap:12px; margin:28px 0 0;
+  padding:18px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+}
+.abp-share-label { font-size:.82rem; font-weight:600; color:var(--navy); margin-right:6px; }
+.abp-share a, .abp-copy-link {
+  width:34px; height:34px; border-radius:50%; background:var(--off);
+  color:var(--navy); display:flex; align-items:center; justify-content:center;
+  font-size:.85rem; text-decoration:none; border:none; cursor:pointer;
+  transition:all var(--t);
+}
+.abp-share a:hover, .abp-copy-link:hover { background:var(--gold); color:#fff; }
+
+.abp-author {
+  display:flex; gap:16px; align-items:flex-start;
+  background:var(--off); border-radius:var(--r-lg); padding:22px 24px;
+  margin:28px 0 0;
+}
+.abp-author img { border-radius:50%; flex-shrink:0; }
+.abp-author-body { flex:1; min-width:0; }
+.abp-author-label { display:block; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gold-dk, var(--gold)); margin-bottom:4px; }
+.abp-author-name { font-weight:700; color:var(--navy); font-size:1.15rem; margin-bottom:6px; font-family:'Cormorant Garamond',serif; }
+.abp-author-name a { color:inherit; text-decoration:none; }
+.abp-author-name a:hover { color:var(--gold-dk, var(--gold)); text-decoration:underline; }
+.abp-author-actions { display:flex; align-items:center; gap:16px; margin-top:14px; flex-wrap:wrap; }
+.abp-author-count { font-size:.8rem; color:var(--muted); }
+.abp-author-btn {
+  display:inline-flex; align-items:center; gap:7px; background:var(--navy); color:#fff;
+  font-size:.8rem; font-weight:600; padding:9px 18px; border-radius:8px; text-decoration:none;
+  transition:background var(--t);
+}
+.abp-author-btn:hover { background:var(--gold-dk, var(--gold)); }
+.abp-author-btn i { font-size:.7rem; transition:transform var(--t); }
+.abp-author-btn:hover i { transform:translateX(3px); }
+.abp-author-bio { font-size:.86rem; color:var(--text); line-height:1.6; margin:0; }
+
+.abp-pagenav {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px;
+}
+.abp-pagenav-link {
+  border:1px solid var(--border-md); border-radius:var(--r-lg); padding:16px 18px;
+  text-decoration:none; display:flex; flex-direction:column; gap:6px;
+  transition:all var(--t);
+}
+.abp-pagenav-link:hover { border-color:var(--gold); box-shadow:var(--shadow-xs); }
+.abp-pagenav-next { text-align:right; align-items:flex-end; }
+.abp-pagenav-dir { font-size:.75rem; font-weight:700; color:var(--gold-dk); text-transform:uppercase; letter-spacing:.04em; }
+.abp-pagenav-dir i { margin:0 4px; }
+.abp-pagenav-title { font-size:.88rem; color:var(--navy); font-weight:600; line-height:1.4; }
+
+.abp-related { margin-top:48px; }
+.abp-related-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--navy); margin-bottom:20px; }
+.abp-related-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.abp-related-card {
+  display:block; text-decoration:none; border-radius:var(--r-lg); overflow:hidden;
+  border:1px solid var(--border-md); background:var(--white); transition:all var(--t);
+}
+.abp-related-card:hover { box-shadow:var(--shadow-sm); transform:translateY(-3px); }
+.abp-related-thumb { aspect-ratio:16/10; overflow:hidden; background:var(--off); }
+.abp-related-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.abp-related-body { padding:14px 16px; }
+.abp-related-card--text-only .abp-related-body { padding:20px 18px; }
+.abp-related-date { font-size:.72rem; color:var(--muted); }
+.abp-related-body h3 { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--navy); margin:4px 0 0; line-height:1.35; }
+
+@media (max-width:780px) {
+  .abp-pagenav { grid-template-columns:1fr; }
+  .abp-pagenav-next { text-align:left; align-items:flex-start; }
+  .abp-related-grid { grid-template-columns:1fr 1fr; }
+  .abp-author { flex-direction:column; }
+}
+@media (max-width:520px) {
+  .abp-related-grid { grid-template-columns:1fr; }
+  .abp-meta { gap:12px; }
+  .abp-toc { padding:16px 18px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BLOG INDEX / LISTING PAGE (index.php + page-blog.php)
+   ══════════════════════════════════════════════════════════════════ */
+.aurix-blog-index { padding:40px 0 60px; }
+
+.abi-header { text-align:center; max-width:600px; margin:0 auto 40px; }
+.abi-title { font-family:'Cormorant Garamond',serif; font-size:2.4rem; color:var(--navy); margin-bottom:10px; }
+.abi-subtitle { color:var(--muted); font-size:.98rem; }
+
+.abi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; align-items:start; }
+
+.abi-card {
+  display:flex; flex-direction:column; text-decoration:none;
+  background:var(--white); border:1px solid var(--border-md); border-radius:var(--r-lg);
+  overflow:hidden; transition:all var(--t);
+}
+.abi-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+
+.abi-card-thumb { position:relative; aspect-ratio:16/10; background:var(--off); overflow:hidden; }
+.abi-card-thumb img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
+.abi-card:hover .abi-card-thumb img { transform:scale(1.06); }
+.abi-card-thumb--empty { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--border-md); font-size:2rem; }
+.abi-card-cat {
+  position:absolute; top:12px; left:12px; background:rgba(13,27,42,.82); color:#fff;
+  font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  padding:5px 12px; border-radius:20px;
+}
+
+.abi-card-body { padding:20px 22px 22px; flex:1; display:flex; flex-direction:column; }
+.abi-card-body h2 { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--navy); margin:0 0 10px; line-height:1.35; }
+.abi-card-body p { font-size:.88rem; color:var(--text); line-height:1.6; margin:0 0 16px; flex:1; }
+.abi-card-meta { display:flex; gap:16px; font-size:.76rem; color:var(--muted); border-top:1px solid var(--border); padding-top:12px; }
+.abi-card-meta i { color:var(--gold); margin-right:4px; }
+
+.abi-pagination { display:flex; justify-content:center; gap:6px; margin-top:44px; }
+.abi-pagination .page-numbers {
+  display:flex; align-items:center; justify-content:center;
+  min-width:38px; height:38px; padding:0 10px; border-radius:8px;
+  border:1px solid var(--border-md); color:var(--navy); text-decoration:none; font-size:.88rem;
+  transition:all var(--t);
+}
+.abi-pagination .page-numbers:hover { border-color:var(--gold); color:var(--gold-dk); }
+.abi-pagination .page-numbers.current { background:var(--navy); border-color:var(--navy); color:#fff; }
+.abi-pagination .page-numbers.dots { border:none; }
+
+.abi-empty { text-align:center; padding:80px 20px; color:var(--muted); }
+.abi-empty i { font-size:2.4rem; color:var(--border-md); margin-bottom:16px; display:block; }
+.abi-empty h2 { font-family:'Cormorant Garamond',serif; color:var(--navy); margin-bottom:8px; }
+
+@media (max-width:960px) {
+  .abi-grid { grid-template-columns:1fr 1fr; gap:20px; }
+}
+@media (max-width:640px) {
+  .abi-grid { grid-template-columns:1fr; }
+  .abi-title { font-size:1.9rem; }
+  .aurix-blog-index { padding-top:24px; padding-bottom:40px; padding-left:16px !important; padding-right:16px !important; box-sizing:border-box; }
+}
+
+/* Extra breathing room for the blog post page on small screens -- the
+   sitewide .aurix-page-wrap padding alone was too tight for comfortable
+   reading margins on a long article. !important + 768px range matches the
+   header-wrap fix above, so this can't be silently overridden by the
+   sitewide .aurix-page-wrap mobile rule at the same breakpoint. */
+@media (max-width:768px) {
+  .aurix-blog-post { padding-left:16px !important; padding-right:16px !important; box-sizing:border-box; }
+  .aurix-blog-index { padding-left:16px !important; padding-right:16px !important; box-sizing:border-box; }
+}
+@media (max-width:640px) {
+  .abp-toc { padding:16px 18px; }
+  .abp-author { padding:18px; }
+}
+
+/* --- Blog index: additional section layouts --- */
+
+/* 1. Featured spotlight */
+.abi-feature {
+  display:grid; grid-template-columns:1.1fr 1fr; gap:0;
+  background:var(--white); border:1px solid var(--border-md); border-radius:var(--r-lg);
+  overflow:hidden; text-decoration:none; margin-bottom:40px; transition:box-shadow var(--t);
+}
+.abi-feature:hover { box-shadow:var(--shadow-md); }
+.abi-feature-media { position:relative; min-height:280px; background:var(--off); }
+.abi-feature-media img { width:100%; height:100%; object-fit:cover; display:block; position:absolute; inset:0; }
+.abi-feature-body { padding:32px 36px; display:flex; flex-direction:column; justify-content:center; }
+/* No featured image -- full-width text layout instead of an empty media box */
+.abi-feature--text-only { grid-template-columns:1fr; }
+.abi-feature--text-only .abi-feature-body { padding:36px 40px; }
+.abi-feature--text-only .abi-feature-body h2 { font-size:2rem; max-width:700px; }
+.abi-feature--text-only .abi-feature-body p { max-width:640px; }
+.abi-feature-label {
+  display:inline-flex; align-items:center; gap:6px; width:fit-content;
+  background:var(--gold-pale); color:var(--gold-dk); font-size:.7rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; padding:5px 13px; border-radius:20px; margin-bottom:14px;
+}
+.abi-feature-body h2 { font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--navy); margin:0 0 12px; line-height:1.3; }
+.abi-feature-body p { font-size:.94rem; color:var(--text); line-height:1.65; margin:0 0 18px; }
+
+/* 2. Category browse row */
+.abi-cat-row { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:40px; }
+.abi-cat-pill {
+  display:inline-flex; align-items:center; gap:6px; background:var(--off); color:var(--navy);
+  font-size:.84rem; font-weight:600; padding:8px 16px; border-radius:20px; text-decoration:none;
+  border:1px solid transparent; transition:all var(--t);
+}
+.abi-cat-pill span { background:rgba(13,27,42,.08); color:var(--muted); font-size:.72rem; font-weight:700; padding:1px 7px; border-radius:10px; }
+.abi-cat-pill:hover { border-color:var(--gold); color:var(--gold-dk); }
+
+.abi-section-title { font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--navy); margin:0 0 20px; padding-top:8px; }
+
+/* 4. Quick Reads list layout -- deliberately distinct from the image-card grid */
+.abi-list { display:flex; flex-direction:column; gap:0; border-top:1px solid var(--border); margin-bottom:20px; }
+.abi-list-row {
+  display:flex; align-items:center; gap:18px; padding:20px 4px;
+  border-bottom:1px solid var(--border); text-decoration:none; transition:background var(--t);
+}
+.abi-list-row:hover { background:var(--off); }
+.abi-list-icon { font-size:1.3rem; color:var(--gold); flex-shrink:0; width:28px; text-align:center; }
+.abi-list-body { flex:1; min-width:0; }
+.abi-list-body h3 { font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--navy); margin:0 0 5px; line-height:1.35; }
+.abi-list-body p { font-size:.85rem; color:var(--muted); margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.abi-list-meta { display:flex; flex-direction:column; align-items:flex-end; gap:4px; font-size:.74rem; color:var(--muted); flex-shrink:0; }
+.abi-list-cat { background:var(--gold-pale); color:var(--gold-dk); font-weight:700; padding:2px 9px; border-radius:10px; font-size:.68rem; text-transform:uppercase; }
+.abi-list-arrow { color:var(--border-md); flex-shrink:0; font-size:.8rem; }
+
+@media (max-width:780px) {
+  .abi-feature { grid-template-columns:1fr; }
+  .abi-feature-media { min-height:200px; }
+  .abi-feature-body { padding:24px; }
+  .abi-list-meta { display:none; } /* keep rows compact on small screens */
+  .abi-list-row { gap:14px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AUTHOR ARCHIVE PAGE (author.php)
+   ══════════════════════════════════════════════════════════════════ */
+.aauth-intro {
+  display:flex; gap:24px; align-items:flex-start;
+  background:var(--white); border:1px solid var(--border-md); border-radius:var(--r-lg);
+  padding:32px; margin-bottom:44px;
+}
+.aauth-intro img { border-radius:50%; flex-shrink:0; }
+.aauth-intro-label { display:inline-block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gold-dk, var(--gold)); background:var(--gold-pale); padding:4px 12px; border-radius:20px; margin-bottom:10px; }
+.aauth-intro-name { font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--navy); margin:0 0 12px; }
+.aauth-intro-bio { font-size:.96rem; color:var(--text); line-height:1.7; max-width:640px; margin:0 0 12px; }
+.aauth-intro-link { font-size:.84rem; color:var(--gold-dk, var(--gold)); text-decoration:none; }
+.aauth-intro-link:hover { text-decoration:underline; }
+
+@media (max-width:640px) {
+  .aauth-intro { flex-direction:column; align-items:center; text-align:center; padding:24px 20px; }
+  .aauth-intro-bio { max-width:100%; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ACCOUNT PAGE HERO — definitive mobile fix.
+   This component accumulated three separate, partially-overlapping rule
+   sets over time (base .aurix-account-hero, a full !important override,
+   and a body.aurix-account-page-scoped set), each with their own mobile
+   breakpoints -- fighting each other and producing inconsistent, cut-off
+   layouts depending on exact viewport width. Rather than risk untangling
+   all three, this is a single high-specificity, !important rule placed
+   last in the file so it wins regardless of what the older rules do,
+   guaranteeing a clean stacked layout on mobile. ══════════════════════ */
+@media (max-width:600px) {
+  .aurix-account-hero,
+  body.aurix-account-page .aurix-account-hero {
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    text-align:left !important;
+    gap:14px !important;
+    padding:22px 18px !important;
+  }
+  .aurix-account-hero__avatar { width:56px !important; height:56px !important; font-size:1.5rem !important; }
+  .aurix-account-hero__info,
+  body.aurix-account-page .aurix-account-hero__info {
+    flex:none !important; min-width:0 !important; width:100% !important;
+  }
+  .aurix-account-hero__info h3,
+  body.aurix-account-page .aurix-account-hero__info h3 {
+    font-size:1.15rem !important; margin:0 0 4px !important;
+    white-space:normal !important; overflow:visible !important; text-overflow:clip !important;
+  }
+  .aurix-account-hero__info p,
+  body.aurix-account-page .aurix-account-hero__info p {
+    font-size:.78rem !important; word-break:break-word !important;
+  }
+  .aurix-account-hero__stats,
+  body.aurix-account-page .aurix-account-hero__stats {
+    display:flex !important; width:100% !important; gap:24px !important;
+  }
+  .aurix-account-hero__badge,
+  body.aurix-account-page .aurix-account-hero__badge {
+    display:inline-flex !important; position:static !important; margin-top:4px !important;
+  }
+}
+
+/* Ensure the account hero always clears the sticky mobile header, regardless
+   of what any earlier rule in this page's legacy CSS does to its top spacing. */
+@media (max-width:768px) {
+  .aurix-account-hero,
+  body.aurix-account-page .aurix-account-hero {
+    margin-top:16px !important;
+  }
+}
+
+/* ── Profile picture upload (My Account -> Account Details) ── */
+.aurix-avatar-upload { display:flex; align-items:center; gap:20px; margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+.aurix-avatar-upload__preview { width:88px; height:88px; border-radius:50%; overflow:hidden; flex-shrink:0; background:var(--off); border:3px solid var(--border-md); }
+.aurix-avatar-upload__preview img, .aurix-avatar-upload__gravatar { width:100%; height:100%; object-fit:cover; display:block; }
+.aurix-avatar-upload__controls { flex:1; min-width:0; }
+.aurix-avatar-upload__btn {
+  display:inline-flex; align-items:center; gap:8px; background:var(--navy); color:#fff;
+  font-size:.84rem; font-weight:600; padding:9px 18px; border-radius:8px; cursor:pointer;
+  transition:background var(--t);
+}
+.aurix-avatar-upload__btn:hover { background:var(--gold-dk, var(--gold)); }
+.aurix-avatar-upload__remove { display:block; font-size:.8rem; color:var(--muted); margin-top:10px; cursor:pointer; }
+.aurix-avatar-upload__remove input { margin-right:6px; }
+.aurix-avatar-upload__hint { font-size:.74rem; color:var(--muted); margin:8px 0 0; }
+
+@media (max-width:480px) {
+  .aurix-avatar-upload { flex-direction:column; align-items:flex-start; }
+}
+
+/* Stronger, unconditional fix for the account hero / sticky header overlap --
+   applies at all viewport widths this time (not just mobile), with more
+   clearance, since the previous mobile-only 16px wasn't enough. */
+.aurix-account-hero,
+body.aurix-account-page .aurix-account-hero {
+  margin-top:32px !important;
+}
+@media (max-width:768px) {
+  .aurix-account-hero,
+  body.aurix-account-page .aurix-account-hero {
+    margin-top:40px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ACCOUNT HERO — Instagram-style profile header redesign.
+   Fresh class names (.aig-*) rather than reusing the old .aurix-account-hero__*
+   ones, so this doesn't inherit any of the legacy overlapping rule sets
+   documented above -- a clean slate for this specific redesign.
+   ══════════════════════════════════════════════════════════════════ */
+.aig-top { display:flex; align-items:flex-start; gap:24px; width:100%; }
+.aig-avatar {
+  width:96px; height:96px; border-radius:50%; flex-shrink:0; overflow:hidden;
+  border:3px solid rgba(255,255,255,.25); background:var(--gold);
+}
+.aig-avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+.aig-top-right { flex:1; min-width:0; padding-top:4px; }
+
+.aig-name-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:16px; }
+.aig-name-row h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:#fff; margin:0; }
+.aig-edit-btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:7px 18px; border:1.5px solid rgba(255,255,255,.4); border-radius:8px;
+  color:#fff; font-size:.82rem; font-weight:600; text-decoration:none;
+  background:transparent; transition:all var(--t);
+}
+.aig-edit-btn:hover { background:rgba(255,255,255,.12); border-color:#fff; }
+
+.aig-stats { display:flex; align-items:center; gap:28px; margin-bottom:14px; flex-wrap:wrap; }
+.aig-stat { display:flex; align-items:baseline; gap:6px; }
+.aig-stat__num { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:700; color:#fff; }
+.aig-stat__lbl { font-size:.78rem; color:rgba(255,255,255,.6); }
+
+.aig-bio { font-size:.85rem; color:rgba(255,255,255,.7); margin:0; }
+.aig-bio i { margin-right:6px; color:var(--gold-lt, #d4ae7a); }
+
+@media (max-width:600px) {
+  .aig-top { flex-direction:column; align-items:center; text-align:center; }
+  .aig-avatar { width:80px; height:80px; }
+  .aig-name-row { flex-direction:column; gap:10px; }
+  .aig-stats { justify-content:center; gap:20px; }
+  .aig-top-right { padding-top:0; width:100%; }
+}
+
+/* ── Profile picture upload widget: Instagram-style centered treatment ── */
+.aurix-avatar-upload {
+  flex-direction:column; align-items:center; text-align:center;
+  padding-bottom:28px; margin-bottom:28px;
+}
+.aurix-avatar-upload__preview { width:110px; height:110px; border-width:4px; }
+.aurix-avatar-upload__controls { width:100%; display:flex; flex-direction:column; align-items:center; }
+.aurix-avatar-upload__btn { border-radius:24px; }
+
+/* ══════════════════════════════════════════════════════════════════
+   "ALL CATEGORIES" — mega dropdown menu (desktop only, ≥1200px).
+   This panel shares the .apanel class with the mobile hamburger drawer,
+   so all overrides here are scoped to #aurix-cat-panel's unique ID rather
+   than touching .apanel itself -- the mobile menu keeps its normal
+   off-canvas slide-in behavior untouched. Below 1200px, #aurix-cat-panel
+   also keeps the standard simple-list slide-out drawer, since a wide
+   multi-column mega menu doesn't fit a phone/tablet screen anyway.
+   ══════════════════════════════════════════════════════════════════ */
+@media (min-width:1200px) {
+  #aurix-cat-panel {
+    position:fixed;
+    top:calc(var(--bar-h) + var(--hdr-h) + var(--nav-h) + 12px);
+    left:50%; right:auto; bottom:auto;
+    width:min(1420px, calc(100% - 80px));
+    max-height:70vh;
+    border-radius:16px;
+    box-shadow:0 24px 64px rgba(13,27,42,.28);
+    transform:translateX(-50%) translateY(-14px);
+    opacity:0; visibility:hidden;
+    transition:opacity .25s ease, transform .25s ease, visibility .25s;
+  }
+  #aurix-cat-panel.open {
+    transform:translateX(-50%) translateY(0);
+    opacity:1; visibility:visible;
+  }
+  body.scrolled #aurix-cat-panel {
+    top:calc(60px + var(--nav-h) + 12px);
+  }
+
+  /* A mega menu doesn't need the slide-out drawer's own header/close-X --
+     clicking the "All Categories" button again, or clicking outside, closes it. */
+  #aurix-cat-panel .apanel__head { display:none; }
+
+  #aurix-cat-panel .apanel__body {
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:2px 32px;
+    padding:28px 28px 20px;
+    overflow:visible;
+    max-height:none;
+  }
+  #aurix-cat-panel .apanel__body a {
+    padding:10px 0; border-bottom:1px solid var(--border);
+  }
+
+  #aurix-cat-panel .apanel__foot {
+    grid-column:1/-1;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ACCESSIBILITY: visible keyboard focus indicator, sitewide.
+   Several components explicitly set outline:none (a handful found across
+   the stylesheet) without always providing a replacement indicator --
+   this is a safety net so keyboard navigation always shows SOME visible
+   focus state, added last in the file so it isn't silently overridden by
+   an earlier, more specific outline:none rule. Uses :focus-visible so it
+   only appears for keyboard/assistive-tech navigation, not mouse clicks.
+   ══════════════════════════════════════════════════════════════════ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #2563EB !important;
+  outline-offset: 2px !important;
+}
+
+/* Guaranteed-win override for mobile bottom nav contrast -- the base rule is
+   already correct (var(--muted), ~5.2:1), but this component has a documented
+   history of duplicate/legacy CSS blocks in this file competing for the same
+   selector, so this removes any doubt regardless of what else targets it. */
+#aurix-mob-bot .amob-nav,
+#aurix-mob-bot .amob-nav span {
+  color: #4a5568 !important;
+}
+#aurix-mob-bot .amob-nav:hover,
+#aurix-mob-bot .amob-nav.active,
+#aurix-mob-bot .amob-nav.active span {
+  color: var(--gold) !important;
 }
