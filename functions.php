@@ -1826,3 +1826,167 @@ add_filter('get_avatar_url', function ($url, $id_or_email, $args) {
     $img  = wp_get_attachment_image_src($attachment_id, array($size, $size));
     return $img ? $img[0] : $url;
 }, 10, 3);
+
+/* ================================================================
+   AURIX AUTO-UPDATER
+   Checks the latest GitHub release for a newer theme version and
+   shows the native "Update now" button in Appearance → Themes and
+   Dashboard → Updates.
+
+   Each release (built by .github/workflows/release.yml) carries
+   two assets: aurix-theme.zip and version.json.
+================================================================ */
+
+define('AURIX_VERSION_URL',  'https://github.com/zaheerabas/aurix-theme/releases/latest/download/version.json');
+define('AURIX_DOWNLOAD_URL', 'https://github.com/zaheerabas/aurix-theme/releases/latest/download/aurix-theme.zip');
+define('AURIX_DETAILS_URL',  'https://github.com/zaheerabas/aurix-theme');
+
+/**
+ * Folder name this theme is installed under (e.g. "aurix-theme" or "aurix-v36").
+ * WordPress keys theme updates by folder name, so never hardcode it.
+ */
+function aurix_theme_slug() {
+    return get_template();
+}
+
+/**
+ * Fetch version.json from the latest GitHub release.
+ * Cached for 12 hours; failures are cached for 1 hour.
+ */
+function aurix_get_remote_version() {
+    $cache_key = 'aurix_remote_version';
+    $cached    = get_transient($cache_key);
+    if ($cached !== false) return $cached ?: false;
+
+    $response = wp_remote_get(AURIX_VERSION_URL, [
+        'timeout'    => 10,
+        'user-agent' => 'AurixThemeUpdater/2.0 WordPress/' . get_bloginfo('version'),
+    ]);
+
+    $data = null;
+    if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+        $data = json_decode(wp_remote_retrieve_body($response), true);
+    }
+
+    if (empty($data['version'])) {
+        set_transient($cache_key, 0, HOUR_IN_SECONDS);
+        return false;
+    }
+
+    set_transient($cache_key, $data, 12 * HOUR_IN_SECONDS);
+    return $data;
+}
+
+/**
+ * Inject update info into the WordPress theme update transient.
+ * This makes the native WP "Update" button appear on the Themes page.
+ */
+add_filter('pre_set_site_transient_update_themes', function($transient) {
+    if (empty($transient->checked)) return $transient;
+
+    $slug   = aurix_theme_slug();
+    $remote = aurix_get_remote_version();
+    if (!$remote) return $transient;
+
+    $current_version = $transient->checked[$slug] ?? wp_get_theme($slug)->get('Version');
+
+    $item = [
+        'theme'        => $slug,
+        'new_version'  => $remote['version'],
+        'url'          => AURIX_DETAILS_URL,
+        'package'      => $remote['download_url'] ?? AURIX_DOWNLOAD_URL,
+        'requires'     => $remote['requires']     ?? '5.8',
+        'requires_php' => $remote['requires_php'] ?? '7.4',
+    ];
+
+    if (version_compare($remote['version'], $current_version, '>')) {
+        $transient->response[$slug] = $item;
+    } else {
+        unset($transient->response[$slug]);
+        $transient->no_update[$slug] = $item;
+    }
+
+    return $transient;
+});
+
+/**
+ * Show theme info (changelog, description) when user clicks "View version details".
+ */
+add_filter('themes_api', function($result, $action, $args) {
+    if ($action !== 'theme_information') return $result;
+    if (($args->slug ?? '') !== aurix_theme_slug()) return $result;
+
+    $remote = aurix_get_remote_version();
+    if (!$remote) return $result;
+
+    return (object) [
+        'name'          => $remote['name']         ?? 'Aurix International',
+        'slug'          => aurix_theme_slug(),
+        'version'       => $remote['version'],
+        'author'        => $remote['author']       ?? 'ZaheerAbbas',
+        'homepage'      => AURIX_DETAILS_URL,
+        'download_link' => $remote['download_url'] ?? AURIX_DOWNLOAD_URL,
+        'last_updated'  => $remote['last_updated'] ?? '',
+        'requires'      => $remote['requires']     ?? '5.8',
+        'requires_php'  => $remote['requires_php'] ?? '7.4',
+        'sections'      => [
+            'description' => $remote['description'] ?? 'Aurix International custom WooCommerce theme.',
+            'changelog'   => nl2br(esc_html($remote['changelog'] ?? 'See GitHub for changelog.')),
+        ],
+    ];
+}, 20, 3);
+
+/**
+ * The release zip contains an "aurix-theme/" folder. If this site has the
+ * theme installed under another folder name (e.g. "aurix-v36"), rename the
+ * extracted folder so the update replaces the installed theme in place.
+ */
+add_filter('upgrader_source_selection', function($source, $remote_source, $upgrader, $hook_extra = []) {
+    global $wp_filesystem;
+
+    $slug = aurix_theme_slug();
+    if (($hook_extra['theme'] ?? '') !== $slug) return $source;
+
+    $desired = trailingslashit($remote_source) . $slug;
+    if (untrailingslashit($source) === $desired) return $source;
+
+    if ($wp_filesystem && $wp_filesystem->move(untrailingslashit($source), $desired, true)) {
+        return trailingslashit($desired);
+    }
+
+    return new WP_Error('aurix_rename_failed', __('Could not prepare the Aurix theme update folder.', 'aurix'));
+}, 10, 4);
+
+/**
+ * Clear the cached release info after an update, and when the admin
+ * clicks "Check again" on Dashboard → Updates.
+ */
+add_action('upgrader_process_complete', function($upgrader, $options) {
+    if (($options['type'] ?? '') === 'theme') {
+        delete_transient('aurix_remote_version');
+    }
+}, 10, 2);
+
+add_action('load-update-core.php', function() {
+    if (!empty($_GET['force-check'])) {
+        delete_transient('aurix_remote_version');
+    }
+});
+
+/**
+ * Admin notice on Themes page showing current version + GitHub link.
+ */
+add_action('admin_notices', function() {
+    $screen = get_current_screen();
+    if (!$screen || $screen->id !== 'themes') return;
+    $v = wp_get_theme(aurix_theme_slug())->get('Version');
+    ?>
+    <div class="notice notice-info is-dismissible">
+        <p>
+            <strong>Aurix International Theme</strong> — version <?php echo esc_html($v); ?> &nbsp;|&nbsp;
+            <a href="<?php echo esc_url(AURIX_DETAILS_URL . '/releases'); ?>" target="_blank" rel="noopener">View releases on GitHub</a> &nbsp;|&nbsp;
+            <a href="<?php echo esc_url(admin_url('update-core.php?force-check=1')); ?>">Check for updates</a>
+        </p>
+    </div>
+    <?php
+});

@@ -1,0 +1,70 @@
+name: Release theme
+
+# Builds aurix-theme.zip and publishes a GitHub release whenever the
+# "Version:" line in style.css changes on main. Installed sites pick the
+# release up through the auto-updater in functions.php.
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read theme version from style.css
+        id: version
+        run: |
+          VERSION=$(grep -m1 -E '^[[:space:]]*Version:' style.css | sed -E 's/^[[:space:]]*Version:[[:space:]]*//' | tr -d '\r[:space:]')
+          if [ -z "$VERSION" ]; then echo "No Version: line in style.css"; exit 1; fi
+          if [[ "$GITHUB_REF" == refs/tags/* && "${GITHUB_REF_NAME}" != "v$VERSION" ]]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match style.css version $VERSION"; exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether this version is already released
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "Release v${{ steps.version.outputs.version }} already exists, nothing to do."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build theme zip and version.json
+        if: steps.check.outputs.exists != 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          mkdir -p dist/aurix-theme
+          git archive HEAD | tar -x -C dist/aurix-theme
+          rm -rf dist/aurix-theme/.github dist/aurix-theme/.gitignore dist/aurix-theme/error_log
+          (cd dist && zip -qr aurix-theme.zip aurix-theme)
+
+          jq --arg v "$VERSION" \
+             --arg d "$(date -u +%Y-%m-%d)" \
+             --arg url "https://github.com/${GITHUB_REPOSITORY}/releases/download/v$VERSION/aurix-theme.zip" \
+             '.version = $v | .last_updated = $d | .download_url = $url' \
+             version.json > dist/version.json
+          cat dist/version.json
+
+      - name: Publish release
+        if: steps.check.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          jq -r '.changelog // "Theme update."' dist/version.json > dist/notes.md
+          gh release create "v$VERSION" dist/aurix-theme.zip dist/version.json \
+            --target "$GITHUB_SHA" \
+            --title "Aurix Theme v$VERSION" \
+            --notes-file dist/notes.md \
+            --latest
