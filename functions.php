@@ -7,6 +7,7 @@ if ( ! defined('ABSPATH') ) exit;
 
 require_once get_template_directory() . '/inc/ajax-handlers.php';
 require_once get_template_directory() . '/inc/nav-walker.php';
+require_once get_template_directory() . '/inc/blog.php';
 
 /* ═══ 1. THEME SETUP ═══ */
 function aurix_setup() {
@@ -1101,7 +1102,8 @@ add_action('wp_ajax_nopriv_adc_distributor_signup', 'aurix_distributor_signup');
 
 /* Enqueue shop CSS/JS on archive/shop pages */
 add_action('wp_enqueue_scripts', function() {
-    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() && ! is_archive() ) return;
+    // Product archives only -- blog category/tag/author archives use css/blog.css.
+    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() && ! is_post_type_archive('product') && ! is_tax( get_object_taxonomies('product') ) ) return;
     wp_enqueue_style(
         'aurix-shop',
         get_template_directory_uri() . '/css/shop.css',

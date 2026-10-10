@@ -1,5 +1,5 @@
 {
-  "version": "36.94.0",
+  "version": "36.95.0",
   "name": "Aurix International",
   "slug": "aurix-theme",
   "author": "ZaheerAbbas",
@@ -9,5 +9,5 @@
   "last_updated": "2026-10-10",
   "requires": "5.8",
   "requires_php": "7.4",
-  "changelog": "v36.94.0 — Aurix v36 theme (new About, Blog, Contact, Distributors, FAQ and Kit Builder pages) with one-click updates from GitHub releases restored."
+  "changelog": "v36.95.0 — Completely redesigned blog and article pages: new navy hero with search and category filters, featured stories, cleaner article cards, and a new article layout with sticky table of contents, share bar, reading progress, author card, related articles and enquiry call-to-action. Category, tag, search and author pages use the same design."
 }

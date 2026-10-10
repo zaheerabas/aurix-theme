@@ -1,260 +1,278 @@
-<?php get_header();
+<?php
+/**
+ * Single article.
+ *
+ * Layout: navy hero (breadcrumb, category, title, summary, author/meta) with
+ * the featured image overlapping its lower edge, then a three-column body on
+ * wide screens — sticky share rail, article, sticky sidebar with the table of
+ * contents and an enquiry card. Below the article: tags, author card,
+ * previous/next, related articles and the enquiry band.
+ */
+get_header();
 
-while ( have_posts() ) : the_post();
+while ( have_posts() ) :
+	the_post();
 
-	// Reading time (avg 200 wpm), computed from plain-text content.
-	$word_count  = str_word_count( wp_strip_all_tags( get_the_content() ) );
-	$reading_min = max( 1, (int) ceil( $word_count / 200 ) );
+	$axa_id        = get_the_ID();
+	$axa_cat       = aurix_blog_primary_cat();
+	$axa_author_id = (int) get_the_author_meta( 'ID' );
+	$axa_author    = get_author_posts_url( $axa_author_id );
+	$axa_permalink = get_permalink();
+	$axa_title     = get_the_title();
 
-	$categories  = get_the_category();
-	$primary_cat = ! empty( $categories ) ? $categories[0] : null;
-	$has_image   = has_post_thumbnail();
+	// Run the content once, give every H2 an id and collect them for the
+	// table of contents.
+	$axa_toc     = array();
+	$axa_used    = array();
+	$axa_content = apply_filters( 'the_content', get_the_content() );
+	$axa_content = preg_replace_callback( '/<h2([^>]*)>(.*?)<\/h2>/is', function ( $m ) use ( &$axa_toc, &$axa_used ) {
+		$text = trim( wp_strip_all_tags( $m[2] ) );
+		if ( preg_match( '/\sid=["\']([^"\']+)["\']/', $m[1], $id ) ) {
+			$slug = $id[1];
+			$attr = $m[1];
+		} else {
+			$base = sanitize_title( $text );
+			$base = $base ? $base : 'section';
+			$slug = $base;
+			for ( $n = 2; isset( $axa_used[ $slug ] ); $n++ ) {
+				$slug = $base . '-' . $n;
+			}
+			$attr = $m[1] . ' id="' . esc_attr( $slug ) . '"';
+		}
+		$axa_used[ $slug ] = true;
+		$axa_toc[]         = array( 'slug' => $slug, 'text' => $text );
+		return '<h2' . $attr . '>' . $m[2] . '</h2>';
+	}, $axa_content );
 
-	// Build the content once, then extract H2s into a table of contents,
-	// inject matching #ids so the TOC links jump correctly, and -- for
-	$content = apply_filters( 'the_content', get_the_content() );
-	$toc     = array();
-	$content = preg_replace_callback( '/<h2([^>]*)>(.*?)<\/h2>/is', function ( $m ) use ( &$toc ) {
-		$text  = wp_strip_all_tags( $m[2] );
-		$slug  = sanitize_title( $text );
-		$toc[] = array( 'slug' => $slug, 'text' => $text );
-		return '<h2' . $m[1] . ' id="' . esc_attr( $slug ) . '">' . $m[2] . '</h2>';
-	}, $content );
-
-	$blog_url = home_url( '/blog' );
+	$axa_share = array(
+		'facebook' => array( 'Facebook', 'fab fa-facebook-f', 'https://www.facebook.com/sharer/sharer.php?u=' . rawurlencode( $axa_permalink ) ),
+		'x'        => array( 'X', 'fab fa-x-twitter', 'https://twitter.com/intent/tweet?url=' . rawurlencode( $axa_permalink ) . '&text=' . rawurlencode( wp_specialchars_decode( $axa_title, ENT_QUOTES ) ) ),
+		'linkedin' => array( 'LinkedIn', 'fab fa-linkedin-in', 'https://www.linkedin.com/sharing/share-offsite/?url=' . rawurlencode( $axa_permalink ) ),
+		'whatsapp' => array( 'WhatsApp', 'fab fa-whatsapp', 'https://wa.me/?text=' . rawurlencode( wp_specialchars_decode( $axa_title, ENT_QUOTES ) . ' ' . $axa_permalink ) ),
+	);
+	$axa_share_html = '';
+	foreach ( $axa_share as $axa_key => $axa_s ) {
+		$axa_share_html .= '<a class="axa-share__btn axa-share__btn--' . esc_attr( $axa_key ) . '" href="' . esc_url( $axa_s[2] ) . '" target="_blank" rel="noopener" aria-label="Share on ' . esc_attr( $axa_s[0] ) . '"><i class="' . esc_attr( $axa_s[1] ) . '" aria-hidden="true"></i></a>';
+	}
+	$axa_share_html .= '<button type="button" class="axa-share__btn axa-copy" data-url="' . esc_url( $axa_permalink ) . '" aria-label="Copy link"><i class="fas fa-link" aria-hidden="true"></i><span class="axa-copy__tip" role="status"></span></button>';
 	?>
 
-	<!-- Header -- clean, light treatment (breadcrumb/category/title/meta on
-	     the page's normal background) rather than a dark full-bleed overlay
-	     band. The featured image, if there is one, displays as a normal
-	     contained image below the meta row instead of as a background. -->
-	<div class="aurix-page-wrap abp-header-wrap" style="max-width:1400px;">
-		<nav class="abp-breadcrumb" aria-label="Breadcrumb">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
-			<span>/</span>
-			<a href="<?php echo esc_url( $blog_url ); ?>">Blog</a>
-			<span>/</span>
-			<span class="abp-breadcrumb-current"><?php the_title(); ?></span>
-		</nav>
+	<div class="axa-progress" aria-hidden="true"><span id="axaProgress"></span></div>
 
-		<h1 class="page-title abp-title"><?php the_title(); ?></h1>
+	<article id="post-<?php the_ID(); ?>" <?php post_class( 'axa' ); ?>>
 
-		<div class="abp-meta">
-			<?php if ( $primary_cat ) : ?>
-				<span><a href="<?php echo esc_url( get_category_link( $primary_cat->term_id ) ); ?>" class="abp-cat-badge abp-cat-badge--inline"><?php echo esc_html( $primary_cat->name ); ?></a></span>
-			<?php endif; ?>
-			<span><i class="fas fa-calendar"></i> <?php echo esc_html( get_the_date() ); ?></span>
-			<span class="abp-meta-author"><?php echo get_avatar( get_the_author_meta( 'ID' ), 22, '', '', array( 'class' => 'abp-meta-avatar' ) ); ?> <a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" class="abp-meta-author-link"><?php the_author(); ?></a></span>
-			<span><i class="fas fa-clock"></i> <?php echo esc_html( $reading_min ); ?> min read</span>
-		</div>
+		<header class="axa-hero<?php echo has_post_thumbnail() ? ' has-media' : ''; ?>">
+			<div class="axa-hero__inner">
+				<nav class="axb-crumbs" aria-label="Breadcrumb">
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
+					<i class="fas fa-chevron-right" aria-hidden="true"></i>
+					<a href="<?php echo esc_url( aurix_blog_url() ); ?>">Blog</a>
+					<?php if ( $axa_cat ) : ?>
+						<i class="fas fa-chevron-right" aria-hidden="true"></i>
+						<a href="<?php echo esc_url( get_category_link( $axa_cat ) ); ?>"><?php echo esc_html( $axa_cat->name ); ?></a>
+					<?php endif; ?>
+				</nav>
 
-		<?php if ( $has_image ) : ?>
-			<div class="abp-thumb"><?php the_post_thumbnail( 'large' ); ?></div>
+				<?php if ( $axa_cat ) : ?>
+					<a class="axb-chip axb-chip--light" href="<?php echo esc_url( get_category_link( $axa_cat ) ); ?>"><?php echo esc_html( $axa_cat->name ); ?></a>
+				<?php endif; ?>
+
+				<h1 class="axa-title"><?php the_title(); ?></h1>
+
+				<?php if ( has_excerpt() ) : ?>
+					<p class="axa-dek"><?php echo esc_html( get_the_excerpt() ); ?></p>
+				<?php endif; ?>
+
+				<div class="axa-byline">
+					<a class="axa-byline__author" href="<?php echo esc_url( $axa_author ); ?>">
+						<?php echo get_avatar( $axa_author_id, 44, 'mystery', '', array( 'class' => 'axa-avatar' ) ); ?>
+						<span>
+							<small>Written by</small>
+							<strong><?php the_author(); ?></strong>
+						</span>
+					</a>
+					<span class="axa-byline__sep" aria-hidden="true"></span>
+					<span class="axa-byline__item">
+						<small>Published</small>
+						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'M j, Y' ) ); ?></time>
+					</span>
+					<?php if ( get_the_modified_date( 'Ymd' ) > get_the_date( 'Ymd' ) ) : ?>
+						<span class="axa-byline__item">
+							<small>Updated</small>
+							<time datetime="<?php echo esc_attr( get_the_modified_date( 'c' ) ); ?>"><?php echo esc_html( get_the_modified_date( 'M j, Y' ) ); ?></time>
+						</span>
+					<?php endif; ?>
+					<span class="axa-byline__item">
+						<small>Reading time</small>
+						<span><?php echo (int) aurix_blog_read_time(); ?> min</span>
+					</span>
+				</div>
+			</div>
+		</header>
+
+		<?php if ( has_post_thumbnail() ) : ?>
+			<figure class="axa-media">
+				<?php the_post_thumbnail( 'full', array( 'loading' => 'eager', 'fetchpriority' => 'high', 'sizes' => '(max-width: 1180px) 100vw, 1180px' ) ); ?>
+				<?php $axa_caption = get_the_post_thumbnail_caption(); ?>
+				<?php if ( $axa_caption ) : ?>
+					<figcaption><?php echo esc_html( $axa_caption ); ?></figcaption>
+				<?php endif; ?>
+			</figure>
 		<?php endif; ?>
-	</div>
 
-	<!-- Reading progress bar -->
-	<div class="abp-progress-track"><div class="abp-progress-fill" id="abpProgressFill"></div></div>
+		<div class="axa-layout<?php echo count( $axa_toc ) >= 2 ? ' has-toc' : ''; ?>">
 
-	<div class="aurix-page-wrap aurix-blog-post" style="max-width:1400px;">
+			<aside class="axa-rail" aria-label="Share this article">
+				<span class="axa-rail__label">Share</span>
+				<div class="axa-share axa-share--col"><?php echo $axa_share_html; // phpcs:ignore -- escaped above ?></div>
+			</aside>
 
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'abp-article' ); ?>>
-
-			<div class="abp-sidebar">
-				<?php if ( count( $toc ) >= 2 ) : ?>
-					<details class="abp-toc" id="abpToc" open>
-						<summary class="abp-toc-title"><i class="fas fa-list-ul"></i> In this article <i class="fas fa-chevron-down abp-toc-chevron"></i></summary>
-						<ul>
-							<?php foreach ( $toc as $item ) : ?>
-								<li><a href="#<?php echo esc_attr( $item['slug'] ); ?>"><?php echo esc_html( $item['text'] ); ?></a></li>
+			<div class="axa-main">
+				<?php if ( count( $axa_toc ) >= 2 ) : ?>
+					<details class="axa-toc axa-toc--inline">
+						<summary><span><i class="fas fa-list-ul" aria-hidden="true"></i> In this article</span><i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
+						<ol>
+							<?php foreach ( $axa_toc as $axa_item ) : ?>
+								<li><a href="#<?php echo esc_attr( $axa_item['slug'] ); ?>"><?php echo esc_html( $axa_item['text'] ); ?></a></li>
 							<?php endforeach; ?>
-						</ul>
+						</ol>
 					</details>
 				<?php endif; ?>
 
-				<!-- Desktop-only: compact author card + recent posts (the full
-				     author bio and related-posts grid at the bottom of the
-				     article already cover this on mobile/tablet, so these
-				     stay hidden there rather than showing the same thing twice). -->
-				<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" class="abp-sidebar-author">
-					<?php echo get_avatar( get_the_author_meta( 'ID' ), 56 ); ?>
-					<div>
-						<span class="abp-sidebar-author-label">Author</span>
-						<div class="abp-sidebar-author-name"><?php the_author(); ?></div>
-						<?php $short_bio = get_the_author_meta( 'description' ); ?>
-						<?php if ( $short_bio ) : ?>
-							<p><?php echo esc_html( wp_trim_words( $short_bio, 14 ) ); ?></p>
-						<?php else : ?>
-							<span class="abp-sidebar-author-view">View profile <i class="fas fa-arrow-right"></i></span>
-						<?php endif; ?>
-					</div>
-				</a>
+				<div class="axa-content entry-content">
+					<?php echo $axa_content; // phpcs:ignore -- already run through the_content filters ?>
+				</div>
 
 				<?php
-				$recent_posts = get_posts( array(
-					'posts_per_page' => 4,
-					'post__not_in'   => array( get_the_ID() ),
-					'orderby'        => 'date',
+				wp_link_pages( array(
+					'before' => '<nav class="axa-pages"><span>Pages:</span>',
+					'after'  => '</nav>',
 				) );
-				if ( $recent_posts ) :
-					?>
-					<div class="abp-sidebar-recent">
-						<div class="abp-sidebar-recent-title">Recent Posts</div>
-						<?php foreach ( $recent_posts as $rp ) : ?>
-							<a href="<?php echo esc_url( get_permalink( $rp ) ); ?>" class="abp-sidebar-recent-item">
-								<?php if ( has_post_thumbnail( $rp->ID ) ) : ?>
-									<div class="abp-sidebar-recent-thumb"><?php echo get_the_post_thumbnail( $rp->ID, 'thumbnail' ); ?></div>
-								<?php endif; ?>
-								<div>
-									<h4><?php echo esc_html( get_the_title( $rp ) ); ?></h4>
-									<span><?php echo esc_html( get_the_date( '', $rp ) ); ?></span>
-								</div>
-							</a>
-						<?php endforeach; ?>
-					</div>
-				<?php endif; ?>
-			</div>
-
-			<div class="entry-content"><?php echo $content; // phpcs:ignore -- already run through the_content filters above ?></div>
-
-			<?php
-			$tags = get_the_tags();
-			if ( $tags ) :
 				?>
-				<div class="abp-tags">
-					<?php foreach ( $tags as $tag ) : ?>
-						<a href="<?php echo esc_url( get_tag_link( $tag->term_id ) ); ?>" class="abp-tag"><?php echo esc_html( $tag->name ); ?></a>
-					<?php endforeach; ?>
-				</div>
-			<?php endif; ?>
 
-			<!-- Share -->
-			<div class="abp-share">
-				<span class="abp-share-label">Share this article</span>
-				<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode( get_permalink() ); ?>" target="_blank" rel="noopener" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
-				<a href="https://twitter.com/intent/tweet?url=<?php echo urlencode( get_permalink() ); ?>&text=<?php echo urlencode( get_the_title() ); ?>" target="_blank" rel="noopener" aria-label="Share on X"><i class="fab fa-x-twitter"></i></a>
-				<a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode( get_permalink() ); ?>" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-				<button type="button" class="abp-copy-link" data-url="<?php echo esc_url( get_permalink() ); ?>" aria-label="Copy link"><i class="fas fa-link"></i></button>
-			</div>
-
-			<!-- Author bio -->
-			<div class="abp-author">
-				<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>">
-					<?php echo get_avatar( get_the_author_meta( 'ID' ), 64 ); ?>
-				</a>
-				<div class="abp-author-body">
-					<span class="abp-author-label">Author</span>
-					<div class="abp-author-name">
-						<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>"><?php the_author(); ?></a>
-					</div>
-					<?php
-					$bio          = get_the_author_meta( 'description' );
-					$author_id    = get_the_author_meta( 'ID' );
-					$author_count = (int) count_user_posts( $author_id, 'post' );
-					?>
-					<?php if ( $bio ) : ?>
-						<p class="abp-author-bio"><?php echo esc_html( $bio ); ?></p>
+				<footer class="axa-foot">
+					<?php $axa_tags = get_the_tags(); ?>
+					<?php if ( $axa_tags ) : ?>
+						<div class="axa-tags">
+							<?php foreach ( $axa_tags as $axa_tag ) : ?>
+								<a href="<?php echo esc_url( get_tag_link( $axa_tag ) ); ?>">#<?php echo esc_html( $axa_tag->name ); ?></a>
+							<?php endforeach; ?>
+						</div>
 					<?php endif; ?>
-					<div class="abp-author-actions">
-						<?php if ( $author_count > 1 ) : ?>
-							<span class="abp-author-count"><?php echo esc_html( $author_count ); ?> articles published</span>
-						<?php endif; ?>
-						<a href="<?php echo esc_url( get_author_posts_url( $author_id ) ); ?>" class="abp-author-btn">View all articles <i class="fas fa-arrow-right"></i></a>
+
+					<div class="axa-share-row">
+						<span>Found this useful? Share it</span>
+						<div class="axa-share"><?php echo $axa_share_html; // phpcs:ignore -- escaped above ?></div>
 					</div>
-				</div>
-			</div>
 
-		</article>
-
-		<!-- Prev / Next -->
-		<?php
-		$prev = get_previous_post();
-		$next = get_next_post();
-		if ( $prev || $next ) :
-			?>
-			<div class="abp-pagenav">
-				<?php if ( $prev ) : ?>
-					<a href="<?php echo esc_url( get_permalink( $prev ) ); ?>" class="abp-pagenav-link abp-pagenav-prev">
-						<span class="abp-pagenav-dir"><i class="fas fa-arrow-left"></i> Previous</span>
-						<span class="abp-pagenav-title"><?php echo esc_html( get_the_title( $prev ) ); ?></span>
-					</a>
-				<?php else : ?><span></span><?php endif; ?>
-				<?php if ( $next ) : ?>
-					<a href="<?php echo esc_url( get_permalink( $next ) ); ?>" class="abp-pagenav-link abp-pagenav-next">
-						<span class="abp-pagenav-dir">Next <i class="fas fa-arrow-right"></i></span>
-						<span class="abp-pagenav-title"><?php echo esc_html( get_the_title( $next ) ); ?></span>
-					</a>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
-
-		<!-- Related posts -->
-		<?php
-		$related_args = array(
-			'posts_per_page' => 3,
-			'post__not_in'   => array( get_the_ID() ),
-			'orderby'        => 'rand',
-		);
-		if ( $primary_cat ) {
-			$related_args['category__in'] = array( $primary_cat->term_id );
-		}
-		$related = get_posts( $related_args );
-		if ( $related ) :
-			?>
-			<div class="abp-related">
-				<h2 class="abp-related-title">Related Articles</h2>
-				<div class="abp-related-grid">
-					<?php foreach ( $related as $rp ) : ?>
-						<a href="<?php echo esc_url( get_permalink( $rp ) ); ?>" class="abp-related-card<?php echo has_post_thumbnail( $rp->ID ) ? '' : ' abp-related-card--text-only'; ?>">
-							<?php if ( has_post_thumbnail( $rp->ID ) ) : ?>
-								<div class="abp-related-thumb"><?php echo get_the_post_thumbnail( $rp->ID, 'medium' ); ?></div>
+					<?php
+					$axa_bio   = get_the_author_meta( 'description' );
+					$axa_count = (int) count_user_posts( $axa_author_id, 'post', true );
+					?>
+					<section class="axa-author" aria-label="About the author">
+						<a href="<?php echo esc_url( $axa_author ); ?>" class="axa-author__photo"><?php echo get_avatar( $axa_author_id, 88, 'mystery' ); ?></a>
+						<div class="axa-author__body">
+							<span class="axb-eyebrow">About the author</span>
+							<h2 class="axa-author__name"><a href="<?php echo esc_url( $axa_author ); ?>"><?php the_author(); ?></a></h2>
+							<?php if ( $axa_bio ) : ?>
+								<p><?php echo esc_html( $axa_bio ); ?></p>
 							<?php endif; ?>
-							<div class="abp-related-body">
-								<span class="abp-related-date"><?php echo esc_html( get_the_date( '', $rp ) ); ?></span>
-								<h3><?php echo esc_html( get_the_title( $rp ) ); ?></h3>
-							</div>
-						</a>
-					<?php endforeach; ?>
+							<a class="axa-author__link" href="<?php echo esc_url( $axa_author ); ?>">
+								<?php echo $axa_count > 1 ? 'View all ' . (int) $axa_count . ' articles' : 'View profile'; ?>
+								<i class="fas fa-arrow-right" aria-hidden="true"></i>
+							</a>
+						</div>
+					</section>
+				</footer>
+			</div>
+
+			<aside class="axa-side">
+				<?php if ( count( $axa_toc ) >= 2 ) : ?>
+					<nav class="axa-toc axa-toc--side" aria-label="In this article">
+						<div class="axa-toc__head">
+							<span>In this article</span>
+							<span class="axa-toc__pct" id="axaPct">0%</span>
+						</div>
+						<ol>
+							<?php foreach ( $axa_toc as $axa_item ) : ?>
+								<li><a href="#<?php echo esc_attr( $axa_item['slug'] ); ?>"><?php echo esc_html( $axa_item['text'] ); ?></a></li>
+							<?php endforeach; ?>
+						</ol>
+					</nav>
+				<?php endif; ?>
+
+				<div class="axa-enquiry">
+					<span class="axa-enquiry__icon"><i class="fas fa-tooth" aria-hidden="true"></i></span>
+					<h3>Need these instruments in bulk?</h3>
+					<p>Wholesale pricing, OEM and private label from our Sialkot factory.</p>
+					<a class="axb-btn axb-btn--gold axb-btn--block" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get a quote</a>
+					<?php if ( function_exists( 'wc_get_page_permalink' ) ) : ?>
+						<a class="axa-enquiry__link" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Browse the catalogue <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+					<?php endif; ?>
+				</div>
+			</aside>
+		</div>
+	</article>
+
+	<?php
+	$axa_prev = get_previous_post();
+	$axa_next = get_next_post();
+	if ( $axa_prev || $axa_next ) :
+		?>
+		<nav class="axa-pager" aria-label="More articles">
+			<?php foreach ( array( 'prev' => $axa_prev, 'next' => $axa_next ) as $axa_dir => $axa_p ) : ?>
+				<?php if ( ! $axa_p ) : ?>
+					<span class="axa-pager__empty"></span>
+					<?php continue; ?>
+				<?php endif; ?>
+				<a class="axa-pager__link axa-pager__link--<?php echo esc_attr( $axa_dir ); ?>" href="<?php echo esc_url( get_permalink( $axa_p ) ); ?>">
+					<?php if ( has_post_thumbnail( $axa_p ) ) : ?>
+						<span class="axa-pager__thumb"><?php echo get_the_post_thumbnail( $axa_p, 'thumbnail' ); ?></span>
+					<?php endif; ?>
+					<span class="axa-pager__text">
+						<small><?php echo 'prev' === $axa_dir ? '<i class="fas fa-arrow-left" aria-hidden="true"></i> Previous article' : 'Next article <i class="fas fa-arrow-right" aria-hidden="true"></i>'; ?></small>
+						<strong><?php echo esc_html( get_the_title( $axa_p ) ); ?></strong>
+					</span>
+				</a>
+			<?php endforeach; ?>
+		</nav>
+	<?php endif; ?>
+
+	<?php
+	// Related: same category first, topped up with the latest posts.
+	$axa_related = array();
+	if ( $axa_cat ) {
+		$axa_related = get_posts( array(
+			'posts_per_page' => 3,
+			'post__not_in'   => array( $axa_id ),
+			'cat'            => $axa_cat->term_id,
+		) );
+	}
+	if ( count( $axa_related ) < 3 ) {
+		$axa_related = array_merge( $axa_related, get_posts( array(
+			'posts_per_page' => 3 - count( $axa_related ),
+			'post__not_in'   => array_merge( array( $axa_id ), wp_list_pluck( $axa_related, 'ID' ) ),
+		) ) );
+	}
+	if ( $axa_related ) :
+		?>
+		<section class="axa-related">
+			<div class="axb-wrap">
+				<div class="axb-section-head">
+					<h2>Keep reading</h2>
+					<a href="<?php echo esc_url( aurix_blog_url() ); ?>">All articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="axb-grid">
+					<?php foreach ( $axa_related as $axa_r ) {
+						aurix_blog_card( $axa_r, 'card' );
+					} ?>
 				</div>
 			</div>
-		<?php endif; ?>
+		</section>
+	<?php endif; ?>
 
-	</div>
+	<?php aurix_blog_cta(); ?>
 
 <?php endwhile; ?>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-	// Different default per device: collapsed on mobile (saves scroll space),
-	// expanded on tablet/desktop (matches the existing inline-box behavior).
-	var toc = document.getElementById('abpToc');
-	if (toc && window.innerWidth < 768) {
-		toc.removeAttribute('open');
-	}
-
-	var copyBtn = document.querySelector('.abp-copy-link');
-	if (copyBtn) {
-		copyBtn.addEventListener('click', function () {
-			navigator.clipboard.writeText(copyBtn.dataset.url).then(function () {
-				var icon = copyBtn.querySelector('i');
-				icon.className = 'fas fa-check';
-				setTimeout(function () { icon.className = 'fas fa-link'; }, 1500);
-			});
-		});
-	}
-
-	var article = document.querySelector('.abp-article');
-	var fill = document.getElementById('abpProgressFill');
-	if (article && fill) {
-		window.addEventListener('scroll', function () {
-			var rect = article.getBoundingClientRect();
-			var articleHeight = article.offsetHeight;
-			var viewportH = window.innerHeight;
-			var scrolled = Math.min(Math.max((-rect.top) / (articleHeight - viewportH), 0), 1);
-			fill.style.width = (scrolled * 100) + '%';
-		}, { passive: true });
-	}
-});
-</script>
 
 <?php get_footer(); ?>
