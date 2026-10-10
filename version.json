@@ -1,5 +1,5 @@
 {
-  "version": "36.95.0",
+  "version": "36.96.0",
   "name": "Aurix International",
   "slug": "aurix-theme",
   "author": "ZaheerAbbas",
@@ -9,5 +9,5 @@
   "last_updated": "2026-10-10",
   "requires": "5.8",
   "requires_php": "7.4",
-  "changelog": "v36.95.0 — Completely redesigned blog and article pages: new navy hero with search and category filters, featured stories, cleaner article cards, and a new article layout with sticky table of contents, share bar, reading progress, author card, related articles and enquiry call-to-action. Category, tag, search and author pages use the same design."
+  "changelog": "v36.96.0 — Blog: image frames now follow each featured image's own size (no cropping); the blog page gains separate sections per category with different layouts (magazine, carousel, timeline, feature panels, masonry and numbered list); the article page gets improved typography, links, lists, quotes, tables, images (click to enlarge), FAQs and embeds."
 }

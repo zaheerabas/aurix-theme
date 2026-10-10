@@ -102,41 +102,102 @@ function aurix_blog_url() {
 }
 
 /**
+ * Width / height of a post's featured image (from attachment metadata), so
+ * every image frame matches the uploaded image instead of cropping it.
+ * Falls back to 3:2 when there is no image.
+ *
+ * @return string CSS aspect-ratio value, e.g. "1600 / 1000".
+ */
+function aurix_blog_ratio( $post = null ) {
+	$id   = get_post_thumbnail_id( $post );
+	$meta = $id ? wp_get_attachment_metadata( $id ) : array();
+	if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+		return (int) $meta['width'] . ' / ' . (int) $meta['height'];
+	}
+	return '3 / 2';
+}
+
+/**
+ * Featured image in a frame that follows the image's own proportions.
+ *
+ * @param WP_Post|int $post
+ * @param string      $size  Image size to request (srcset still lets the browser pick).
+ * @param bool        $eager Load immediately (above-the-fold images).
+ * @param string      $sizes Optional sizes attribute.
+ */
+function aurix_blog_media( $post, $size = 'medium_large', $eager = false, $sizes = '' ) {
+	$post = get_post( $post );
+	$attr = array( 'loading' => $eager ? 'eager' : 'lazy' );
+	if ( $eager ) {
+		$attr['fetchpriority'] = 'high';
+	}
+	if ( $sizes ) {
+		$attr['sizes'] = $sizes;
+	}
+	$html  = '<div class="axb-media' . ( has_post_thumbnail( $post ) ? '' : ' axb-media--empty' ) . '" style="--ar:' . esc_attr( aurix_blog_ratio( $post ) ) . '">';
+	$html .= has_post_thumbnail( $post )
+		? get_the_post_thumbnail( $post, $size, $attr )
+		: '<span class="axb-media__mark" aria-hidden="true">AURIX</span>';
+	return $html . '</div>';
+}
+
+/** "Oct 6, 2026 · 4 min read" line. */
+function aurix_blog_meta( $post ) {
+	$post = get_post( $post );
+	return '<div class="axb-meta"><time datetime="' . esc_attr( get_the_date( 'c', $post ) ) . '">' . esc_html( get_the_date( 'M j, Y', $post ) ) . '</time><span aria-hidden="true">·</span><span>' . (int) aurix_blog_read_time( $post ) . ' min read</span></div>';
+}
+
+/** Category chip for a post (empty string when uncategorised). */
+function aurix_blog_chip( $post ) {
+	$cat = aurix_blog_primary_cat( $post );
+	return $cat ? '<span class="axb-chip">' . esc_html( $cat->name ) . '</span>' : '';
+}
+
+/** Linked title; the link is stretched over the whole card in CSS. */
+function aurix_blog_title( $post, $tag = 'h3' ) {
+	$post = get_post( $post );
+	return '<' . $tag . ' class="axb-card__title"><a href="' . esc_url( get_permalink( $post ) ) . '">' . esc_html( get_the_title( $post ) ) . '</a></' . $tag . '>';
+}
+
+/** Trimmed excerpt paragraph. */
+function aurix_blog_excerpt( $post, $words = 20 ) {
+	return '<p class="axb-card__excerpt">' . esc_html( wp_trim_words( get_the_excerpt( get_post( $post ) ), $words, '…' ) ) . '</p>';
+}
+
+/**
  * Article card used by every listing.
  *
  * @param WP_Post|int $post
- * @param string      $variant 'card' (grid), 'lead' (large overlay story) or 'side' (compact horizontal).
+ * @param string      $variant card    image on top (grids, masonry, carousels)
+ *                             split   large image beside the text (lead story)
+ *                             row     small image beside the title (side lists)
+ *                             panel   dark panel, image and text side by side
+ * @param array       $opts    words (excerpt length, 0 = none), eager, size, flip.
  */
-function aurix_blog_card( $post, $variant = 'card' ) {
-	$post  = get_post( $post );
-	$url   = get_permalink( $post );
-	$cat   = aurix_blog_primary_cat( $post );
-	$thumb = has_post_thumbnail( $post );
-	$size  = 'lead' === $variant ? 'large' : ( 'side' === $variant ? 'medium' : 'medium_large' );
-	$words = 'lead' === $variant ? 28 : 20;
-	$classes = 'axb-card axb-card--' . $variant . ( $thumb ? '' : ' axb-card--noimg' );
+function aurix_blog_card( $post, $variant = 'card', $opts = array() ) {
+	$post = get_post( $post );
+	$opts = wp_parse_args( $opts, array(
+		'words' => 'row' === $variant ? 0 : ( 'card' === $variant ? 20 : 34 ),
+		'eager' => false,
+		'size'  => 'row' === $variant ? 'medium' : ( 'card' === $variant ? 'medium_large' : 'large' ),
+		'flip'  => false,
+	) );
+	$classes = 'axb-card axb-card--' . $variant . ( $opts['flip'] ? ' is-flip' : '' );
 	?>
 	<article class="<?php echo esc_attr( $classes ); ?>">
-		<div class="axb-card__media">
-			<?php if ( $thumb ) : ?>
-				<?php echo get_the_post_thumbnail( $post, $size, array( 'loading' => 'lead' === $variant ? 'eager' : 'lazy' ) ); ?>
-			<?php else : ?>
-				<span class="axb-card__placeholder" aria-hidden="true"><span>AURIX</span></span>
-			<?php endif; ?>
-		</div>
+		<?php echo aurix_blog_media( $post, $opts['size'], $opts['eager'] ); // phpcs:ignore -- escaped in helper ?>
 		<div class="axb-card__body">
-			<?php if ( $cat ) : ?>
-				<span class="axb-chip"><?php echo esc_html( $cat->name ); ?></span>
-			<?php endif; ?>
-			<h3 class="axb-card__title"><a href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a></h3>
-			<?php if ( 'side' !== $variant ) : ?>
-				<p class="axb-card__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt( $post ), $words, '…' ) ); ?></p>
-			<?php endif; ?>
-			<div class="axb-card__meta">
-				<time datetime="<?php echo esc_attr( get_the_date( 'c', $post ) ); ?>"><?php echo esc_html( get_the_date( 'M j, Y', $post ) ); ?></time>
-				<span aria-hidden="true">·</span>
-				<span><?php echo (int) aurix_blog_read_time( $post ); ?> min read</span>
-			</div>
+			<?php
+			echo aurix_blog_chip( $post ); // phpcs:ignore
+			echo aurix_blog_title( $post, 'split' === $variant ? 'h2' : 'h3' ); // phpcs:ignore
+			if ( $opts['words'] ) {
+				echo aurix_blog_excerpt( $post, $opts['words'] ); // phpcs:ignore
+			}
+			echo aurix_blog_meta( $post ); // phpcs:ignore
+			if ( in_array( $variant, array( 'split', 'panel' ), true ) ) {
+				echo '<span class="axb-card__more">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></span>';
+			}
+			?>
 		</div>
 	</article>
 	<?php
@@ -247,4 +308,57 @@ function aurix_blog_cta() {
 		</div>
 	</section>
 	<?php
+}
+
+/**
+ * Category sections shown on the main blog page, each with its own layout.
+ *
+ * Known categories get a fixed layout and intro; any other category with
+ * posts gets the next layout from the rotation, so new categories appear
+ * automatically. Filter with 'aurix_blog_sections' to reorder or change them.
+ *
+ * Layouts: magazine, carousel, timeline, feature, mosaic, list.
+ *
+ * @return array[] term, layout, title, intro, show
+ */
+function aurix_blog_sections() {
+	$known = array(
+		'news'              => array( 'magazine', 'Company news, announcements and updates from Aurix International.' ),
+		'product-guides'    => array( 'carousel', 'How each instrument works, what to look for and how to choose the right one.' ),
+		'events'            => array( 'timeline', 'Trade shows and exhibitions where you can meet the Aurix team.' ),
+		'industry-insights' => array( 'feature', 'Market trends, sourcing advice and analysis from the dental industry.' ),
+	);
+	$rotation = array( 'mosaic', 'list', 'carousel', 'magazine' );
+	$show     = array( 'magazine' => 5, 'carousel' => 8, 'timeline' => 4, 'feature' => 2, 'mosaic' => 5, 'list' => 6 );
+
+	$sections = array();
+	$i        = 0;
+	foreach ( aurix_blog_filter_cats() as $cat ) {
+		if ( isset( $known[ $cat->slug ] ) ) {
+			list( $layout, $intro ) = $known[ $cat->slug ];
+		} else {
+			$layout = $rotation[ $i++ % count( $rotation ) ];
+			$intro  = $cat->description ? wp_strip_all_tags( $cat->description ) : '';
+		}
+		if ( $cat->description ) {
+			$intro = wp_strip_all_tags( $cat->description );
+		}
+		$sections[ $cat->slug ] = array(
+			'term'   => $cat,
+			'layout' => $layout,
+			'title'  => $cat->name,
+			'intro'  => $intro,
+			'show'   => $show[ $layout ],
+		);
+	}
+
+	// Known categories first, in the order listed above.
+	$order = array_flip( array_keys( $known ) );
+	uksort( $sections, function ( $a, $b ) use ( $order ) {
+		$oa = isset( $order[ $a ] ) ? $order[ $a ] : 99;
+		$ob = isset( $order[ $b ] ) ? $order[ $b ] : 99;
+		return $oa - $ob;
+	} );
+
+	return apply_filters( 'aurix_blog_sections', array_slice( $sections, 0, 6, true ) );
 }
