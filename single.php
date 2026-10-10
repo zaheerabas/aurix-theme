@@ -44,6 +44,11 @@ while ( have_posts() ) :
 		return '<h2' . $attr . '>' . $m[2] . '</h2>';
 	}, $axa_content );
 
+	// Wrap tables so wide ones scroll sideways on phones instead of
+	// stretching the page.
+	$axa_content = preg_replace( '/<table\b/i', '<div class="axa-table" tabindex="0"><table', $axa_content );
+	$axa_content = str_ireplace( '</table>', '</table></div>', $axa_content );
+
 	$axa_share = array(
 		'facebook' => array( 'Facebook', 'fab fa-facebook-f', 'https://www.facebook.com/sharer/sharer.php?u=' . rawurlencode( $axa_permalink ) ),
 		'x'        => array( 'X', 'fab fa-x-twitter', 'https://twitter.com/intent/tweet?url=' . rawurlencode( $axa_permalink ) . '&text=' . rawurlencode( wp_specialchars_decode( $axa_title, ENT_QUOTES ) ) ),
@@ -112,7 +117,7 @@ while ( have_posts() ) :
 
 		<?php if ( has_post_thumbnail() ) : ?>
 			<figure class="axa-media">
-				<?php the_post_thumbnail( 'full', array( 'loading' => 'eager', 'fetchpriority' => 'high', 'sizes' => '(max-width: 1180px) 100vw, 1180px' ) ); ?>
+				<?php echo aurix_blog_media( get_post(), 'full', true, '(max-width: 1180px) 100vw, 1180px' ); // phpcs:ignore -- escaped in helper ?>
 				<?php $axa_caption = get_the_post_thumbnail_caption(); ?>
 				<?php if ( $axa_caption ) : ?>
 					<figcaption><?php echo esc_html( $axa_caption ); ?></figcaption>
@@ -227,7 +232,7 @@ while ( have_posts() ) :
 				<?php endif; ?>
 				<a class="axa-pager__link axa-pager__link--<?php echo esc_attr( $axa_dir ); ?>" href="<?php echo esc_url( get_permalink( $axa_p ) ); ?>">
 					<?php if ( has_post_thumbnail( $axa_p ) ) : ?>
-						<span class="axa-pager__thumb"><?php echo get_the_post_thumbnail( $axa_p, 'thumbnail' ); ?></span>
+						<span class="axa-pager__thumb"><?php echo aurix_blog_media( $axa_p, 'medium' ); // phpcs:ignore -- escaped in helper ?></span>
 					<?php endif; ?>
 					<span class="axa-pager__text">
 						<small><?php echo 'prev' === $axa_dir ? '<i class="fas fa-arrow-left" aria-hidden="true"></i> Previous article' : 'Next article <i class="fas fa-arrow-right" aria-hidden="true"></i>'; ?></small>
