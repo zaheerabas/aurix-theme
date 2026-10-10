@@ -10,8 +10,24 @@
 - Mobile: full-width cart sidebar, responsive account layout
 - Elementor compatible
 
+## Download
+
+**[⬇ Download the latest version (aurix-theme.zip)](https://github.com/zaheerabas/aurix-theme/releases/latest/download/aurix-theme.zip)**
+
+This link always gives the newest release. Older versions and release notes
+are on the [Releases page](https://github.com/zaheerabas/aurix-theme/releases).
+
+> Use this zip, not GitHub's green **Code → Download ZIP** button. That button
+> creates a folder named `aurix-theme-main`, which WordPress treats as a
+> different theme, so one-click updates won't reach it.
+
 ## Installation
-Upload via WordPress Admin → Appearance → Themes → Add New → Upload Theme
+1. Download the zip above.
+2. In WordPress go to Appearance → Themes → Add New → **Upload Theme**.
+3. Choose `aurix-theme.zip`, click **Install Now**, then **Activate**.
+
+After that, new versions appear automatically as **Update now** in
+Appearance → Themes (no need to download again).
 
 ## Requirements
 - WordPress 6.0+
