@@ -8,6 +8,7 @@ if ( ! defined('ABSPATH') ) exit;
 require_once get_template_directory() . '/inc/ajax-handlers.php';
 require_once get_template_directory() . '/inc/nav-walker.php';
 require_once get_template_directory() . '/inc/blog.php';
+require_once get_template_directory() . '/inc/supplier-directory.php';
 
 /* ═══ 1. THEME SETUP ═══ */
 function aurix_setup() {

@@ -1,13 +1,13 @@
 {
-  "version": "36.96.1",
+  "version": "36.97.0",
   "name": "Aurix International",
   "slug": "aurix-theme",
   "author": "ZaheerAbbas",
   "download_url": "https://github.com/zaheerabas/aurix-theme/releases/latest/download/aurix-theme.zip",
   "details_url": "https://github.com/zaheerabas/aurix-theme",
   "description": "Custom WooCommerce theme for Aurix International — surgical and dental instruments.",
-  "last_updated": "2026-10-10",
+  "last_updated": "2026-10-17",
   "requires": "5.8",
   "requires_php": "7.4",
-  "changelog": "v36.96.1 — Article sidebar: corrected the enquiry card text."
+  "changelog": "v36.97.0 — New dental instruments supplier directory: searchable list of 100+ suppliers (US and worldwide), \"Add your company\" form with admin review, and a starter-list importer (Dental Suppliers → Starter list)."
 }
