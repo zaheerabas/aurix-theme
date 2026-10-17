@@ -81,9 +81,7 @@ html { overflow-x:clip; }
 .axd-layout { display:grid; grid-template-columns:280px minmax(0, 1fr); gap:36px; align-items:start; }
 
 .axd-filters {
-  position:sticky; top:calc(var(--hdr-h) + var(--nav-h) + 16px);
   background:#fff; border:1px solid var(--axd-line); border-radius:var(--r-lg); padding:22px;
-  max-height:calc(100vh - var(--hdr-h) - var(--nav-h) - 32px); overflow:auto;
 }
 .axd-filters-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
 .axd-filters-head h2 { font-size:1.5rem; margin:0; }
@@ -254,7 +252,6 @@ html { overflow-x:clip; }
 /* ── Responsive ────────────────────────────────────────────────────────── */
 @media (max-width:1024px) {
   .axd-layout { grid-template-columns:1fr; }
-  .axd-filters { position:static; max-height:none; }
   .axd-side-card { display:none; }
   .axd-guide-grid, .axd-add-grid { grid-template-columns:1fr; gap:36px; }
 }
