@@ -19,6 +19,15 @@ $us        = array_filter( $listings, function ( $l ) { return 'United States' =
 $us_states = array_intersect_key( aurix_dir_us_states(), array_flip( array_filter( wp_list_pluck( $us, 'state' ) ) ) );
 $dist_url  = home_url( '/become-an-aurix-distributor-global-distributor-network/' );
 $year      = gmdate( 'Y' );
+$regions   = array_count_values( wp_list_pluck( $listings, 'region' ) );
+$types     = array_count_values( array_filter( wp_list_pluck( $listings, 'type' ) ) );
+$letters   = array_flip( array_map( 'aurix_dir_letter', wp_list_pluck( $listings, 'name' ) ) );
+$order     = array( 'North America', 'Europe', 'Asia-Pacific', 'Latin America', 'Middle East & Africa', 'Other' );
+uksort( $regions, function ( $a, $b ) use ( $order ) { return array_search( $a, $order, true ) - array_search( $b, $order, true ); } );
+$popular   = array(
+	array( 'Hand instruments', 'focus' ), array( 'Surgical instruments', 'focus' ), array( 'Implants', 'focus' ),
+	array( 'United States', 'country' ), array( 'Germany', 'country' ), array( 'Distributor', 'type' ),
+);
 
 $faqs = array(
 	array( 'What does a dental instruments supplier do?', 'A dental instruments supplier sells hand, surgical and rotary instruments to dental practices, schools, hospitals and resellers. Some make the instruments themselves (manufacturers), some buy from several brands and resell them (distributors), and some sell mainly online.' ),
@@ -45,6 +54,13 @@ $faqs = array(
 			<input type="search" id="axd-q" placeholder="Search suppliers, cities or products…" autocomplete="off">
 		</form>
 
+		<div class="axd-popular">
+			<span>Popular:</span>
+			<?php foreach ( $popular as $pop ) : ?>
+				<button type="button" data-pop-<?php echo esc_attr( $pop[1] ); ?>="<?php echo esc_attr( $pop[0] ); ?>"><?php echo esc_html( 'United States' === $pop[0] ? 'USA' : $pop[0] ); ?></button>
+			<?php endforeach; ?>
+		</div>
+
 		<ul class="axd-stats">
 			<li><strong><?php echo count( $listings ); ?></strong><span>suppliers listed</span></li>
 			<li><strong><?php echo count( $countries ); ?></strong><span>countries</span></li>
@@ -59,126 +75,178 @@ $faqs = array(
 	</div>
 </section>
 
-<section class="axd-main">
-	<div class="axd-wrap axd-layout">
+<section class="axd-main" id="axd-directory">
+	<div class="axd-wrap">
 
-		<aside class="axd-filters" aria-label="Filter suppliers">
-			<div class="axd-filters-head">
-				<h2>Filter</h2>
-				<button type="button" class="axd-reset" id="axd-reset">Clear all</button>
-			</div>
-
-			<label class="axd-label" for="axd-country">Country</label>
-			<select id="axd-country" class="axd-select">
-				<option value="">All countries</option>
-				<?php foreach ( $countries as $c => $n ) : ?>
-					<option value="<?php echo esc_attr( $c ); ?>"><?php echo esc_html( $c . ' (' . $n . ')' ); ?></option>
-				<?php endforeach; ?>
-			</select>
-
-			<div class="axd-state-wrap" id="axd-state-wrap" hidden>
-				<label class="axd-label" for="axd-state">US state</label>
-				<select id="axd-state" class="axd-select">
-					<option value="">All states</option>
-					<?php foreach ( $us_states as $code => $label ) : ?>
-						<option value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-
-			<label class="axd-label" for="axd-type">Supplier type</label>
-			<select id="axd-type" class="axd-select">
-				<option value="">All types</option>
-				<?php foreach ( aurix_dir_types() as $t ) : ?>
-					<option value="<?php echo esc_attr( $t ); ?>"><?php echo esc_html( $t ); ?></option>
-				<?php endforeach; ?>
-			</select>
-
-			<span class="axd-label">Product focus</span>
-			<div class="axd-chips" id="axd-focus">
-				<?php foreach ( aurix_dir_focus_areas() as $f ) : ?>
-					<button type="button" class="axd-chip" data-focus="<?php echo esc_attr( $f ); ?>" aria-pressed="false"><?php echo esc_html( $f ); ?></button>
+		<?php if ( count( $regions ) > 1 ) : ?>
+			<div class="axd-regions" role="group" aria-label="Region">
+				<button type="button" class="axd-region is-active" data-region="" aria-pressed="true">All regions <span><?php echo count( $listings ); ?></span></button>
+				<?php foreach ( $regions as $r => $n ) : ?>
+					<button type="button" class="axd-region" data-region="<?php echo esc_attr( $r ); ?>" aria-pressed="false"><?php echo esc_html( $r ); ?> <span><?php echo (int) $n; ?></span></button>
 				<?php endforeach; ?>
 			</div>
+		<?php endif; ?>
 
-			<div class="axd-side-card">
-				<i class="fa-solid fa-store" aria-hidden="true"></i>
-				<h3>Are you a supplier?</h3>
-				<p>Get your company in front of clinics, schools and distributors searching for dental instruments.</p>
-				<a class="axd-btn axd-btn--gold axd-btn--block" href="#add-company">List your company</a>
-			</div>
-		</aside>
+		<div class="axd-layout">
+			<div class="axd-filters-backdrop" id="axd-backdrop" hidden></div>
+			<aside class="axd-filters" id="axd-filters" aria-label="Filter suppliers">
+				<div class="axd-filters-head">
+					<h2>Filters</h2>
+					<button type="button" class="axd-reset" id="axd-reset">Clear all</button>
+					<button type="button" class="axd-filters-close" id="axd-filters-close" aria-label="Close filters"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+				</div>
 
-		<div class="axd-results">
-			<div class="axd-toolbar">
-				<p class="axd-count" id="axd-count" aria-live="polite">Showing <?php echo count( $listings ); ?> suppliers</p>
-				<label class="axd-sort"><span>Sort</span>
-					<select id="axd-sort" class="axd-select">
-						<option value="featured">Featured first</option>
-						<option value="az">Name A–Z</option>
-						<option value="za">Name Z–A</option>
+				<div class="axd-filter-group">
+					<label class="axd-label" for="axd-country">Country</label>
+					<select id="axd-country" class="axd-select">
+						<option value="">All countries</option>
+						<?php foreach ( $countries as $c => $n ) : ?>
+							<option value="<?php echo esc_attr( $c ); ?>"><?php echo esc_html( $c . ' (' . $n . ')' ); ?></option>
+						<?php endforeach; ?>
 					</select>
-				</label>
-			</div>
 
-			<div class="axd-grid" id="axd-grid">
-				<?php
-				foreach ( $listings as $i => $l ) :
-					$where    = implode( ', ', array_filter( array( $l['city'], $l['state'], $l['country'] ) ) );
-					$initials = strtoupper( implode( '', array_map( function ( $w ) { return mb_substr( $w, 0, 1 ); }, array_slice( preg_split( '/[\s\-]+/', preg_replace( '/[^\p{L}\s\-]/u', '', $l['name'] ) ), 0, 2 ) ) ) );
-					$search   = strtolower( implode( ' ', array( $l['name'], $l['desc'], $l['city'], $l['state'], $l['country'], $l['type'], implode( ' ', $l['focus'] ), $l['website'] ) ) );
-					?>
-					<article class="axd-card<?php echo $l['own'] ? ' axd-card--own' : ( $l['featured'] ? ' axd-card--featured' : '' ); ?>"
-						data-search="<?php echo esc_attr( $search ); ?>"
-						data-name="<?php echo esc_attr( strtolower( $l['name'] ) ); ?>"
-						data-order="<?php echo (int) $i; ?>"
-						data-country="<?php echo esc_attr( $l['country'] ); ?>"
-						data-state="<?php echo esc_attr( $l['state'] ); ?>"
-						data-type="<?php echo esc_attr( $l['type'] ); ?>"
-						data-focus="<?php echo esc_attr( implode( '|', $l['focus'] ) ); ?>">
-						<header class="axd-card-head">
-							<span class="axd-mono" aria-hidden="true"><?php echo esc_html( $initials ); ?></span>
-							<div>
-								<h3 class="axd-card-name"><?php echo esc_html( $l['name'] ); ?></h3>
-								<?php if ( $where ) : ?>
-									<p class="axd-card-where"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <?php echo esc_html( $where ); ?></p>
-								<?php endif; ?>
-							</div>
-						</header>
-						<div class="axd-badges">
-							<span class="axd-type"><?php echo esc_html( $l['type'] ); ?></span>
-							<?php if ( $l['featured'] || $l['own'] ) : ?><span class="axd-badge axd-badge--featured"><i class="fa-solid fa-star" aria-hidden="true"></i> Featured</span><?php endif; ?>
-							<?php if ( $l['verified'] ) : ?><span class="axd-badge axd-badge--verified"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Verified</span><?php endif; ?>
+					<div class="axd-state-wrap" id="axd-state-wrap" hidden>
+						<label class="axd-label" for="axd-state">US state</label>
+						<select id="axd-state" class="axd-select">
+							<option value="">All states</option>
+							<?php foreach ( $us_states as $code => $label ) : ?>
+								<option value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+
+				<div class="axd-filter-group">
+					<span class="axd-label">Supplier type</span>
+					<div class="axd-radios" id="axd-type">
+						<label><input type="radio" name="axd-type" value="" checked> <span>All types</span></label>
+						<?php foreach ( aurix_dir_types() as $t ) : ?>
+							<label><input type="radio" name="axd-type" value="<?php echo esc_attr( $t ); ?>"> <span><?php echo esc_html( $t ); ?></span> <em><?php echo (int) ( $types[ $t ] ?? 0 ); ?></em></label>
+						<?php endforeach; ?>
+					</div>
+				</div>
+
+				<div class="axd-filter-group">
+					<span class="axd-label">Product focus</span>
+					<div class="axd-chips" id="axd-focus">
+						<?php foreach ( aurix_dir_focus_areas() as $f ) : ?>
+							<button type="button" class="axd-chip" data-focus="<?php echo esc_attr( $f ); ?>" aria-pressed="false"><?php echo esc_html( $f ); ?></button>
+						<?php endforeach; ?>
+					</div>
+				</div>
+
+				<div class="axd-filter-group">
+					<label class="axd-toggle"><input type="checkbox" id="axd-verified"> <span>Featured &amp; verified only</span></label>
+				</div>
+
+				<button type="button" class="axd-btn axd-btn--gold axd-btn--block axd-filters-apply" id="axd-filters-apply">Show results</button>
+
+				<div class="axd-side-card">
+					<i class="fa-solid fa-store" aria-hidden="true"></i>
+					<h3>Are you a supplier?</h3>
+					<p>Get your company in front of clinics, schools and distributors searching for dental instruments.</p>
+					<a class="axd-btn axd-btn--gold axd-btn--block" href="#add-company">List your company</a>
+				</div>
+			</aside>
+
+			<div class="axd-results">
+				<div class="axd-toolbar">
+					<button type="button" class="axd-filters-open" id="axd-filters-open" aria-controls="axd-filters"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Filters <span class="axd-filters-badge" id="axd-filters-badge" hidden>0</span></button>
+					<p class="axd-count" id="axd-count" aria-live="polite">Showing <strong><?php echo count( $listings ); ?></strong> suppliers</p>
+					<div class="axd-tools">
+						<label class="axd-sort"><span>Sort</span>
+							<select id="axd-sort" class="axd-select">
+								<option value="featured">Featured first</option>
+								<option value="az">Name A–Z</option>
+								<option value="za">Name Z–A</option>
+								<option value="country">Country</option>
+							</select>
+						</label>
+						<div class="axd-views" role="group" aria-label="View">
+							<button type="button" class="axd-view is-active" data-view="grid" aria-pressed="true" title="Grid view"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/></svg><span class="screen-reader-text">Grid view</span></button>
+							<button type="button" class="axd-view" data-view="list" aria-pressed="false" title="List view"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="2" width="14" height="3" rx="1.5" fill="currentColor"/><rect x="1" y="6.5" width="14" height="3" rx="1.5" fill="currentColor"/><rect x="1" y="11" width="14" height="3" rx="1.5" fill="currentColor"/></svg><span class="screen-reader-text">List view</span></button>
 						</div>
-						<?php if ( $l['desc'] ) : ?>
-							<p class="axd-card-desc"><?php echo esc_html( $l['desc'] ); ?></p>
-						<?php endif; ?>
-						<?php if ( $l['focus'] ) : ?>
-							<ul class="axd-tags">
-								<?php foreach ( $l['focus'] as $f ) : ?><li><?php echo esc_html( $f ); ?></li><?php endforeach; ?>
-							</ul>
-						<?php endif; ?>
-						<footer class="axd-card-foot">
-							<?php if ( $l['own'] ) : ?>
-								<a class="axd-link axd-link--solid" href="<?php echo esc_url( home_url( '/shop/' ) ); ?>">Shop instruments</a>
-								<a class="axd-link" href="<?php echo esc_url( $dist_url ); ?>">Become a distributor</a>
-							<?php elseif ( $l['website'] ) : ?>
-								<a class="axd-link" href="<?php echo esc_url( 'https://' . $l['website'] ); ?>" target="_blank" rel="nofollow noopener noreferrer"><?php echo esc_html( $l['website'] ); ?> <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
-							<?php endif; ?>
-							<?php if ( $l['phone'] ) : ?>
-								<a class="axd-link" href="<?php echo esc_url( 'tel:' . preg_replace( '/[^0-9+]/', '', $l['phone'] ) ); ?>"><i class="fa-solid fa-phone" aria-hidden="true"></i> <?php echo esc_html( $l['phone'] ); ?></a>
-							<?php endif; ?>
-						</footer>
-					</article>
-				<?php endforeach; ?>
-			</div>
+					</div>
+				</div>
 
-			<div class="axd-empty" id="axd-empty" hidden>
-				<i class="fa-regular fa-face-meh" aria-hidden="true"></i>
-				<p>No suppliers match these filters yet.</p>
-				<a class="axd-btn axd-btn--gold" href="#add-company">Add your company</a>
+				<div class="axd-active" id="axd-active" hidden></div>
+
+				<nav class="axd-letters" id="axd-letters" aria-label="Filter by first letter">
+					<button type="button" class="axd-letter is-active" data-letter="" aria-pressed="true">All</button>
+					<?php foreach ( array_merge( range( 'A', 'Z' ), array( '#' ) ) as $ch ) : ?>
+						<button type="button" class="axd-letter" data-letter="<?php echo esc_attr( $ch ); ?>" aria-pressed="false"<?php echo isset( $letters[ $ch ] ) ? '' : ' disabled'; ?>><?php echo esc_html( $ch ); ?></button>
+					<?php endforeach; ?>
+				</nav>
+
+				<div class="axd-grid" id="axd-grid">
+					<?php
+					foreach ( $listings as $i => $l ) :
+						$where    = implode( ', ', array_filter( array( $l['city'], $l['state'], $l['country'] ) ) );
+						$initials = strtoupper( implode( '', array_map( function ( $w ) { return mb_substr( $w, 0, 1 ); }, array_slice( preg_split( '/[\s\-]+/', preg_replace( '/[^\p{L}\s\-]/u', '', $l['name'] ) ), 0, 2 ) ) ) );
+						$search   = strtolower( implode( ' ', array( $l['name'], $l['desc'], $l['city'], $l['state'], $l['country'], $l['region'], $l['type'], implode( ' ', $l['focus'] ), $l['website'] ) ) );
+						?>
+						<article class="axd-card<?php echo $l['own'] ? ' axd-card--own' : ( $l['featured'] ? ' axd-card--featured' : '' ); ?>"
+							data-search="<?php echo esc_attr( $search ); ?>"
+							data-name="<?php echo esc_attr( strtolower( $l['name'] ) ); ?>"
+							data-letter="<?php echo esc_attr( aurix_dir_letter( $l['name'] ) ); ?>"
+							data-order="<?php echo (int) $i; ?>"
+							data-country="<?php echo esc_attr( $l['country'] ); ?>"
+							data-region="<?php echo esc_attr( $l['region'] ); ?>"
+							data-state="<?php echo esc_attr( $l['state'] ); ?>"
+							data-type="<?php echo esc_attr( $l['type'] ); ?>"
+							data-trust="<?php echo ( $l['own'] || $l['featured'] || $l['verified'] ) ? '1' : ''; ?>"
+							data-focus="<?php echo esc_attr( implode( '|', $l['focus'] ) ); ?>">
+							<header class="axd-card-head">
+								<span class="axd-mono" aria-hidden="true"><?php echo esc_html( $initials ); ?></span>
+								<div class="axd-card-id">
+									<h3 class="axd-card-name"><?php echo esc_html( $l['name'] ); ?></h3>
+									<?php if ( $where ) : ?>
+										<p class="axd-card-where"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <?php echo esc_html( $where ); ?></p>
+									<?php endif; ?>
+								</div>
+							</header>
+							<div class="axd-badges">
+								<span class="axd-type"><?php echo esc_html( $l['type'] ); ?></span>
+								<?php if ( $l['featured'] || $l['own'] ) : ?><span class="axd-badge axd-badge--featured"><i class="fa-solid fa-star" aria-hidden="true"></i> Featured</span><?php endif; ?>
+								<?php if ( $l['verified'] ) : ?><span class="axd-badge axd-badge--verified"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Verified</span><?php endif; ?>
+							</div>
+							<?php if ( $l['desc'] ) : ?>
+								<p class="axd-card-desc"><?php echo esc_html( $l['desc'] ); ?></p>
+							<?php endif; ?>
+							<?php if ( $l['focus'] ) : ?>
+								<ul class="axd-tags">
+									<?php foreach ( $l['focus'] as $f ) : ?><li><?php echo esc_html( $f ); ?></li><?php endforeach; ?>
+								</ul>
+							<?php endif; ?>
+							<footer class="axd-card-foot">
+								<?php if ( $l['own'] ) : ?>
+									<a class="axd-link axd-link--solid" href="<?php echo esc_url( home_url( '/shop/' ) ); ?>">Shop instruments</a>
+									<a class="axd-link" href="<?php echo esc_url( $dist_url ); ?>">Become a distributor</a>
+								<?php elseif ( $l['website'] ) : ?>
+									<a class="axd-link" href="<?php echo esc_url( 'https://' . $l['website'] ); ?>" target="_blank" rel="nofollow noopener noreferrer"><?php echo esc_html( $l['website'] ); ?> <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+								<?php endif; ?>
+								<?php if ( $l['phone'] ) : ?>
+									<a class="axd-link" href="<?php echo esc_url( 'tel:' . preg_replace( '/[^0-9+]/', '', $l['phone'] ) ); ?>"><i class="fa-solid fa-phone" aria-hidden="true"></i> <?php echo esc_html( $l['phone'] ); ?></a>
+								<?php endif; ?>
+							</footer>
+						</article>
+					<?php endforeach; ?>
+				</div>
+
+				<div class="axd-empty" id="axd-empty" hidden>
+					<i class="fa-regular fa-face-meh" aria-hidden="true"></i>
+					<p>No suppliers match these filters yet.</p>
+					<div class="axd-empty-actions">
+						<button type="button" class="axd-btn axd-btn--outline" data-axd-reset>Clear filters</button>
+						<a class="axd-btn axd-btn--gold" href="#add-company">Add your company</a>
+					</div>
+				</div>
+				<div class="axd-more-wrap" id="axd-more-wrap" hidden>
+					<div class="axd-progress"><span id="axd-progress-bar"></span></div>
+					<p class="axd-progress-text" id="axd-progress-text"></p>
+					<button type="button" class="axd-btn axd-btn--outline" id="axd-more">Show more suppliers</button>
+				</div>
 			</div>
-			<div class="axd-more-wrap"><button type="button" class="axd-btn axd-btn--outline" id="axd-more" hidden>Show more suppliers</button></div>
 		</div>
 	</div>
 </section>

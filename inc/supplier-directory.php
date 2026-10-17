@@ -50,6 +50,34 @@ function aurix_dir_us_states() {
 	);
 }
 
+/** World region for a country name, used by the region tabs. */
+function aurix_dir_region( $country ) {
+	static $map = null;
+	if ( null === $map ) {
+		$groups = array(
+			'North America'        => array( 'United States', 'Canada', 'Mexico' ),
+			'Latin America'        => array( 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru', 'Ecuador', 'Uruguay', 'Venezuela', 'Costa Rica', 'Panama', 'Guatemala', 'Dominican Republic', 'Puerto Rico' ),
+			'Europe'               => array( 'United Kingdom', 'Ireland', 'Germany', 'France', 'Italy', 'Spain', 'Portugal', 'Netherlands', 'Belgium', 'Luxembourg', 'Switzerland', 'Liechtenstein', 'Austria', 'Sweden', 'Norway', 'Denmark', 'Finland', 'Iceland', 'Poland', 'Czech Republic', 'Czechia', 'Slovakia', 'Hungary', 'Romania', 'Bulgaria', 'Greece', 'Croatia', 'Slovenia', 'Serbia', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine', 'Malta', 'Cyprus' ),
+			'Asia-Pacific'         => array( 'China', 'Hong Kong', 'Taiwan', 'Japan', 'South Korea', 'India', 'Pakistan', 'Bangladesh', 'Sri Lanka', 'Nepal', 'Singapore', 'Malaysia', 'Thailand', 'Vietnam', 'Indonesia', 'Philippines', 'Australia', 'New Zealand' ),
+			'Middle East & Africa' => array( 'Turkey', 'Israel', 'United Arab Emirates', 'Saudi Arabia', 'Qatar', 'Kuwait', 'Bahrain', 'Oman', 'Jordan', 'Lebanon', 'Iran', 'Iraq', 'Egypt', 'Morocco', 'Tunisia', 'Algeria', 'South Africa', 'Nigeria', 'Kenya', 'Ghana', 'Ethiopia' ),
+		);
+		$map = array();
+		foreach ( $groups as $region => $list ) {
+			foreach ( $list as $c ) {
+				$map[ strtolower( $c ) ] = $region;
+			}
+		}
+	}
+	$key = strtolower( trim( (string) $country ) );
+	return isset( $map[ $key ] ) ? $map[ $key ] : 'Other';
+}
+
+/** First letter of a company name for the A–Z bar ("#" for digits and symbols). */
+function aurix_dir_letter( $name ) {
+	$ch = strtoupper( remove_accents( mb_substr( ltrim( (string) $name ), 0, 1 ) ) );
+	return preg_match( '/^[A-Z]$/', $ch ) ? $ch : '#';
+}
+
 /** Listing fields stored as post meta: key => label. */
 function aurix_dir_fields() {
 	return array(
@@ -259,6 +287,7 @@ function aurix_dir_listings() {
 			'city'     => aurix_dir_meta( $p->ID, 'city' ),
 			'state'    => aurix_dir_meta( $p->ID, 'state' ),
 			'country'  => aurix_dir_meta( $p->ID, 'country' ),
+			'region'   => aurix_dir_region( aurix_dir_meta( $p->ID, 'country' ) ),
 			'type'     => aurix_dir_meta( $p->ID, 'type' ),
 			'phone'    => aurix_dir_meta( $p->ID, 'phone' ),
 			'focus'    => $focus,
