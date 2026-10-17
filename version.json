@@ -1,5 +1,5 @@
 {
-  "version": "36.97.0",
+  "version": "36.97.1",
   "name": "Aurix International",
   "slug": "aurix-theme",
   "author": "ZaheerAbbas",
@@ -9,5 +9,5 @@
   "last_updated": "2026-10-17",
   "requires": "5.8",
   "requires_php": "7.4",
-  "changelog": "v36.97.0 — New dental instruments supplier directory: searchable list of 100+ suppliers (US and worldwide), \"Add your company\" form with admin review, and a starter-list importer (Dental Suppliers → Starter list)."
+  "changelog": "v36.97.1 — Supplier directory: grid and list views (remembered per visitor), region tabs, A–Z bar, removable active-filter chips, popular searches, type and featured/verified filters, mobile filter drawer, wider 3-column grid; [aurix_supplier_directory] shortcode for Elementor; no inner scrollbar on the filter sidebar."
 }
