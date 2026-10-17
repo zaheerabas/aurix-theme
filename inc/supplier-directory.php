@@ -4,11 +4,12 @@
  *
  * - "aurix_supplier" post type holds one listing per company (admin only,
  *   no single pages: every listing is shown on the directory page).
- * - page-supplier-directory.php renders the searchable directory and the
- *   "Add your company" form.
+ * - template-parts/supplier-directory.php renders the page sections (search,
+ *   filters, listings, guide, "Add your company" form, FAQ). Place them in any
+ *   page with the [aurix_supplier_directory] shortcode, or choose the
+ *   "Dental Supplier Directory" page template.
  * - Public submissions arrive as pending listings for an admin to review.
- * - Dental Suppliers → Starter list imports data/suppliers.json and creates
- *   the directory page.
+ * - Dental Suppliers → Starter list imports data/suppliers.json.
  *
  * Markup classes use the "axd-" prefix; styles live in
  * css/supplier-directory.css and behaviour in js/supplier-directory.js,
@@ -16,7 +17,6 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'AURIX_DIR_SLUG', 'dental-instruments-supplier-directory' );
 define( 'AURIX_DIR_TEMPLATE', 'page-supplier-directory.php' );
 
 /** Supplier types shown in filters and the submission form. */
@@ -276,13 +276,18 @@ function aurix_dir_listings() {
 	return $out;
 }
 
-/** True on the directory page. */
+/** True on a page that uses the directory template or contains the shortcode. */
 function aurix_is_directory_page() {
-	return ! is_admin() && is_page() && AURIX_DIR_TEMPLATE === get_page_template_slug( get_queried_object_id() );
+	if ( is_admin() || ! is_singular() ) {
+		return false;
+	}
+	$post = get_queried_object();
+	return AURIX_DIR_TEMPLATE === get_page_template_slug( $post )
+		|| ( $post instanceof WP_Post && has_shortcode( $post->post_content, 'aurix_supplier_directory' ) );
 }
 
-add_action( 'wp_enqueue_scripts', function () {
-	if ( ! aurix_is_directory_page() ) {
+function aurix_dir_enqueue() {
+	if ( wp_script_is( 'aurix-directory', 'enqueued' ) ) {
 		return;
 	}
 	$ver = wp_get_theme( get_template() )->get( 'Version' );
@@ -291,7 +296,31 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_localize_script( 'aurix-directory', 'aurixDir', array(
 		'ajax' => admin_url( 'admin-ajax.php' ),
 	) );
+}
+
+add_action( 'wp_enqueue_scripts', function () {
+	if ( aurix_is_directory_page() ) {
+		aurix_dir_enqueue();
+	}
 }, 20 );
+
+/**
+ * [aurix_supplier_directory title="..."] — all directory sections. Assets are
+ * also enqueued here so the shortcode works inside page builders.
+ */
+add_shortcode( 'aurix_supplier_directory', function ( $atts ) {
+	$atts = shortcode_atts( array( 'title' => 'Dental Instruments Supplier Directory' ), $atts, 'aurix_supplier_directory' );
+	aurix_dir_enqueue();
+	ob_start();
+	get_template_part( 'template-parts/supplier-directory', null, array( 'embed' => true, 'title' => $atts['title'] ) );
+	return ob_get_clean();
+} );
+
+/** The default page template shows the shortcode full width, without its own title. */
+function aurix_dir_page_is_embed( $post = null ) {
+	$post = get_post( $post );
+	return $post && has_shortcode( $post->post_content, 'aurix_supplier_directory' );
+}
 
 /* ── Public submissions ────────────────────────────────────────────────── */
 
@@ -437,32 +466,6 @@ function aurix_dir_import() {
 	return array( $added, $skipped );
 }
 
-/** Create the directory page if no page uses the template yet. Returns its ID. */
-function aurix_dir_ensure_page() {
-	$existing = get_posts( array( 'post_type' => 'page', 'post_status' => 'any', 'meta_key' => '_wp_page_template', 'meta_value' => AURIX_DIR_TEMPLATE, 'fields' => 'ids', 'numberposts' => 1 ) );
-	if ( $existing ) {
-		return (int) $existing[0];
-	}
-	$id = wp_insert_post( array(
-		'post_type'   => 'page',
-		'post_status' => 'publish',
-		'post_title'  => 'Dental Instruments Supplier Directory',
-		'post_name'   => AURIX_DIR_SLUG,
-	) );
-	if ( $id && ! is_wp_error( $id ) ) {
-		update_post_meta( $id, '_wp_page_template', AURIX_DIR_TEMPLATE );
-		$title = 'Dental Instruments Supplier Directory: 100+ US & Global';
-		$desc  = 'Find dental instrument suppliers, manufacturers and distributors in the USA and worldwide. Filter by state, country and product. List your company free.';
-		update_post_meta( $id, '_yoast_wpseo_title', $title );
-		update_post_meta( $id, '_yoast_wpseo_metadesc', $desc );
-		update_post_meta( $id, '_yoast_wpseo_focuskw', 'dental instruments supplier' );
-		update_post_meta( $id, 'rank_math_title', $title );
-		update_post_meta( $id, 'rank_math_description', $desc );
-		update_post_meta( $id, 'rank_math_focus_keyword', 'dental instruments supplier' );
-	}
-	return (int) $id;
-}
-
 function aurix_dir_import_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
@@ -470,9 +473,8 @@ function aurix_dir_import_page() {
 	$msg = '';
 	if ( isset( $_POST['axd_import'] ) && check_admin_referer( 'axd_import' ) ) {
 		list( $added, $skipped ) = aurix_dir_import();
-		$page = aurix_dir_ensure_page();
 		update_option( 'aurix_dir_imported', 1 );
-		$msg = sprintf( 'Imported %d suppliers (%d already listed). Directory page: <a href="%s" target="_blank">%s</a>', $added, $skipped, esc_url( get_permalink( $page ) ), esc_html( get_permalink( $page ) ) );
+		$msg = sprintf( 'Imported %d suppliers (%d already listed).', $added, $skipped );
 	}
 	$file  = get_template_directory() . '/data/suppliers.json';
 	$total = file_exists( $file ) ? count( (array) json_decode( (string) file_get_contents( $file ), true ) ) : 0;
@@ -480,11 +482,16 @@ function aurix_dir_import_page() {
 	if ( $msg ) {
 		echo '<div class="notice notice-success"><p>' . wp_kses_post( $msg ) . '</p></div>';
 	}
-	echo '<p>The theme includes a starter list of <strong>' . (int) $total . '</strong> dental suppliers (mostly US). Importing adds them as published listings and creates the directory page at <code>/' . esc_html( AURIX_DIR_SLUG ) . '/</code> if it does not exist yet.</p>';
+	echo '<p>The theme includes a starter list of <strong>' . (int) $total . '</strong> dental suppliers (mostly US). Importing adds them as published listings.</p>';
 	echo '<p>Companies already in the directory (same website) are skipped, so it is safe to run again after a theme update adds new suppliers.</p>';
 	echo '<form method="post">';
 	wp_nonce_field( 'axd_import' );
 	echo '<p><button class="button button-primary" name="axd_import" value="1">Import starter list</button></p></form>';
+	echo '<h2>Showing the directory on a page</h2><ol>';
+	echo '<li>Create a page (Pages → Add New), for example “Dental Instruments Supplier Directory”.</li>';
+	echo '<li>Add this shortcode to the page content: <code>[aurix_supplier_directory]</code> — or, instead, choose <strong>Dental Supplier Directory</strong> under Page Attributes → Template.</li>';
+	echo '<li>Optional: change the main heading with <code>[aurix_supplier_directory title="Your heading"]</code>.</li></ol>';
+	echo '<p>Suggested SEO title: <code>Dental Instruments Supplier Directory: 100+ US &amp; Global</code><br>Suggested meta description: <code>Find dental instrument suppliers, manufacturers and distributors in the USA and worldwide. Filter by state, country and product. List your company free.</code></p>';
 	echo '<h2>Reviewing submissions</h2><p>Companies that use the “Add your company” form appear under <a href="' . esc_url( admin_url( 'edit.php?post_type=aurix_supplier&post_status=pending' ) ) . '">Dental Suppliers → Pending</a>. Check the details, then click Publish. You also get an email for each one.</p></div>';
 }
 
@@ -492,5 +499,5 @@ add_action( 'admin_notices', function () {
 	if ( get_option( 'aurix_dir_imported' ) || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	echo '<div class="notice notice-info"><p><strong>New: dental supplier directory.</strong> <a href="' . esc_url( admin_url( 'edit.php?post_type=aurix_supplier&page=aurix-dir-import' ) ) . '">Import the starter list and create the directory page</a>.</p></div>';
+	echo '<div class="notice notice-info"><p><strong>New: dental supplier directory.</strong> <a href="' . esc_url( admin_url( 'edit.php?post_type=aurix_supplier&page=aurix-dir-import' ) ) . '">Import the starter list</a>, then add <code>[aurix_supplier_directory]</code> to any page.</p></div>';
 } );
