@@ -1,0 +1,1132 @@
+[
+ {
+  "name": "Henry Schein Dental",
+  "website": "henryschein.com",
+  "city": "Melville",
+  "state": "NY",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment;Hand instruments",
+  "desc": "Global distributor of dental and medical supplies, equipment and practice technology."
+ },
+ {
+  "name": "Patterson Dental",
+  "website": "pattersondental.com",
+  "city": "St. Paul",
+  "state": "MN",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment;Hand instruments",
+  "desc": "US and Canadian distributor of dental supplies, equipment, technology and service; taken private by Patient Square Capital in 2025."
+ },
+ {
+  "name": "Benco Dental",
+  "website": "benco.com",
+  "city": "Pittston",
+  "state": "PA",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "Large privately owned US dental distributor offering supplies, equipment and office design."
+ },
+ {
+  "name": "Darby Dental Supply",
+  "website": "darbydental.com",
+  "city": "Jericho",
+  "state": "NY",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Infection control",
+  "desc": "Long-established US dental supply distributor selling online and by phone."
+ },
+ {
+  "name": "Safco Dental Supply",
+  "website": "safcodental.com",
+  "city": "Buffalo Grove",
+  "state": "IL",
+  "country": "United States",
+  "type": "Online retailer",
+  "focus": "Full-line supplies;Infection control",
+  "desc": "US dental supplier selling consumables mainly through its website and catalog."
+ },
+ {
+  "name": "Dental City",
+  "website": "dentalcity.com",
+  "city": "Green Bay",
+  "state": "WI",
+  "country": "United States",
+  "type": "Online retailer",
+  "focus": "Full-line supplies;Hand instruments",
+  "desc": "US online dental supply company serving practices nationwide."
+ },
+ {
+  "name": "Net32",
+  "website": "net32.com",
+  "city": "Cary",
+  "state": "NC",
+  "country": "United States",
+  "type": "Marketplace",
+  "focus": "Full-line supplies;Hand instruments",
+  "desc": "Online marketplace where dental practices compare prices from multiple vendors."
+ },
+ {
+  "name": "Midway Dental Supply",
+  "website": "midwaydental.com",
+  "city": "Livonia",
+  "state": "MI",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "Livonia, Michigan dental distributor serving the Midwest; acquired by Henry Schein in 2022."
+ },
+ {
+  "name": "Atlanta Dental Supply",
+  "website": "atlantadental.com",
+  "city": "Duluth",
+  "state": "GA",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "Dental distributor headquartered in Duluth, GA, serving the southeastern and mid-Atlantic US."
+ },
+ {
+  "name": "Burkhart Dental Supply",
+  "website": "burkhartdental.com",
+  "city": "Tacoma",
+  "state": "WA",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "Full-service dental distributor headquartered in Tacoma, WA, serving practices across the western US."
+ },
+ {
+  "name": "Pearson Dental Supplies",
+  "website": "pearsondental.com",
+  "city": "Sylmar",
+  "state": "CA",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "California-based dental supply distributor with branches in several western states."
+ },
+ {
+  "name": "Scott's Dental Supply",
+  "website": "scottsdental.com",
+  "city": "Fife",
+  "state": "WA",
+  "country": "United States",
+  "type": "Online retailer",
+  "focus": "Full-line supplies",
+  "desc": "US dental supply company selling consumables and equipment."
+ },
+ {
+  "name": "IQ Dental Supply",
+  "website": "iqdentalsupply.com",
+  "city": "Fairfield",
+  "state": "NJ",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Infection control",
+  "desc": "Family-owned dental supply distributor in Fairfield, NJ, serving mainly the Northeast."
+ },
+ {
+  "name": "TDSC.com (The Dental Supply Company)",
+  "website": "tdsc.com",
+  "city": "",
+  "state": "",
+  "country": "United States",
+  "type": "Online retailer",
+  "focus": "Full-line supplies",
+  "desc": "Online dental supply store affiliated with Delta Dental."
+ },
+ {
+  "name": "Practicon",
+  "website": "practicon.com",
+  "city": "Greenville",
+  "state": "NC",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Full-line supplies;Infection control",
+  "desc": "US supplier of dental products, practice supplies and patient education items."
+ },
+ {
+  "name": "SmartPractice",
+  "website": "smartpractice.com",
+  "city": "Phoenix",
+  "state": "AZ",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Infection control;Full-line supplies",
+  "desc": "Phoenix-based maker of dental practice products, patient education and allergy-care items; sold its dental supply division to Darby in 2018."
+ },
+ {
+  "name": "Hu-Friedy (HuFriedyGroup)",
+  "website": "hufriedygroup.com",
+  "city": "Chicago",
+  "state": "IL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Periodontal;Infection control",
+  "desc": "Manufacturer of dental hand instruments and instrument management systems, operating since 1908."
+ },
+ {
+  "name": "American Eagle Instruments",
+  "website": "am-eagle.com",
+  "city": "Missoula",
+  "state": "MT",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Periodontal",
+  "desc": "US manufacturer of scalers, curettes and other periodontal hand instruments."
+ },
+ {
+  "name": "Paradise Dental Technologies (PDT)",
+  "website": "pdtdental.com",
+  "city": "Missoula",
+  "state": "MT",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Periodontal",
+  "desc": "US manufacturer of periodontal and hygiene hand instruments."
+ },
+ {
+  "name": "Nordent Manufacturing",
+  "website": "nordent.com",
+  "city": "Elk Grove Village",
+  "state": "IL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Surgical instruments",
+  "desc": "US manufacturer of dental hand instruments."
+ },
+ {
+  "name": "Salvin Dental Specialties",
+  "website": "salvin.com",
+  "city": "Charlotte",
+  "state": "NC",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Surgical instruments;Implants",
+  "desc": "US supplier of oral surgery, implant and regenerative products."
+ },
+ {
+  "name": "Integra Miltex",
+  "website": "integralife.com",
+  "city": "York",
+  "state": "PA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Surgical instruments;Hand instruments",
+  "desc": "Miltex dental and surgical instrument brand of Integra LifeSciences, based in York, PA."
+ },
+ {
+  "name": "Premier Dental Products",
+  "website": "premierdentalco.com",
+  "city": "Plymouth Meeting",
+  "state": "PA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Restorative materials",
+  "desc": "Founded 1913; makes dental hygiene and clinical products such as ultrasonic scaler inserts and prophy paste."
+ },
+ {
+  "name": "Brasseler USA",
+  "website": "brasselerusa.com",
+  "city": "Savannah",
+  "state": "GA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Burs & rotary;Endodontics;Hand instruments",
+  "desc": "US maker of rotary instruments, burs, endodontic and hand instruments."
+ },
+ {
+  "name": "A. Titan Instruments",
+  "website": "atitan.com",
+  "city": "",
+  "state": "NY",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Hand instruments;Surgical instruments;Loupes & magnification",
+  "desc": "Supplier of dental and surgical instruments and magnification products, with manufacturing in Hamburg, NY."
+ },
+ {
+  "name": "Sklar Surgical Instruments",
+  "website": "sklarcorp.com",
+  "city": "West Chester",
+  "state": "PA",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Surgical instruments",
+  "desc": "Surgical instrument maker and distributor, serving dental and other specialties."
+ },
+ {
+  "name": "Ace Surgical Supply (now ACE Southern)",
+  "website": "acesurgical.com",
+  "city": "Brockton",
+  "state": "MA",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Surgical instruments;Implants",
+  "desc": "Brockton MA supplier of oral surgery, implant and bone-grafting products; Henry Schein subsidiary, merged into ACE Southern in 2022."
+ },
+ {
+  "name": "Meisinger USA",
+  "website": "meisingerusa.com",
+  "city": "Centennial",
+  "state": "CO",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Burs & rotary;Implants;Surgical instruments",
+  "desc": "US arm of Hager & Meisinger, supplying burs and surgical instruments."
+ },
+ {
+  "name": "Osteogenics Biomedical",
+  "website": "osteogenics.com",
+  "city": "Lubbock",
+  "state": "TX",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Implants;Surgical instruments",
+  "desc": "US maker of regenerative and bone-grafting products and instruments."
+ },
+ {
+  "name": "Dentsply Sirona",
+  "website": "dentsplysirona.com",
+  "city": "Charlotte",
+  "state": "NC",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Equipment;Endodontics;Implants;Restorative materials",
+  "desc": "Dental manufacturer of equipment, consumables, endodontic and implant systems."
+ },
+ {
+  "name": "Envista",
+  "website": "envistaco.com",
+  "city": "Brea",
+  "state": "CA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Implants;Orthodontics;Equipment",
+  "desc": "Dental products company whose brands include Nobel Biocare, Ormco and Kerr."
+ },
+ {
+  "name": "Kerr Dental",
+  "website": "kerrdental.com",
+  "city": "Brea",
+  "state": "CA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Endodontics",
+  "desc": "Maker of restorative materials and endodontic products."
+ },
+ {
+  "name": "Ultradent Products",
+  "website": "ultradent.com",
+  "city": "South Jordan",
+  "state": "UT",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Endodontics",
+  "desc": "US manufacturer of dental materials, instruments and equipment."
+ },
+ {
+  "name": "Young Innovations",
+  "website": "youngdental.com",
+  "city": "Algonquin",
+  "state": "IL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Infection control;Hand instruments",
+  "desc": "US maker of preventive, infection-control and hygiene products."
+ },
+ {
+  "name": "Zirc Dental Products",
+  "website": "zirc.com",
+  "city": "Buffalo",
+  "state": "MN",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Infection control;Hand instruments",
+  "desc": "US maker of instrument cassettes, tubs and organisational products."
+ },
+ {
+  "name": "Garrison Dental Solutions",
+  "website": "garrisondental.com",
+  "city": "Spring Lake",
+  "state": "MI",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "US maker of sectional matrix systems and restorative products."
+ },
+ {
+  "name": "Crosstex International",
+  "website": "crosstex.com",
+  "city": "Hauppauge",
+  "state": "NY",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Infection control",
+  "desc": "US maker of infection-control and sterilisation products."
+ },
+ {
+  "name": "Kulzer US",
+  "website": "kulzerus.com",
+  "city": "South Bend",
+  "state": "IN",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "US arm of Kulzer, maker of dental materials."
+ },
+ {
+  "name": "GC America",
+  "website": "gcamerica.com",
+  "city": "Alsip",
+  "state": "IL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "US arm of GC Corporation, maker of dental materials."
+ },
+ {
+  "name": "Solventum",
+  "website": "solventum.com",
+  "city": "St. Paul",
+  "state": "Maplewood",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Orthodontics",
+  "desc": "Health-care company spun off from 3M in 2024; its dental business includes the former 3M oral care products."
+ },
+ {
+  "name": "BioHorizons",
+  "website": "biohorizons.com",
+  "city": "Birmingham",
+  "state": "AL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Implants",
+  "desc": "US manufacturer of dental implants and regenerative products."
+ },
+ {
+  "name": "ZimVie",
+  "website": "zimvie.com",
+  "city": "Palm Beach Gardens",
+  "state": "FL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Implants",
+  "desc": "Dental implant and restorative company; privately held by ARCHIMED since October 2025."
+ },
+ {
+  "name": "Keystone Industries",
+  "website": "keystoneindustries.com",
+  "city": "Gibbstown",
+  "state": "NJ",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "US maker of dental materials and laboratory products."
+ },
+ {
+  "name": "Parkell",
+  "website": "parkell.com",
+  "city": "Edgewood",
+  "state": "NY",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Equipment",
+  "desc": "US maker of dental materials and small equipment."
+ },
+ {
+  "name": "Pulpdent",
+  "website": "pulpdent.com",
+  "city": "Watertown",
+  "state": "MA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Endodontics",
+  "desc": "US maker of dental materials."
+ },
+ {
+  "name": "Bisco",
+  "website": "bisco.com",
+  "city": "Schaumburg",
+  "state": "IL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "US maker of adhesives and restorative materials."
+ },
+ {
+  "name": "Plasdent",
+  "website": "plasdent.com",
+  "city": "",
+  "state": "",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Infection control;Full-line supplies",
+  "desc": "Maker of dental disposables and infection-control products, operating since 1987."
+ },
+ {
+  "name": "Pac-Dent",
+  "website": "pac-dent.com",
+  "city": "Brea",
+  "state": "CA",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Infection control;Restorative materials",
+  "desc": "US supplier of dental consumables and small equipment."
+ },
+ {
+  "name": "Hager Worldwide",
+  "website": "hagerworldwide.com",
+  "city": "Hickory",
+  "state": "NC",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Burs & rotary;Infection control;Full-line supplies",
+  "desc": "US distributor of dental products and accessories."
+ },
+ {
+  "name": "Microcopy Dental",
+  "website": "microcopydental.com",
+  "city": "Kennesaw",
+  "state": "GA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Burs & rotary",
+  "desc": "US maker of dental burs and diamonds."
+ },
+ {
+  "name": "SS White Dental",
+  "website": "sswhiteburs.com",
+  "city": "Lakewood",
+  "state": "NJ",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Burs & rotary",
+  "desc": "US maker of dental burs and rotary instruments."
+ },
+ {
+  "name": "Komet USA",
+  "website": "kometusa.com",
+  "city": "Rock Hill",
+  "state": "SC",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Burs & rotary;Endodontics",
+  "desc": "US arm of Komet Dental, supplying burs and rotary instruments."
+ },
+ {
+  "name": "Aseptico",
+  "website": "aseptico.com",
+  "city": "Woodinville",
+  "state": "WA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "US maker of portable dental equipment and motors."
+ },
+ {
+  "name": "A-dec",
+  "website": "a-dec.com",
+  "city": "Newberg",
+  "state": "OR",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "US manufacturer of dental chairs, delivery systems and equipment."
+ },
+ {
+  "name": "Midmark",
+  "website": "midmark.com",
+  "city": "",
+  "state": "OH",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Equipment;Infection control",
+  "desc": "US maker of dental and medical equipment and sterilisation products."
+ },
+ {
+  "name": "DentalEZ",
+  "website": "dentalez.com",
+  "city": "Malvern",
+  "state": "PA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "US maker of dental chairs, handpieces and utility equipment."
+ },
+ {
+  "name": "Orascoptic",
+  "website": "orascoptic.com",
+  "city": "Middleton",
+  "state": "WI",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Loupes & magnification",
+  "desc": "US maker of dental loupes and headlights."
+ },
+ {
+  "name": "Designs for Vision",
+  "website": "designsforvision.com",
+  "city": "Bohemia",
+  "state": "NY",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Loupes & magnification",
+  "desc": "US maker of surgical telescopes and lights."
+ },
+ {
+  "name": "SurgiTel",
+  "website": "surgitel.com",
+  "city": "Ann Arbor",
+  "state": "MI",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Loupes & magnification",
+  "desc": "US maker of loupes and illumination for dentistry."
+ },
+ {
+  "name": "Septodont (US)",
+  "website": "septodontusa.com",
+  "city": "Lancaster",
+  "state": "PA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "US arm of Septodont, maker of dental anaesthetics and materials."
+ },
+ {
+  "name": "Dental Health Products (DHPI)",
+  "website": "dhpsupply.com",
+  "city": "New Franken",
+  "state": "WI",
+  "country": "United States",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Infection control",
+  "desc": "Wisconsin-based US distributor of dental supplies and equipment, with a private-label line."
+ },
+ {
+  "name": "Aurix International",
+  "website": "aurixinternational.com",
+  "city": "",
+  "state": "",
+  "country": "United States",
+  "type": "Manufacturer & distributor",
+  "focus": "Hand instruments;Surgical instruments;Periodontal",
+  "desc": "USA-based supplier of surgical-grade dental and surgical instruments, kits, wholesale and private label."
+ },
+ {
+  "name": "Shofu Dental Corporation",
+  "website": "shofu.com",
+  "city": "San Marcos",
+  "state": "CA",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Burs & rotary",
+  "desc": "US arm of Japan's Shofu, maker of finishing and restorative products."
+ },
+ {
+  "name": "NSK America",
+  "website": "nskdental.com",
+  "city": "Hoffman Estates",
+  "state": "IL",
+  "country": "United States",
+  "type": "Manufacturer",
+  "focus": "Equipment;Burs & rotary",
+  "desc": "US arm of NSK, maker of handpieces and motors."
+ },
+ {
+  "name": "Sinclair Dental",
+  "website": "sinclairdental.com",
+  "city": "North Vancouver",
+  "state": "BC",
+  "country": "Canada",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "Canadian dental supply distributor, owned by Medline Canada since 2024."
+ },
+ {
+  "name": "Aesculap (B. Braun)",
+  "website": "aesculap.de",
+  "city": "Tuttlingen",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Surgical instruments",
+  "desc": "German manufacturer of surgical instruments, part of B. Braun."
+ },
+ {
+  "name": "KLS Martin Group",
+  "website": "klsmartin.com",
+  "city": "Tuttlingen",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Surgical instruments",
+  "desc": "German maker of surgical instruments and oral and maxillofacial systems."
+ },
+ {
+  "name": "Carl Martin",
+  "website": "carlmartin.de",
+  "city": "Solingen",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Surgical instruments",
+  "desc": "German manufacturer of dental instruments."
+ },
+ {
+  "name": "Helmut Zepf Medizintechnik",
+  "website": "zepf-dental.com",
+  "city": "Seitingen-Oberflacht",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Surgical instruments;Hand instruments",
+  "desc": "German manufacturer of dental and surgical instruments."
+ },
+ {
+  "name": "Stoma Dentalsysteme",
+  "website": "stoma.de",
+  "city": "Emmingen-Liptingen",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Surgical instruments;Hand instruments",
+  "desc": "German maker of dental hand and surgical instruments."
+ },
+ {
+  "name": "Komet Dental (Gebr. Brasseler)",
+  "website": "kometdental.com",
+  "city": "Lemgo",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Burs & rotary;Endodontics",
+  "desc": "German maker of rotary instruments and burs."
+ },
+ {
+  "name": "Hager & Meisinger",
+  "website": "meisinger.de",
+  "city": "Neuss",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Burs & rotary;Implants",
+  "desc": "German maker of burs and surgical instruments."
+ },
+ {
+  "name": "Dentaurum",
+  "website": "dentaurum.de",
+  "city": "Ispringen",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Orthodontics;Implants",
+  "desc": "German family company making orthodontic and dental products."
+ },
+ {
+  "name": "VOCO",
+  "website": "voco.dental",
+  "city": "Cuxhaven",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "German maker of dental materials."
+ },
+ {
+  "name": "KaVo",
+  "website": "kavo.com",
+  "city": "Biberach an der Riss",
+  "state": "",
+  "country": "Germany",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "German maker of dental units, handpieces and equipment; owned by Planmeca since 2022."
+ },
+ {
+  "name": "Medesy",
+  "website": "medesy.it",
+  "city": "Maniago",
+  "state": "",
+  "country": "Italy",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Surgical instruments",
+  "desc": "Italian manufacturer of dental hand instruments."
+ },
+ {
+  "name": "Zhermack",
+  "website": "zhermack.com",
+  "city": "Badia Polesine",
+  "state": "",
+  "country": "Italy",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "Italian maker of impression materials and dental products."
+ },
+ {
+  "name": "Deppeler",
+  "website": "deppeler.ch",
+  "city": "Rolle",
+  "state": "",
+  "country": "Switzerland",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Periodontal",
+  "desc": "Swiss manufacturer of periodontal and hygiene hand instruments."
+ },
+ {
+  "name": "Coltene",
+  "website": "coltene.com",
+  "city": "Altstätten",
+  "state": "",
+  "country": "Switzerland",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Endodontics;Infection control",
+  "desc": "Swiss dental group making consumables, endodontic and infection-control products."
+ },
+ {
+  "name": "Bien-Air Dental",
+  "website": "bienair.com",
+  "city": "Biel/Bienne",
+  "state": "",
+  "country": "Switzerland",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "Swiss maker of dental handpieces and motors."
+ },
+ {
+  "name": "EMS Dental",
+  "website": "ems-dental.com",
+  "city": "Nyon",
+  "state": "",
+  "country": "Switzerland",
+  "type": "Manufacturer",
+  "focus": "Equipment;Periodontal",
+  "desc": "Swiss maker of ultrasonic scalers and air-polishing systems."
+ },
+ {
+  "name": "FKG Dentaire",
+  "website": "fkg.ch",
+  "city": "La Chaux-de-Fonds",
+  "state": "",
+  "country": "Switzerland",
+  "type": "Manufacturer",
+  "focus": "Endodontics",
+  "desc": "Swiss maker of endodontic files and systems."
+ },
+ {
+  "name": "Straumann Group",
+  "website": "straumann.com",
+  "city": "Basel",
+  "state": "",
+  "country": "Switzerland",
+  "type": "Manufacturer",
+  "focus": "Implants;Orthodontics",
+  "desc": "Swiss implant dentistry and orthodontics company headquartered in Basel."
+ },
+ {
+  "name": "Nobel Biocare",
+  "website": "nobelbiocare.com",
+  "city": "Kloten",
+  "state": "",
+  "country": "Switzerland",
+  "type": "Manufacturer",
+  "focus": "Implants",
+  "desc": "Dental implant company, part of Envista."
+ },
+ {
+  "name": "Ivoclar",
+  "website": "ivoclar.com",
+  "city": "Schaan",
+  "state": "",
+  "country": "Liechtenstein",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Equipment",
+  "desc": "Liechtenstein-based maker of dental materials and equipment."
+ },
+ {
+  "name": "W&H",
+  "website": "wh.com",
+  "city": "Bürmoos",
+  "state": "",
+  "country": "Austria",
+  "type": "Manufacturer",
+  "focus": "Equipment;Infection control",
+  "desc": "Austrian maker of handpieces, surgical units and sterilisers."
+ },
+ {
+  "name": "LM-Instruments",
+  "website": "lm-dental.com",
+  "city": "Parainen",
+  "state": "",
+  "country": "Finland",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Periodontal",
+  "desc": "Finnish maker of ergonomic dental hand instruments."
+ },
+ {
+  "name": "Planmeca",
+  "website": "planmeca.com",
+  "city": "Helsinki",
+  "state": "",
+  "country": "Finland",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "Finnish maker of dental units and imaging."
+ },
+ {
+  "name": "Plandent",
+  "website": "plandent.com",
+  "city": "Helsinki",
+  "state": "",
+  "country": "Finland",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "Dental distributor in the Planmeca Group, serving Nordic and other European markets."
+ },
+ {
+  "name": "Directa Dental",
+  "website": "directadental.com",
+  "city": "Upplands Väsby",
+  "state": "",
+  "country": "Sweden",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Infection control",
+  "desc": "Swedish maker of dental consumables."
+ },
+ {
+  "name": "Septodont",
+  "website": "septodont.com",
+  "city": "Saint-Maur-des-Fossés",
+  "state": "",
+  "country": "France",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "French maker of dental anaesthetics and materials."
+ },
+ {
+  "name": "Acteon",
+  "website": "acteongroup.com",
+  "city": "Mérignac",
+  "state": "",
+  "country": "France",
+  "type": "Manufacturer",
+  "focus": "Equipment;Periodontal",
+  "desc": "French maker of ultrasonic, imaging and dental equipment."
+ },
+ {
+  "name": "Micro-Mega",
+  "website": "micro-mega.com",
+  "city": "Besançon",
+  "state": "",
+  "country": "France",
+  "type": "Manufacturer",
+  "focus": "Endodontics",
+  "desc": "French maker of endodontic instruments; part of Coltene since 2018."
+ },
+ {
+  "name": "Prima Dental",
+  "website": "primadental.com",
+  "city": "Gloucester",
+  "state": "",
+  "country": "United Kingdom",
+  "type": "Manufacturer",
+  "focus": "Burs & rotary",
+  "desc": "UK maker of dental burs and rotary instruments."
+ },
+ {
+  "name": "DD Group (Dental Directory)",
+  "website": "dental-directory.co.uk",
+  "city": "Witham",
+  "state": "",
+  "country": "United Kingdom",
+  "type": "Distributor",
+  "focus": "Full-line supplies",
+  "desc": "UK dental distributor."
+ },
+ {
+  "name": "Kent Express",
+  "website": "kentexpress.co.uk",
+  "city": "Gillingham",
+  "state": "",
+  "country": "United Kingdom",
+  "type": "Distributor",
+  "focus": "Full-line supplies",
+  "desc": "UK dental supply distributor."
+ },
+ {
+  "name": "Trycare",
+  "website": "trycare.co.uk",
+  "city": "Bradford",
+  "state": "",
+  "country": "United Kingdom",
+  "type": "Distributor",
+  "focus": "Hand instruments;Full-line supplies",
+  "desc": "UK supplier of dental instruments and products."
+ },
+ {
+  "name": "Swallow Dental",
+  "website": "swallowdental.co.uk",
+  "city": "Silsden",
+  "state": "",
+  "country": "United Kingdom",
+  "type": "Distributor",
+  "focus": "Surgical instruments;Hand instruments",
+  "desc": "UK supplier of dental surgical instruments."
+ },
+ {
+  "name": "Dentaltix",
+  "website": "dentaltix.com",
+  "city": "Alcobendas",
+  "state": "",
+  "country": "Spain",
+  "type": "Online retailer",
+  "focus": "Full-line supplies",
+  "desc": "Spanish online dental supply store."
+ },
+ {
+  "name": "GC Corporation",
+  "website": "gc.dental",
+  "city": "Tokyo",
+  "state": "",
+  "country": "Japan",
+  "type": "Manufacturer",
+  "focus": "Restorative materials",
+  "desc": "Japanese maker of dental materials."
+ },
+ {
+  "name": "Shofu",
+  "website": "shofu.co.jp",
+  "city": "Kyoto",
+  "state": "",
+  "country": "Japan",
+  "type": "Manufacturer",
+  "focus": "Restorative materials;Burs & rotary",
+  "desc": "Japanese maker of dental materials and finishing products."
+ },
+ {
+  "name": "J. Morita",
+  "website": "morita.com",
+  "city": "Kyoto",
+  "state": "",
+  "country": "Japan",
+  "type": "Manufacturer",
+  "focus": "Equipment;Endodontics",
+  "desc": "Japanese maker of dental equipment and imaging."
+ },
+ {
+  "name": "NSK (Nakanishi)",
+  "website": "nsk-dental.com",
+  "city": "Kanuma",
+  "state": "",
+  "country": "Japan",
+  "type": "Manufacturer",
+  "focus": "Equipment;Burs & rotary",
+  "desc": "Japanese maker of dental handpieces."
+ },
+ {
+  "name": "Mani",
+  "website": "mani.co.jp",
+  "city": "Utsunomiya",
+  "state": "",
+  "country": "Japan",
+  "type": "Manufacturer",
+  "focus": "Endodontics;Burs & rotary",
+  "desc": "Japanese maker of endodontic files, burs and surgical needles."
+ },
+ {
+  "name": "Osstem Implant",
+  "website": "osstem.com",
+  "city": "Seoul",
+  "state": "",
+  "country": "South Korea",
+  "type": "Manufacturer",
+  "focus": "Implants;Equipment",
+  "desc": "Korean dental implant and equipment company."
+ },
+ {
+  "name": "MegaGen Implant",
+  "website": "imegagen.com",
+  "city": "Daegu",
+  "state": "",
+  "country": "South Korea",
+  "type": "Manufacturer",
+  "focus": "Implants",
+  "desc": "Korean dental implant manufacturer."
+ },
+ {
+  "name": "Vatech",
+  "website": "vatech.com",
+  "city": "Hwaseong",
+  "state": "",
+  "country": "South Korea",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "Korean maker of dental imaging systems."
+ },
+ {
+  "name": "Medit",
+  "website": "medit.com",
+  "city": "Seoul",
+  "state": "",
+  "country": "South Korea",
+  "type": "Manufacturer",
+  "focus": "Equipment",
+  "desc": "Korean maker of intraoral scanners."
+ },
+ {
+  "name": "Guilin Woodpecker",
+  "website": "glwoodpecker.com",
+  "city": "Guilin",
+  "state": "",
+  "country": "China",
+  "type": "Manufacturer",
+  "focus": "Equipment;Endodontics",
+  "desc": "Chinese maker of ultrasonic scalers and endodontic devices."
+ },
+ {
+  "name": "GDC Fine Crafted Dental",
+  "website": "gdcdental.com",
+  "city": "Hoshiarpur",
+  "state": "",
+  "country": "India",
+  "type": "Manufacturer",
+  "focus": "Hand instruments;Surgical instruments",
+  "desc": "Indian manufacturer of dental hand instruments."
+ },
+ {
+  "name": "Dentalkart",
+  "website": "dentalkart.com",
+  "city": "Gurugram",
+  "state": "",
+  "country": "India",
+  "type": "Online retailer",
+  "focus": "Full-line supplies",
+  "desc": "Indian online dental supply store."
+ },
+ {
+  "name": "Ainsworth Dental",
+  "website": "ainsworthdental.com.au",
+  "city": "Sydney",
+  "state": "",
+  "country": "Australia",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Equipment",
+  "desc": "Australian dental distributor."
+ },
+ {
+  "name": "Adam Dental Supplies",
+  "website": "adamdental.com.au",
+  "city": "Mulgrave",
+  "state": "",
+  "country": "Australia",
+  "type": "Distributor",
+  "focus": "Full-line supplies;Hand instruments",
+  "desc": "Australian dental supplies company."
+ }
+]
