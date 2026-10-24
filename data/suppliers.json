@@ -130,14 +130,14 @@
   "desc": "Family-owned dental supply distributor in Fairfield, NJ, serving mainly the Northeast."
  },
  {
-  "name": "TDSC.com (The Dental Supply Company)",
+  "name": "TDSC.com (The Dentists Supply Company)",
   "website": "tdsc.com",
   "city": "",
   "state": "",
   "country": "United States",
   "type": "Online retailer",
   "focus": "Full-line supplies",
-  "desc": "Online dental supply store affiliated with Delta Dental."
+  "desc": "Online dental supply company founded by the California Dental Association, with orders fulfilled through Henry Schein."
  },
  {
   "name": "Practicon",
@@ -392,8 +392,8 @@
  {
   "name": "Solventum",
   "website": "solventum.com",
-  "city": "St. Paul",
-  "state": "Maplewood",
+  "city": "Maplewood",
+  "state": "MN",
   "country": "United States",
   "type": "Manufacturer",
   "focus": "Restorative materials;Orthodontics",
