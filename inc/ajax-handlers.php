@@ -114,6 +114,19 @@ function aurix_contact_submit() {
     $budget_map = [ 'small' => 'Under $10K', 'mid' => '$10K – $50K', 'large' => '$50K+' ];
     $budget_label = $budget_map[ $budget ] ?? 'Not specified';
 
+    // ── Save to the Inbox ──
+    $saved = false;
+    if ( function_exists( 'aurix_inbox_add' ) ) {
+        $saved = aurix_inbox_add( 'contact', [
+            'name' => $full_name, 'email' => $email, 'phone' => $phone, 'company' => $company,
+            'subject' => $subject, 'message' => $message,
+            'data' => [ 'Inquiry type' => $inq_type, 'Role' => $role, 'Budget' => $budget_label, 'Newsletter' => $newsletter ],
+        ] );
+        if ( 'Yes' === $newsletter ) {
+            aurix_inbox_add( 'newsletter', [ 'name' => $full_name, 'email' => $email, 'company' => $company, 'status' => 'read', 'data' => [ 'Signed up via' => 'Contact form' ] ] );
+        }
+    }
+
     // ── Pull customizer email settings ──
     $admin_to      = get_theme_mod( 'aurix_cf_admin_email',   get_option( 'admin_email' ) );
     $admin_cc      = get_theme_mod( 'aurix_cf_admin_cc',      '' );
@@ -232,7 +245,7 @@ function aurix_contact_submit() {
     ];
     $user_sent = wp_mail( $email, $user_subject, $user_body, $user_headers );
 
-    if ( $admin_sent || $user_sent ) {
+    if ( $admin_sent || $user_sent || $saved ) {
         wp_send_json_success( [ 'msg' => 'Sent' ] );
     } else {
         wp_send_json_error( [ 'msg' => 'Mail delivery failed. Please contact us directly.' ] );

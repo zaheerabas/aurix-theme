@@ -430,6 +430,18 @@ function aurix_dir_submit() {
 	}
 	set_transient( $ip_key, $count + 1, HOUR_IN_SECONDS );
 
+	if ( function_exists( 'aurix_inbox_add' ) ) {
+		aurix_inbox_add( $wants ? 'distributor' : 'supplier', array(
+			'name' => $contact, 'email' => $email, 'phone' => $phone, 'company' => $name, 'country' => $country,
+			'subject' => $wants ? 'Directory listing + wants to become an Aurix distributor' : 'Supplier directory listing',
+			'message' => $desc, 'ref' => 'import:supplier:' . $post_id,
+			'data' => array(
+				'Website' => $website, 'City / State' => implode( ', ', array_filter( array( $city, $state ) ) ), 'Company type' => $type,
+				'Focus' => implode( ', ', $focus ), 'Wants to be an Aurix distributor' => $wants ? 'Yes' : 'No', 'Listing ID' => $post_id,
+			),
+		) );
+	}
+
 	$admin = get_option( 'admin_email' );
 	wp_mail(
 		$admin,
