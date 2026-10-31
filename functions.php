@@ -9,6 +9,10 @@ require_once get_template_directory() . '/inc/ajax-handlers.php';
 require_once get_template_directory() . '/inc/nav-walker.php';
 require_once get_template_directory() . '/inc/blog.php';
 require_once get_template_directory() . '/inc/supplier-directory.php';
+require_once get_template_directory() . '/inc/inbox.php';
+require_once get_template_directory() . '/inc/inbox-team.php';
+require_once get_template_directory() . '/inc/inbox-push.php';
+require_once get_template_directory() . '/inc/inbox-app.php';
 
 /* ═══ 1. THEME SETUP ═══ */
 function aurix_setup() {
@@ -1031,13 +1035,18 @@ function aurix_rfq_submit() {
     $message = sanitize_textarea_field($_POST['rfq_message'] ?? '');
     $url     = esc_url_raw($_POST['rfq_url'] ?? '');
     if ( ! $name || ! is_email($email) ) { wp_send_json_error('Missing required fields'); return; }
+    $saved = function_exists('aurix_inbox_add') ? aurix_inbox_add('quote', [
+        'name' => $name, 'email' => $email, 'company' => $company, 'country' => $country,
+        'subject' => 'Wholesale quote: ' . $product, 'message' => $message, 'source' => $url,
+        'data' => ['Product' => $product, 'SKU' => $sku, 'Quantity' => $qty, 'Target price' => $price, 'Product link' => $url],
+    ]) : false;
     $admin = get_option('admin_email');
     $subj  = 'Wholesale Quote: ' . $product . ' (SKU: ' . $sku . ')';
     $body  = "Product: $product\nSKU: $sku\nURL: $url\n\nName: $name\nEmail: $email\nCompany: $company\nCountry: $country\nQty: $qty\nTarget $: $price\n\nMessage:\n$message";
     $hdrs  = ['Content-Type: text/plain; charset=UTF-8','From: '.get_bloginfo('name').' <'.$admin.'>','Reply-To: '.$name.' <'.$email.'>'];
     $sent  = wp_mail($admin, $subj, $body, $hdrs);
     wp_mail($email, 'Your Quote Request — Aurix International', "Dear $name,\n\nThank you! We received your quote request for $product (SKU: $sku, Qty: $qty).\nWe'll respond within 24 hours.\n\nBest,\nAurix International", ['From: Aurix International <'.$admin.'>']);
-    $sent ? wp_send_json_success(['message'=>'Sent.']) : wp_send_json_error('Mail failed.');
+    ( $sent || $saved ) ? wp_send_json_success(['message'=>'Sent.']) : wp_send_json_error('Mail failed.');
 }
 add_action('wp_ajax_aurix_rfq_submit',        'aurix_rfq_submit');
 add_action('wp_ajax_nopriv_aurix_rfq_submit', 'aurix_rfq_submit');
@@ -1051,6 +1060,12 @@ function aurix_faq_submit() {
     $url     = esc_url_raw($_POST['faq_product_url']       ?? '');
     $q       = sanitize_textarea_field($_POST['faq_question'] ?? '');
     if ( ! $name || ! is_email($email) || ! $q ) { wp_send_json_error('Missing fields'); return; }
+    if ( function_exists('aurix_inbox_add') ) {
+        aurix_inbox_add('question', [
+            'name' => $name, 'email' => $email, 'subject' => 'Question about ' . $product, 'message' => $q, 'source' => $url,
+            'data' => ['Product' => $product, 'Product link' => $url],
+        ]);
+    }
     $admin = get_option('admin_email');
     $subj  = 'Product FAQ: ' . $product;
     $body  = "Product: $product\nURL: $url\n\nFrom: $name ($email)\n\nQuestion:\n$q";
@@ -1071,6 +1086,18 @@ function aurix_distributor_signup() {
     $email = sanitize_email(wp_unslash($_POST['email'] ?? ''));
     if ( ! is_email($email) ) {
         wp_send_json_error(['message' => 'Please enter a valid email address.']);
+    }
+
+    if ( function_exists('aurix_inbox_add') ) {
+        aurix_inbox_add('distributor', [
+            'email'   => $email,
+            'name'    => sanitize_text_field(wp_unslash($_POST['name'] ?? '')),
+            'company' => sanitize_text_field(wp_unslash($_POST['company'] ?? '')),
+            'country' => sanitize_text_field(wp_unslash($_POST['country'] ?? '')),
+            'phone'   => sanitize_text_field(wp_unslash($_POST['phone'] ?? '')),
+            'message' => sanitize_textarea_field(wp_unslash($_POST['message'] ?? '')),
+            'subject' => 'Distributor Community signup',
+        ]);
     }
 
     $admin = get_option('admin_email');
@@ -1309,6 +1336,9 @@ function aurix_waitlist_signup() {
             'status' => 'active',
         ];
         update_option('aurix_waitlist_emails', $list);
+        if ( function_exists('aurix_inbox_add') ) {
+            aurix_inbox_add('waitlist', ['email' => $email, 'subject' => 'VIP Waitlist — Kit Builder early access']);
+        }
 
         /* ── 1. Confirmation email to USER ── */
         $user_subject = "You're on the VIP Waitlist — " . $site_name;
@@ -1541,6 +1571,14 @@ function aurix_oos_waitlist_signup() {
     if ( ! $already ) {
         $list[] = ['email' => $email, 'date' => current_time('Y-m-d H:i:s')];
         update_option($option_key, $list);
+        if ( function_exists('aurix_inbox_add') ) {
+            aurix_inbox_add('stock', [
+                'email' => $email, 'ref' => 'product:' . $product_id,
+                'subject' => 'Back-in-stock alert: ' . $product_name,
+                'source' => $product_id ? get_permalink($product_id) : '',
+                'data' => ['Product' => $product_name, 'Product ID' => $product_id],
+            ]);
+        }
 
         /* ── Email to USER ── */
         ob_start(); ?>
